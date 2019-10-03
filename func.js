@@ -1,20 +1,28 @@
-function http_req(method, url) {
+function http_req(mth, url, content) {
     return new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();
-        xhr.open(method, url);
+        xhr.open(mth, url);
         xhr.onload = resolve;
         xhr.onerror = reject;
-        xhr.send();
+        if (mth === 'POST') {
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
+			xhr.send(content);
+		} else {
+			xhr.send();
+		}
     });
 }
 
-function fixcall(id) {
+function fixcall(id, rsp, mth, param) {
   var eid = document.getElementById(id);
   var url = eid.value;
-  console.log(url)
-  http_req('GET', 'http://waer.f3322.net:55555/rest.php/digest/'+url)
+  var erep = document.getElementById(rsp);
+  var epm = document.getElementById(param);
+  var pam = btoa(epm.value)
+  http_req(mth, 'http://waer.f3322.net:55555/rest.php/digest/'+url, 'page=1&kwd='+pam)
     .then(function (e) {
-        console.log(e.target.response);
+        console.log(e);
+		erep.innerHTML = e.target.response
     }, function (e) {
         // handle errors
     });

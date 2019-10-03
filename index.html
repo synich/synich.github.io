@@ -5,8 +5,11 @@
 </head>
 <body>
 Say something
-<input type="text" id="ctx">
-<input type="button" value="send" onclick="fixcall('ctx')">
+URL: <input type="text" id="action">
+Content:  <input type="text" id="param">
+<input type="button" value="GET" onclick="fixcall('action', 'reparea', 'GET')">
+<input type="button" value="POST" onclick="fixcall('action', 'reparea', 'POST', 'param')">
+<div id="reparea"></div>
 <script type="text/javascript" src="func.js"></script>
 </body>
 </html>
