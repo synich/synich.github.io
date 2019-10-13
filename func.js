@@ -35,13 +35,26 @@ function fixcall(id, rsp, mth, param) {
     });
 }
 
-function goosearch(id) {
+function goosearch(id, rsp, token) {
   var kwd = getElemValue(id);
-  window.open(g_waer_url+'pgext/goosearch/'+kwd, '_blank' )
+  var tkt = getElemValue(token);
+  var erep = document.getElementById(rsp);
+  http_req('GET', g_waer_url+'pgext/goosearch/'+kwd+'?t='+tkt, '')
+    .then( function(e) {
+        erep.innerHTML = e.target.response
+      }
+    )
 }
 
-function crosswall(id) {
+function crosswall(id, rsp, token) {
   var url = getElemValue(id);
-  var b64 = btoa(url)
-  window.open(g_waer_url+'pgext/crosswall/'+b64, '_blank' )
+  url = url.replace(/ +/g, '+');
+  var b64 = btoa(url);
+  var tkt = getElemValue(token);
+  var erep = document.getElementById(rsp);
+  http_req('GET', g_waer_url+'pgext/crosswall/'+b64+'?t='+tkt, '' )
+    .then( function(e) {
+        erep.innerHTML = e.target.response
+      }
+    )
 }

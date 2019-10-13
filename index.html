@@ -9,12 +9,12 @@ URL: <input type="text" id="action">
 Content:  <input type="text" id="param">
 <input type="button" value="GET" onclick="fixcall('action', 'reparea', 'GET')">
 <input type="button" value="POST" onclick="fixcall('action', 'reparea', 'POST', 'param')">
+<input type="password" id="token">
 <hr/>
-Google <input type="text" id="google">
-<input type="button" value="Search" onclick="goosearch('google')">
-<hr/>
+Goo <input type="text" id="goo">
+<input type="button" value="Search" onclick="goosearch('goo', 'reparea', 'token')">
 Cross <input type="text" id="cross">
-<input type="button" value="Proxy" onclick="crosswall('cross')">
+<input type="button" value="Proxy" onclick="crosswall('cross', 'reparea', 'token')">
 <div id="reparea"></div>
 <script type="text/javascript" src="func.js"></script>
 </body>
