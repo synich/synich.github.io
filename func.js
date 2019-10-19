@@ -35,26 +35,38 @@ function fixcall(id, rsp, mth, param) {
     });
 }
 
-function goosearch(id, rsp, token) {
+function goosearch(id, rsp, token, act) {
   var kwd = getElemValue(id);
   var tkt = getElemValue(token);
   var erep = document.getElementById(rsp);
-  http_req('GET', g_waer_url+'pgext/goosearch/'+kwd+'?t='+tkt, '')
+  var action = getElemValue(act);
+  var targeturl = g_waer_url+'pgext/goosearch/'+kwd+'?t='+tkt;
+  if (action== 'in' ) {
+  http_req('GET', targeturl+ '&act=i', '')
     .then( function(e) {
         erep.innerHTML = e.target.response
       }
     )
+  } else {
+    window.open(targeturl+ '&act=o', '_blank');
+  }
 }
 
-function crosswall(id, rsp, token) {
+function crosswall(id, rsp, token, act) {
   var url = getElemValue(id);
   url = url.replace(/ +/g, '+');
   var b64 = btoa(url);
   var tkt = getElemValue(token);
   var erep = document.getElementById(rsp);
-  http_req('GET', g_waer_url+'pgext/crosswall/'+b64+'?t='+tkt, '' )
+  var action = getElemValue(act);
+  var targeturl = g_waer_url+'pgext/crosswall/'+b64+'?t='+tkt;
+  if (action== 'in' ) {
+  http_req('GET', targeturl+ '&act=i' , '' )
     .then( function(e) {
         erep.innerHTML = e.target.response
       }
     )
+  } else {
+    window.open(targeturl+ '&act=o', '_blank');
+  }
 }

@@ -11,10 +11,14 @@ Content:  <input type="text" id="param">
 <input type="button" value="POST" onclick="fixcall('action', 'reparea', 'POST', 'param')">
 <input type="password" id="token">
 <hr/>
+<select id="act">Mode
+<option value="in">In</option>
+<option value="out">Out</option>
+</select>
 Goo <input type="text" id="goo">
-<input type="button" value="Search" onclick="goosearch('goo', 'reparea', 'token')">
+<input type="button" value="Search" onclick="goosearch('goo', 'reparea', 'token', 'act')">
 Cross <input type="text" id="cross">
-<input type="button" value="Proxy" onclick="crosswall('cross', 'reparea', 'token')">
+<input type="button" value="Proxy" onclick="crosswall('cross', 'reparea', 'token', 'act')">
 <div id="reparea"></div>
 <script type="text/javascript" src="func.js"></script>
 </body>
