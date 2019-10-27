@@ -19,7 +19,7 @@ function http_req(mth, url, content) {
     });
 }
 
-var g_waer_url = 'http://waer.f3322.net:55555/rest.php/'
+var g_waer_url = 'http://waer.f3322.net:55555/r.php/'
 
 function fixcall(id, rsp, mth, param) {
   var url = getElemValue(id);
