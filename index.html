@@ -2,24 +2,73 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 <title>蛙二的思考</title>
-</head>
-<body>
-Say something
-URL: <input type="text" id="action">
-Content:  <input type="text" id="param">
-<input type="button" value="GET" onclick="fixcall('action', 'reparea', 'GET')">
-<input type="button" value="POST" onclick="fixcall('action', 'reparea', 'POST', 'param')">
-<input type="password" id="token">
-<hr/>
-<select id="act">Mode
-<option value="in">In</option>
-<option value="out">Out</option>
+<style type="text/css" media="all">
+  @import "/theme/css/pure.css";
+  @import "/theme/css/layout.css?v=3";
+</style></head>
+
+<body onload="onDoorBody()" onhashchange="onHashChange()">
+<div id="sesame"></div>
+
+<div id="e_blog">
+<span class="pure-u-1-5" onclick="showPreview('tagList')">Timeline</span>
+<span class="pure-u-1-5" onclick="showTag('tagList')">Tag</span>
+<span class="pure-u-1-5" onclick="showAbout('tagList')">About</span>
+<input type="text" id="search_key" placeholder="搜索示例 lua self -do" onkeypress="if(event.keyCode ==13){onKeySearch('search_key', 'blog_content')}">
+<div class="article" id="blog_content"></div>
+<hr />
+<!-- blog tag -->
+<div class="content" id="tagList"></div>
+<span id="recUp"></span>
+</div>
+
+<div id="e_tmrec" style="display:none">
+<select id="eYear">
+	<option value="17">2017</option>
+	<option value="18">2018</option>
+	<option value="19">2019</option>
+	<option value="20">2020</option>
 </select>
-Goo <input type="text" id="goo">
-<input type="button" value="Search" onclick="goosearch('goo', 'reparea', 'token', 'act')">
-Cross <input type="text" id="cross">
-<input type="button" value="Proxy" onclick="crosswall('cross', 'reparea', 'token', 'act')">
-<div id="reparea"></div>
-<script type="text/javascript" src="func.js"></script>
+<select id="eMonth">
+	<option value="01">Jan</option>
+	<option value="02">Feb</option>
+	<option value="03">Mar</option>
+	<option value="04">Apr</option>
+	<option value="05">May</option>
+	<option value="06">Jun</option>
+	<option value="07">Jul</option>
+	<option value="08">Aug</option>
+	<option value="09">Sep</option>
+	<option value="10">Oct</option>
+	<option value="11">Nov</option>
+	<option value="12">Dec</option>
+</select>
+<input type="button" value="看" onclick="getRec('eYear', 'eMonth', 'eTbDiary')"/>
+日程
+<select id="eHour">
+	<option value="12">12点</option>
+	<option value="18">18点</option>
+	<option value="24">24点</option>
+</select>：
+<input type="button" value="保存" onclick="saveRec('eHour', 'eDo')"/>
+<br />
+<textarea name="myTag" id="eDo" cols="37" rows="10"></textarea>
+<br />
+<input type="text" name="mySrch" id="eSrch">
+<input type="button" value="检索" onclick="searchRec('eSrch', 'eTbDiary')"/>
+<div id="eTbDiary"></div>
+</div>
+
+<div id="e_admin"  style="display:none">
+	<input id="eDay" type="text" name="whichDay" />
+	<input type="button" value="日期" onclick="getBlog('eDay', 'e01', 'eTag')"/>
+	<hr/>
+	<textarea id="e01" ></textarea>
+	标签：<input id="eTag" type="text" name="myTag" value=""/>
+	<input type="button" value="保存" onclick="saveBlog('eDay', 'e01', 'eTag')" />
+</div>
+
+<script type="text/javascript" src="/theme/js/jquery-3.0.0.min.js"></script>
+<script type="text/javascript" src="/theme/js/door.js?v=5"></script>
 </body>
 </html>
