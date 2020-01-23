@@ -20,7 +20,6 @@ function bindValue2Elem(d, e) {
   var elem = document.getElementById(e);
   elem.value = d;
 }
-
 /////////////// various style content //////////////////////
 var g_prepage = 0;
 function showPreview(elem) {
@@ -80,6 +79,9 @@ function onKeySearch(k, v) {
 	  var oput = '';
 	  for (var i=0; i<ctx.length; i++)  {
 		  oput = oput + '<h1>'+ctx[i].date+'</h1>'+ctx[i].content+'<hr/>';
+	  }
+	  if (oput == '') {
+		oput = 'No content match input keyword.';
 	  }
 	  bindInner2Elem(oput, v);
 	});
@@ -145,7 +147,6 @@ function displayOne(e) {
     }
   }
 }
-
 //////////////////// admin edit ////////////////////////////
 
 /// get markdown original text
@@ -172,7 +173,6 @@ function saveBlog(whichDay, editId, tagId){
     function(data, status){ alert(data); }
   );
 }
-
 
 //////////////////////// tmrec func ////////////////////////////
 function curDay(){
