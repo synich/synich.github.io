@@ -1,5 +1,12 @@
+g_xip = 'gh_'+returnCitySN['cip']+'_'+encodeURI(returnCitySN['cname']);
 function getHttp (pth, arg, cb) {
-	$.get('http://waer.f3322.net:55555/r.php'+pth, arg, cb)
+    $.ajax({
+        type : 'GET',
+        url : 'http://waer.f3322.net:55555/r.php'+pth,
+        data : arg,
+        //beforeSend: function(xhr) {xhr.setRequestHeader("XIP", g_xip)},
+        headers : {'XIP':g_xip}
+    }).done(cb)
 }
 function postHttp(pth, arg, cb) {
     $.post('http://waer.f3322.net:55555/r.php'+pth, arg, cb)
@@ -20,10 +27,11 @@ function bindValue2Elem(d, e) {
   var elem = document.getElementById(e);
   elem.value = d;
 }
+
 /////////////// various style content //////////////////////
 var g_prepage = 0;
 function showPreview(elem) {
-  getHttp('/blog/preview', 'page='+g_prepage, function(data) {
+  getHttp('/blog/preview', {page : g_prepage}, function(data) {
     var pd = eval('('+data+')');
     var oput = '';
     for (var i=0; i<pd.length; i++) {
@@ -217,7 +225,7 @@ function searchRec(eSrch, eTb){
   var eleSch = document.getElementById(eSrch);
   var kwd = eleSch.value;
   var tbtm = document.getElementById(eTb);
-  postHttp("/tmrec/searchRec/"+kwd, function(data, status){
+  postHttp("/tmrec/searchRec/"+kwd, '', function(data, status){
     tbtm.innerHTML = data;
   });
 }
@@ -240,7 +248,7 @@ function tm_startup(){
   $("#eHour").val(tmp.toString());
 
   d = document.getElementById("eDo");
-  postHttp("/tmrec/justDo/"+curDay()+"/"+tmp.toString(), function(data, status){
+  postHttp("/tmrec/justDo/"+curDay()+"/"+tmp.toString(), '', function(data, status){
     d.value = data.slice(1);//strip first \n
   });
 }
