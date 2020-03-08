@@ -1,4 +1,4 @@
-g_xip = 'gh_'+returnCitySN['cip']+'_'+encodeURI(returnCitySN['cname']);
+g_xip = returnCitySN['cip']+'_'+encodeURI(returnCitySN['cname']);
 function getHttp (pth, arg, cb) {
     $.ajax({
         type : 'GET',
