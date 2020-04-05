@@ -1,4 +1,4 @@
-g_xip = 'gh_'+returnCitySN['cip']+'_'+encodeURI(returnCitySN['cname']);
+g_xip = returnCitySN['cip']+'_'+encodeURI(returnCitySN['cname']);
 function getHttp (pth, arg, cb) {
     $.ajax({
         type : 'GET',
@@ -38,6 +38,7 @@ function showPreview(elem) {
       oput = oput + pd[i]['content'] + '-&gt<span onclick="onBlogTimeline('+pd[i]['date']+')">阅读'+pd[i]['date'] + '完整内容</span><hr />';
     }
     bindInner2Elem(oput, elem )
+    document.getElementById(elem).className='article';
   } );
   g_prepage++;
 }
@@ -55,6 +56,7 @@ function showTag(elem) {
 		oput = oput + '<span class="tagList" id="tag'+tag+'" onclick=onBlogTag("'+tag+'")>'+title + '</span><hr/>';
 	  }
       bindInner2Elem(oput, elem);
+      document.getElementById(elem).className='content';
 	  bindInner2Elem(pd['recUp'], 'recUp');
 	  if (pd['sesame']) {
 		bindInner2Elem(pd['sesame'], 'sesame');
@@ -65,13 +67,14 @@ function showTag(elem) {
 function showAbout(elem) {
   getHttp('/blog/about', '', function(data) {
     bindInner2Elem(data, elem )
+    document.getElementById(elem).className='article';
   } )
 }
 
 //default action show by tag
 function onDoorBody() {
     displayOne('blog');
-    showTag('tagList');
+    showTag('shrArea');
 }
 
 function onHashChange() {

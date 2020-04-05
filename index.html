@@ -11,14 +11,14 @@
 <div id="sesame"></div>
 
 <div id="e_blog">
-<span class="pure-u-1-5" onclick="showPreview('tagList')">Timeline</span>
-<span class="pure-u-1-5" onclick="showTag('tagList')">Tag</span>
-<span class="pure-u-1-5" onclick="showAbout('tagList')">About</span>
+<span class="pure-u-1-5" onclick="showPreview('shrArea')">Timeline</span>
+<span class="pure-u-1-5" onclick="showTag('shrArea')">Tag</span>
+<span class="pure-u-1-5" onclick="showAbout('shrArea')">About</span>
 <input type="text" id="search_key" placeholder="搜索示例 lua self -do" onkeypress="if(event.keyCode ==13){onKeySearch('search_key', 'blog_content')}">
 <div class="article" id="blog_content"></div>
 <hr />
-<!-- blog tag -->
-<div class="content" id="tagList"></div>
+<!-- preview/tag/about share-->
+<div id="shrArea"></div>
 <span id="recUp"></span>
 </div>
 
@@ -70,6 +70,6 @@
 
 <script type="text/javascript" src="/theme/js/jquery-3.4.1.min.js"></script>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-<script type="text/javascript" src="/theme/js/door.js?v=3"></script>
+<script type="text/javascript" src="/theme/js/door.js?v=4"></script>
 </body>
 </html>
