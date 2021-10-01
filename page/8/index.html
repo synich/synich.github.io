@@ -65,161 +65,161 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+                <a href="/post/190528/" title="批处理的用法">批处理的用法</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年9月1日
+            2019年5月28日
         </date>
         
         <div class="post-content">
-            单看这两个模型的名字，含义好像是非此即彼的，研究它的时间划分，以及计分细节，才体会到这两个模型想表达含义的差异。 模型定义 昼伏夜出定义了4个时……
+            工作原因不得不用批处理打包，网上介绍的函数用法并不准确。 用 :func 加 goto eof的方式可以定义一个块，但它还算不上函数，如果执行流到了定义开始处，会继……
         </div>
-        <p class="readmore"><a href="/post/210901/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190528/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+                <a href="/post/190526/" title="HTTP的认证方式">HTTP的认证方式</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月29日
+            2019年5月26日
         </date>
         
         <div class="post-content">
-            git虽然是个分布式版本管理工具，但在我看来网络协议的支持是开发比较晚的，共有4种协议： local协议，其实就是把另一个目录看成是远程仓库，……
+            HTTP初衷是定义为无状态协议，但随着使用日渐广泛，认证也纳入了RFC7235的定义。客户端如果请求一个不被允许的资源，服务端返回401或4……
         </div>
-        <p class="readmore"><a href="/post/210729/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190526/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+                <a href="/post/190524/" title="远程文件传输说明">远程文件传输说明</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月21日
+            2019年5月24日
         </date>
         
         <div class="post-content">
-            执行过程 常用的有local和yarn两种模式，写代码或调错阶段，无特殊情况用local，速度快很多。 pyspark和scala的spark不……
+            由于安全性的关系，很多新系统默认不提供FTP功能，要交互文件就需要别的方式，好在SSH整合了SFTP子系统。不用额外启动守护，只要sshd_……
         </div>
-        <p class="readmore"><a href="/post/210721/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190524/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+                <a href="/post/190520/" title="域名和DNS的事">域名和DNS的事</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月14日
+            2019年5月20日
         </date>
         
         <div class="post-content">
-            包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+            自从2016年5月注册免费的DDNS域名已经过去3年了，一直用却从未深究过其中原理。网上提供免费域名的服务商不少，几个知名的直接在路由器内嵌……
         </div>
-        <p class="readmore"><a href="/post/210614/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190520/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+                <a href="/post/190506/" title="对称加密实践">对称加密实践</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月13日
+            2019年5月6日
         </date>
         
         <div class="post-content">
-            熟悉了vim的sexp模式后，再进行lisp编程，这时操作时脑中思考的就不再是一行文本，而是一整个表达式块，我要在这个表达式外再施加一层操作……
+            所有对称加密的核心是XOR运算，因为XOR运算有一个非常神奇的特性A*B*B=A。也就是说A与B进行XOR运算之后的结果再和B运算就能复原A……
         </div>
-        <p class="readmore"><a href="/post/210613/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190506/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+                <a href="/post/190504/" title="博客网站功能扩展记录">博客网站功能扩展记录</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月11日
+            2019年5月4日
         </date>
         
         <div class="post-content">
-            写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
+            调试 一直以来对Web开发调试都没有好的办法，知道了error_log函数可以记日志。记录的文件名通过php.ini来设置 error_log = php_errors.log 这种相对路径的……
         </div>
-        <p class="readmore"><a href="/post/210611/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190504/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+                <a href="/post/190502/" title="蒙古帝国">蒙古帝国</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月21日
+            2019年5月2日
         </date>
         
         <div class="post-content">
-            理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
+            成吉思汗传位给窝阔台再传给贵由后，却不能守，被拖雷之子蒙哥抢了帝位，最终传于忽必烈改为元朝。 蒙哥、忽必烈、旭烈兀、阿里不哥是拖雷的4个儿子，……
         </div>
-        <p class="readmore"><a href="/post/210421/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190502/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+                <a href="/post/190501/" title="Linux的软件包管理软件说明">Linux的软件包管理软件说明</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月4日
+            2019年5月1日
         </date>
         
         <div class="post-content">
-            现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
+            不同发行版有独特的包管理软件，分为打包软件和包管理两块，相对来说打包软件定义包的格式，而包管理要解决的问题要复杂得多。 添加软件时，要记录所有……
         </div>
-        <p class="readmore"><a href="/post/210404/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190501/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+                <a href="/post/190429/" title="网络文件系统机制">网络文件系统机制</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年3月22日
+            2019年4月29日
         </date>
         
         <div class="post-content">
-            Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
+            几种常见的NAS协议，FTP无法挂载到路径，AFS只有Apple用，几乎遇不到，说说Samba(smb又叫CIFS)和nfs方式 Samba 有1和2两……
         </div>
-        <p class="readmore"><a href="/post/210322/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190429/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+                <a href="/post/190420/" title="浏览器的网络请求发展史">浏览器的网络请求发展史</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月16日
+            2019年4月20日
         </date>
         
         <div class="post-content">
-            从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
+            偶然间推论出的历史脉络 HTTP0.9版只有GET，加上当时浏览器最初的定位就是互相看文档，初代只是个能在地址栏发起GET的图形程序。 慢慢地应……
         </div>
-        <p class="readmore"><a href="/post/210216/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190420/">阅读全文</a></p>
     </article>
     
     
@@ -228,10 +228,15 @@
 
 <ol class="page-navigator">
     
-
+    <li class="prev">
+        <a href="/page/7/">上一页</a>
+    </li>
     
 
     
+
+    
+        
         
     
     
@@ -239,22 +244,49 @@
     
         
         
-        <li  class="current">
+        <li >
             <a href="/">1</a>
         </li>
         
     
         
-        
-        <li >
-            <a href="/page/2/">2</a>
+        <li>
+            <span>...</span>
         </li>
         
     
         
         
         <li >
-            <a href="/page/3/">3</a>
+            <a href="/page/6/">6</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/7/">7</a>
+        </li>
+        
+    
+        
+        
+        <li  class="current">
+            <a href="/page/8/">8</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/9/">9</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/10/">10</a>
         </li>
         
     
@@ -276,7 +308,7 @@
     
 
     <li class="next">
-        <a href="/page/2/">下一页</a>
+        <a href="/page/9/">下一页</a>
     </li>
     
 </ol>

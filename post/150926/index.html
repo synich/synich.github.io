@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>软件可靠性硬件可靠 | 蛙二的思考</title>
+    <meta property="og:title" content="软件可靠性硬件可靠 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2015-09-26T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2015-09-26T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="软件可靠性硬件可靠">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/150926/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">软件可靠性硬件可靠</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2015年9月26日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>通常我们在写软件时，总会做各种各样的错误或异常判断，比如输入非法啊，执行异常之类的。但我们很少去怀疑是不是硬件本身出现问题，仿佛这个世界，只有逻辑错误而不会有电路错误一样。</p>
+<p>以前听一次云存储的入门讲座，其中就讲到硬盘的存储位出错机率是10e-12，换算下来一块1个T的硬盘，在一年里总会发生一次非正常的bit位翻转。那是我第一次听到有人这么仔细地计算硬件错误机率给软件设计带来的影响。</p>
+<p>今天在吃饭时，又听到两个有意思的异常问题</p>
+<p>1.软件经常莫名其妙地死机，甚至一天之内死机十数次，经过调试发现总是内存地址的最高位变成错误的1，把1改成0就不会发生死机。从软件层面问题已经无法解答，最后硬件部的人承认是电路设计有问题，类似是电磁兼容一类的，导致内存受影响，引起最高的bit位翻转。</p>
+<p>2.某个版本的主程序启动后，会引起busybox死机，但只在那个版本上会出现，经过反复调查，最后偶然发现死机版本的busybox的内存映像竟然和静态编译出的汇编代码不同。考虑到其它版本没有问题，排除加载器问题，于是只好对主程序的内核调用一条条地排查，最后果然发现是某条内核调用，因为代码写得不完善，将某一内存地址的bit位做了翻转，而busybox正好加载到该内存地址。通常code页的内容是不可修改的，但因为这个奇怪的bit翻转，导致汇编指令从Mov变成了Shift，进而导致后续的内存映射异常。又因为异常的内存地址是编译期固定的，所以只在某个版本会影响到busybox的代码段，引起奇怪异常。</p>
+<p>这两个问题我没有亲身参与，具体细节也是听说而已，但却让我对软件的底层可靠性有了不一样的认识。平时我们写程序，一般是不考虑内存bit位异常翻转，一方面民用的内存、主板在出厂前还是做了相对完善的检验，电磁兼容也必须要通过3C认证，故这种问题反映较少，但公司产品，尤其低成本平台，研发周期又短，发生这种问题，也就不足为奇了。</p>
+<p>第二个问题则是系统层的奇怪异常，以前我自己写代码，如果遇到底层的函数异常，一般也就不去深究了，一方面是信任，另一方面也确实是看不懂。但从实际情况来看，只要是人写的代码，不论它在哪一层，都有出错的可能。</p>
+<p>以前还听说过IBM的Z系列大型机，用在金融领域，有个特性就是两个一模一样的CPU同时计算，如果计算出的结果不一致，则丢弃该次计算，当时我看到这段介绍，觉得根本就不可能，今天再去反观，才发觉自己真是见识太少。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

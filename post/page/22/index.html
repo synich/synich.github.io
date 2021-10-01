@@ -1,24 +1,27 @@
 <!doctype html>
 <html lang="zh-ch">
 <head>
-	<meta name="generator" content="Hugo 0.88.1" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>蛙二的思考 | </title>
-    <meta property="og:title" content="蛙二的思考 | ">
-    <meta property="og:type" content="website">
+    <title>Posts | 蛙二的思考</title>
+    <meta property="og:title" content="Posts - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+        
     <meta name="Keywords" content="">
-    <meta name="description" content="">
-    <meta property="og:url" content="/">
+    <meta name="description" content="Posts">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="/index.xml" title="蛙二的思考" />
+    <link rel="alternate" type="application/rss+xml" href="/post/index.xml" title="蛙二的思考" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -36,11 +39,9 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <h1>
-                        <a id="logo" href="">
-                            蛙二的思考
-                        </a>
-                    </h1>
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
                 
                 
             </div>
@@ -62,165 +63,185 @@
                     
 <div class="res-cons">
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年9月1日
-        </date>
-        
-        <div class="post-content">
-            单看这两个模型的名字，含义好像是非此即彼的，研究它的时间划分，以及计分细节，才体会到这两个模型想表达含义的差异。 模型定义 昼伏夜出定义了4个时……
-        </div>
-        <p class="readmore"><a href="/post/210901/">阅读全文</a></p>
-    </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+                <a href="/post/170227/" title="LuaJIT的编译过程和FFI接口">LuaJIT的编译过程和FFI接口</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月29日
+            2017年2月27日
         </date>
         
         <div class="post-content">
-            git虽然是个分布式版本管理工具，但在我看来网络协议的支持是开发比较晚的，共有4种协议： local协议，其实就是把另一个目录看成是远程仓库，……
+            编译LuaJIT比Lua要复杂很多，共分三个步骤。先看src目录下的host目录，首先要编译出host内的minilua，用它驱动dynas……
         </div>
-        <p class="readmore"><a href="/post/210729/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170227/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+                <a href="/post/170224/" title="Openresty的应用开发">Openresty的应用开发</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月21日
+            2017年2月24日
         </date>
         
         <div class="post-content">
-            执行过程 常用的有local和yarn两种模式，写代码或调错阶段，无特殊情况用local，速度快很多。 pyspark和scala的spark不……
+            每个版本都是在nginx的基础上做扩充，所以版本号会多出一位。ngx_lua、memc、srcache都是扩展。自带resty的命令行工具，……
         </div>
-        <p class="readmore"><a href="/post/210721/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170224/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+                <a href="/post/170220/" title="Nginx模块介绍">Nginx模块介绍</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月14日
+            2017年2月20日
         </date>
         
         <div class="post-content">
-            包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+            要对Nginx做扩展，都是在nginx.conf里通过命令调用来完成的。 这些命令是归属到某个module中的。命令本身不会显式支持命名空间，……
         </div>
-        <p class="readmore"><a href="/post/210614/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170220/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+                <a href="/post/170219/" title="函数式和对象式，表达式和语句">函数式和对象式，表达式和语句</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月13日
+            2017年2月19日
         </date>
         
         <div class="post-content">
-            熟悉了vim的sexp模式后，再进行lisp编程，这时操作时脑中思考的就不再是一行文本，而是一整个表达式块，我要在这个表达式外再施加一层操作……
+            伞哥在微博提到，ML的函数语法如果有多个参数，当参数没有完整传入时，并不是像Lua/PHP等一样赋值为nill，而是返回一个curry化的函……
         </div>
-        <p class="readmore"><a href="/post/210613/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170219/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+                <a href="/post/170207/" title="仔细打磨写过的程序">仔细打磨写过的程序</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月11日
+            2017年2月7日
         </date>
         
         <div class="post-content">
-            写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
+            从去年12月到最近，把公司内的AppWiki网站还有这个博客网站的代码，重新进行了调整，颇多感触。 比如代码中早期很多地方因为求快都是Hard……
         </div>
-        <p class="readmore"><a href="/post/210611/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170207/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+                <a href="/post/170204/" title="Lua栈操作记录">Lua栈操作记录</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月21日
+            2017年2月4日
         </date>
         
         <div class="post-content">
-            理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
+            Lua与C互操作用的是Stack模式，1表示底部，-1表示顶部。除了push/pop还有 lua_insert,lua_remove,lua_……
         </div>
-        <p class="readmore"><a href="/post/210421/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170204/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+                <a href="/post/170203/" title="CSS的一些理解">CSS的一些理解</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月4日
+            2017年2月3日
         </date>
         
         <div class="post-content">
-            现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
+            写在前面的话 HTML是SGML/XML的一种特殊应用或者说DSL， 标准的网页写法是，与之对照的DocBook的首行写法是，而SVG图像的写法……
         </div>
-        <p class="readmore"><a href="/post/210404/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170203/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+                <a href="/post/170202/" title="procfs记录">procfs记录</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年3月22日
+            2017年2月2日
         </date>
         
         <div class="post-content">
-            Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
+            procfs诞生于1984年的Unix第8版，愿望是对ptrace的一种改良。起初是每个进程对应一个文件，经过Plan9改造成伪文件系统，且……
         </div>
-        <p class="readmore"><a href="/post/210322/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170202/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+                <a href="/post/170125/" title="Lua中udata设置元表机制和回调">Lua中udata设置元表机制和回调</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月16日
+            2017年1月25日
         </date>
         
         <div class="post-content">
-            从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
+            在Lua语言中可以给表设置metatable，用C语言写Lua扩展库时，返回的句柄 可以是table(比如luaiconv库)，也可以是use……
         </div>
-        <p class="readmore"><a href="/post/210216/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/170125/">阅读全文</a></p>
     </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="/post/170121/" title="Json中的null和undefined">Json中的null和undefined</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年1月21日
+        </date>
+        
+        <div class="post-content">
+            由于Json是来自于JavaScript，因此讨论Json中的字段必须要回归到JS中。 null在JS语言定义里是一个字面量，且是基本类型。如……
+        </div>
+        <p class="readmore"><a href="/post/170121/">阅读全文</a></p>
+    </article>
+    
     
     
 
@@ -228,33 +249,24 @@
 
 <ol class="page-navigator">
     
-
+    <li class="prev">
+        <a href="/post/page/21/">上一页</a>
+    </li>
     
 
     
-        
-    
-    
 
     
         
         
-        <li  class="current">
-            <a href="/">1</a>
-        </li>
-        
+    
+    
+
     
         
         
         <li >
-            <a href="/page/2/">2</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/3/">3</a>
+            <a href="/post/">1</a>
         </li>
         
     
@@ -267,7 +279,48 @@
         
         
         <li >
-            <a href="/page/29/">29</a>
+            <a href="/post/page/20/">20</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/post/page/21/">21</a>
+        </li>
+        
+    
+        
+        
+        <li  class="current">
+            <a href="/post/page/22/">22</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/post/page/23/">23</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/post/page/24/">24</a>
+        </li>
+        
+    
+        
+        <li>
+            <span>...</span>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/post/page/29/">29</a>
         </li>
         
     
@@ -276,7 +329,7 @@
     
 
     <li class="next">
-        <a href="/page/2/">下一页</a>
+        <a href="/post/page/23/">下一页</a>
     </li>
     
 </ol>

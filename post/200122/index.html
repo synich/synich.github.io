@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>putty的配置 | 蛙二的思考</title>
+    <meta property="og:title" content="putty的配置 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-01-22T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-01-22T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="putty的配置">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/200122/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">putty的配置</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月22日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>putty是个免费且方便的终端工具，其它像xshell等在按下Alt时会触发菜单栏，导致使用emacs时不好用，但是putty默认的配置不如xshell方便，列举如下</p>
+<p>首先在Connection菜单开启保活，keepalives设置为300，否则长期不用会断开远程连接。</p>
+<p>默认情况下字体很少，先勾上Appearance的Allow selection of variable-pitch fonts，就能选择Lucida Console，此后关掉这个选项还是可用，怀疑是个bug。</p>
+<p>配色，终端定义了文本、背景和8种ANSI颜色，每一种又可以叠加Bold属性。规范只定义了有这些选择，具体如何展示还取决于终端软件的设定甚至和显示器效果也有关系。putty默认文字颜色较暗且文件夹的蓝色和背景接近，很难看清，建设改为以下配色</p>
+<p>以下3个数字分别表示RGB</p>
+<ul>
+<li>Default Foregroud: 230/230/230  网上很多方案推荐全用255，这样会和Bold Foregroud一样，不能区分两种信息，最好稍暗一点</li>
+<li>Blue: 30/140/240</li>
+<li>Blue Bold: 85/190/255</li>
+<li>Red: 200/0/0</li>
+<li>Magenta: 200/0/200</li>
+</ul>
+<p>还有一些ANSI控制码，如：nA (光标上移n行 )、nB(光标下移n行 )、nC(光标右移n行 )、nD (光标左移n行 )、2J(清屏)、K(清除从光标到行尾的内容)、s(保存光标位置)、u(恢复光标位置)、?25l(隐藏光标)、?25l(显示光标)。     其中 ，'\033[0m&rsquo;用于恢复默认的终端输出属性，否则会影响后续的输出。</p>
+<p>基于常用参数，可定义如下单一控制宏，用于printf系列语句：</p>
+<pre tabindex="0"><code>#define NONE                 &quot;\e[0m&quot;
+#define BLACK                &quot;\e[0;30m&quot;
+#define L_BLACK              &quot;\e[1;30m&quot;
+#define RED                  &quot;\e[0;31m&quot;
+#define L_RED                &quot;\e[1;31m&quot;
+#define GREEN                &quot;\e[0;32m&quot;
+#define L_GREEN              &quot;\e[1;32m&quot;
+#define BROWN                &quot;\e[0;33m&quot;
+#define YELLOW               &quot;\e[1;33m&quot;
+#define BLUE                 &quot;\e[0;34m&quot;
+#define L_BLUE               &quot;\e[1;34m&quot;
+#define PURPLE               &quot;\e[0;35m&quot;
+#define L_PURPLE             &quot;\e[1;35m&quot;
+#define CYAN                 &quot;\e[0;36m&quot;
+#define L_CYAN               &quot;\e[1;36m&quot;
+#define GRAY                 &quot;\e[0;37m&quot;
+#define WHITE                &quot;\e[1;37m&quot;
+
+#define BOLD                 &quot;\e[1m&quot;
+#define UNDERLINE            &quot;\e[4m&quot;
+#define BLINK                &quot;\e[5m&quot;
+#define REVERSE              &quot;\e[7m&quot;
+#define HIDE                 &quot;\e[8m&quot;
+#define CLEAR                &quot;\e[2J&quot;
+#define CLRLINE              &quot;\r\e[K&quot; //or &quot;\e[1K\r&quot;
+</code></pre>
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

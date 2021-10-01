@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Bitcoin中三种哈希的区别与关联 | 蛙二的思考</title>
+    <meta property="og:title" content="Bitcoin中三种哈希的区别与关联 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2017-08-29T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2017-08-29T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Bitcoin中三种哈希的区别与关联">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/170829/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Bitcoin中三种哈希的区别与关联</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年8月29日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>区块链的不可篡改性是基于哈希函数的特性，Bitcoin中有3个地方用到了哈希的特性(都是SHA256)，分别是区块的哈希、区块的merkler树的哈希、每个交易的哈希。</p>
+<p>比特币实现区块链的数组结构比较简单，区块构成单向链表，区块结构的整体概貌：</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>每个区块含有一到N个交易，是个可变长结构，但不能无限增大，目前代码中人为地把区块大小限制在1M(分叉的BCC是8M)。这里还看不出哈希，接下来看看BlockMeta，这里面包含了两个Hash。</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>parentHash是把区块形成区块链的关键字段，计算这个Hash值异常困难，需要数亿次(甚至更多)地变换nonce值，进而使算出的Hash值小于difficulty。这也构成了Bitcoin共识机制PoW的基础，谁能算出这个值，网络上所有节点就承认TA挖到了这个块，从而获得了coinbase的奖励。但是区块并不保存自身的Hash值，因为一旦尝试出了nonce使得本区块符合链的条件，只要向全网广播这个刚算出的区块，其它所有看到这个广播的矿工都会保存这个区块的哈希。</p>
+<p>merklerRoot也是SHA256，不过这个计算就没区块哈希这么变态了。区块只是个容器，重要的还是其中的交易，merkler树就是记录所有交易生成的摘要，使得不论多少笔交易，都只需要很少且恒定的数据，就能证明交易的存在。它也是SPV的验证基础，这部分内容还没看明白，以后再补充。如果区块只包含一笔交易(即coinbase交易)，merklerRoot就等于这个coinbase交易的ID(哈希)，如果有两笔以上交易ID，则两两作字符串拼接，并通过Double SHA256反复循环直到算出根值。</p>
+<p>每笔交易都是可变长结构，包含的输入和输入数量至少为1，无上限。</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>交易结构并不包含哈希，只有输入才包含哈希。</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>由于Bitcoin没有账户的概念，只有UTXO，可以理解成一张支票吧。如果想交易，即证明有合法的input，就要向前找到一个或多个可用(未花费)的output，输入的哈希就用于寻找这个output。但交易可能不止一个output，所以还需要index来标识是第几个output，有了这两个值，就能惟一确定到UTXO，各节点也能验证余额是否足够。</p>
+<p>上面说了Bitcoin的结构，接下来对比下Bitshares的区块结构。Bitshares只有区块摘要的哈希算法用了SHA256，而区块ID、交易ID和MerklerRoot用的都是RIPEMD160。计算Merkler时的策略也有细微不同，Bitcoin在计算奇数个叶子节点时，会把最后一个节点复制一份，且每两个叶节点在向上计算上一级摘要用的是Double SHA256；而BitShares是直接把最后一个孤立节点放到下一轮计算，只用了Single SHA256，少了一半计算量。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

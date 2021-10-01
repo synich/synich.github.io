@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>P2P及SIP和xinetd | 蛙二的思考</title>
+    <meta property="og:title" content="P2P及SIP和xinetd - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2017-04-29T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2017-04-29T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="P2P及SIP和xinetd">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/170429/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">P2P及SIP和xinetd</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年4月29日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>P2P穿透涉及的协议有STUN/TURN/ICE，STUN是真正的UDP打洞，但只适用于cone NAT的网络环境下(完全、限制、端口限制三种都支持)，因为STUN的核心是子网内的客户端和公网建立连接后，NAT映射后的公网地址要能被另一个客户端使用，只有cone NAT才满足这个条件，symmetric NAT不允许公网端口复用，因此无法即使从公网上获取了NAT后的地址，也不能用来和另一个对端连接。</p>
+<p>对symmetric网络，只能使用中继方式，就用到TURN的方式，ICE要解决的问题和TURN类似，但两者的差异还没有完全清楚。</p>
+<p>P2P之后两个端就要建立会话，SIP是定义非常严谨的协议，明确地分了4个层级，基础的用ABNF规定了文档用语的格式，然后是传输层，接着是和业务关联最紧密的事务层，事务层之上还有个可选的事务用户(TU)，但这一层并不是必须的，比如无状态的proxy就没有TU一说。</p>
+<h2 id="xinetd类程序">xinetd类程序</h2>
+<p>知道xinetd这玩意属于偶然，本想尝试着在linux上跑cvs的server端，然而还是失败了。所有的服务端程序都需要监听端口，比如httpd就自己监听80，但是如果有大量非高频程序，要监听各式各样的端口，全数都启动显然是浪费资源，super server daemon也就是xinetd就是解决这类问题。这个程序的前身是inetd，不过现在都切换到xinetd了。
+它的功能是配合/etc/service配置项，监听各种各样的端口，然后把端口请求转发给相应的程序。比如在/etc/xinetd.d/目录下配置2401端口由cvs监听，平时cvs不会启动只有2401端口来请求时就唤醒cvs来处理。很多本身不带网络服务的程序，通过xinetd就具备了通信功能，有点CGI的味道。</p>
+<p>从功能上可以看出xinetd属于优化类程序，并不是默认自带程序，Alpine linux甚至都没有包。在Cent7下通过yum install xinetd安装，也可以通过下载包手动安装，依赖很少。xinetd程序也很小，x64版本不到200K。安装后还需要通过service xinetd start启动，这样才真正开始监听。</p>
+<p>用xined监听telnet遇到问题，系统默认telnet只能监听23端口，但是这要求有root权限，这种情况下要先在service增加一个伪telnet服务，让这个服务监听新端口，然后配置这个伪服务，最终导给telnet监听。</p>
+<p>busybox有类似的程序tcpsvd，配套telnetd和ftpd一起使用。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Apache和Nginx配置的理解 | 蛙二的思考</title>
+    <meta property="og:title" content="Apache和Nginx配置的理解 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2016-11-25T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2016-11-25T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Apache和Nginx配置的理解">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/161125/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Apache和Nginx配置的理解</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2016年11月25日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>前文有提到过PHP是怎么和Apache和Nginx整合的，作为当今最流行的两大Web服务器，从配置文件来看看这二者对Web业务的理解。</p>
+<p>还是先从和外部程序(如PHP)的结合性说起，Web服务器要想实现动态网页效果，最早是CGI方式，
+另外还有Python定义的WSGI(包括衍生出的uwsgi)，以及不太常见的SCGI。Nginx支持这三种方式都是比较松的耦合，
+通过<code>fastcgi_pass</code>把HTTP请求转给CGI服务器处理。另外一个很像的指令是<code>proxy_pass</code>，
+二者的差异是<code>proxy_pass</code>是纯透传，即Back-to-back。而<code>fastcgi_pass</code>要做的工作则多得多，
+不仅要构造一堆的CGI变量定义，还要在这些定义之前增加符合FastCGI规范的协议头。
+另外php的cli方式不支持，一定要使用php-cgi -b port方式才支持fastcgi协议的请求。
+用<code>uwsgi_pass</code>则是转成uwsgi协议给对应的程序处理。所以Nginx只做协议转换，不会调用外部进程。</p>
+<p>正是因为Nginx支持各种非HTTP协议的适配和转换，又不集成外部程序，它被普遍地认为是反向代理的模板。</p>
+<p>Apache当然也支持转发，通过加载<code>mod_proxy</code>插件和相应的配置，把HTTP请求转给独立的外部进程。除些之外，Apache和PHP还有一种结合更紧密的方式，
+即通过<code>AddHandler fcgid-script .php</code>这条指令，把路径名是.php结尾的请求，
+识别成fcigd方式，进而通过FcgidWrapper指令声明的执行程序，直接运行PHP程序了。
+虽然这种方式也是调用php-cgi.exe程序，但不是-b监听的方式。
+因此在我的win8.1系统上出现一个很奇怪的故障，即Apache的<code>mod_fcgid</code>可以运行，
+Nginx却死活跑不起来。OpenResty深度整合了lua(主要还是程序小)，达到像Apache的效果。</p>
+<p>Apache和Nginx在Web功能的配置上还是很像的，比如统一定向到错误页面</p>
+<p>这是Apache</p>
+<blockquote>
+<p>ErrorDocument 404 /missing.html</p>
+</blockquote>
+<p>这是Nginx</p>
+<blockquote>
+<p>error_page  404              /404.html;</p>
+</blockquote>
+<p>这里有个初学者很容易误解的坑，用PHP返回的错误码，服务器是不理会的。
+原理是Web服务器只认自身产生的错误码，对外部程序返回的HTTP头内的错误码不做识别。
+Nginx还好一点，可以用<code>fastcgi_intercept_errors on;</code>这条指令强制打开，进而达到错误码重定向的功能，Apache就比较惨了，如果是Proxy的返回，
+还能用ProxyErrorOverride来识别，但对FastCGI方式没有直接支持，只能以WorkAroud方式绕过，具体怎么绕，还没搞明白。</p>
+<h2 id="nginx和tomcat协作">nginx和tomcat协作</h2>
+<p>tomcat是符合servlet规范的一个实作，规范定义了web.xml，包含servlet类名，很多MIME项，所以很大，一般不用看。</p>
+<p>业务配置在conf/server.xml中，最多可配6层结构。最外层定义惟一的server，是整个tomcat大的业务入口，这层要监听一个关闭端口，默认是8005。server下可以有多个service，其中可以定义多个connector和惟一的engine，每个connector负责一种protocol和端口，支持的protocol有ajp/1.3和http/1.1。ajp是Apache JServ Protocol，似乎只有httpd支持，如果要和nginx配合，要依赖http的connector才行。engine下层是若干个host元素，每个host通过appBase属性规定了war包的位置。context中指定url路由对应的servlet，不过这套做法已经近乎绝迹，最里还有Logger等就不提了。</p>
+<p>之所以会有这么多层，也是需求使然。服务要拆分，每个服务监听不同端口，就要在service层实现。对虚机运营商来说，监听端口惟一，但想尽量多卖主机，于是Host就有存在的价值。service和engine是一对一绑定，我觉得可以合一，而context也没有存在的必要。但最起码，service和host是无法被简化的。</p>
+<p>由上可知tomcat自身是可以做web服务器的，类似PHP支持http和cgi两种协议。但真正部署时，还是用动态处理能力。</p>
+<p>nginx可以配置upstream，层级在http之下和server平级。比如upstream tomcat，在location定义<code>proxy_pass http://tomcat;</code>一句就能反向代理过去了。其实直接在<code>proxy_pass</code>后面写ip和port应该也可以。</p>
+<p>从命令行启动tomcat的入口是catalina.bat，使用了cmd的一个语法<code>start title dosth</code>，即start特殊命令，从而可以打开一个名为title的新cmd窗口，并执行dosth命令。否则就在窗口下直接执行。</p>
+<h2 id="在小米路由的使用">在小米路由的使用</h2>
+<p>小米路由器使用Nginx监听80端口，配置文件在/tmp/sysapihttpdconf/目录下，
+首页目录在/www下，这个目录没有什么内容，index.htm中最主要的就是这句：
+<code>&lt;meta http-equiv=&quot;refresh&quot; content=&quot;0; url=/cgi-bin/luci/web&quot;&gt;</code>。
+这个标签含有浏览器刷新和重定向两种功能，最终被重定向到了url所指向的地方。
+在Nginx的配置脚本中，有<code>set $script_name /cgi-bin/luci</code>
+在/www目录下，有cgi-bin/目录，其中又有luci这个文件，</p>
+<p>luci只是个入口，这其中会require相当多的文件，比如sgi.cgi，dispatcher等等。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

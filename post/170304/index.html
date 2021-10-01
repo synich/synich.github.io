@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>并发和并行 | 蛙二的思考</title>
+    <meta property="og:title" content="并发和并行 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2017-03-04T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2017-03-04T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="并发和并行">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/170304/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">并发和并行</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年3月4日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>先比较两者的定义：</p>
+<ul>
+<li>
+<p>并发是concurrent，指多线程编程存在对同一资源的竞态情况，往往需要加锁操作，Perl6提供了OO::Monitor和OO::Actor两种原语来支持。</p>
+</li>
+<li>
+<p>并行是parallel，指多进程可以互不干扰地执行程序，因为处理的数据不同，自然不用加锁。并行存在数据的归集操作，Perl6也提供了Promise等原语支持。</p>
+</li>
+</ul>
+<p>并发必然涉及锁，说说线程和条件变量和信号量</p>
+<p>先说说创建线程的两种属性join和detach。</p>
+<p>pth的线程实现有5个队列NRWSD，分别是new/ready/wait/suspend/dead。join属性的线程在退出时加入dead队列，因此依然被调度，而detach属性的线程则不会，因此直接把线程控制变量free掉不再调度。所以退出时也不一样，join用<code>pthread_exit</code>可以捕获退出状态，detach可以直接用return。</p>
+<p>条件变量必须配合锁，在wait前显式地获取锁，在wait函数内进入cond等待队列并释放锁，然后线程block住，将将调度权交还系统。直到另一个线程signal或broadcast才重新执行。而signal函数如果发现cond队列为空，不执行任何动作直接返回。</p>
+<p>信号量并不是pthread定义的，各个平台函数名也不同，等效于mutex和condition再外加一个计数器的总和。因此mutex和condition可以认为是线程同步的原语。</p>
+<p>比如公司的RPC网络框架库，后台启动4个业务线程，平时以semaphore的方式等待，消息到了就在epoll线程执行加1操作，接着就会有一个业务线程被执行。但是这个场景中直接用condition是不行的，试想如果4个业务线程都还在执行中，此时又来一个请求，如果是condition的语义，由于所有业务线程都在执行导致cond队列没有等待，这时的signal没有任何意义，导致这个请求丢失。当然如果真用condition，RPC框架也不是这么实现了。</p>
+<h2 id="perl6对于同步和并发的探索">perl6对于同步和并发的探索</h2>
+<p>从slide上摘录要点。</p>
+<ul>
+<li>线程 存在数据竞争</li>
+<li>锁 会导致死锁</li>
+<li>条件变量 spurious wakeups？不清楚是什么</li>
+</ul>
+<p>Perl6给出的解决方式，用start启动一个promise，再await就可以得到promise结果。</p>
+<p>支持monitor和actor模式，类似Java的synchronizised同步块语法，可见多线程抢夺资源是如此的普遍，编程语言都会作出方便的支持。</p>
+<h2 id="异步接口转为同步接口案例">异步接口转为同步接口案例</h2>
+<p>起因是图片识别人脸的协议最早的对接方式是阻塞的，新品改成异步方式，本来以为异步转同步很简单，真正实做才好现细节值得思考。</p>
+<p>首先异步通常意味着执行的结束时间很长且不确定的，但转同步的时候必须要加上限制约不能无限等待，等待的最长时间全凭经验，是无法量化的因素。</p>
+<p>接着考虑多线程同步的问题，异步通常需要订阅回调函数，执行并等待的线程A和回调执行结果的线程B间就必然存在资源竞争的问题。常见的等待方式就在是A线程启动一个带超时的信号量(semaphore/event)，并由线程B来释放它。但是如果线程B被触发时线程A的信号量已超时并过期，B就不应该释放。但目前基础库中并没有办法探测A的信号量是否还在等待。因此提高了复杂性。</p>
+<p>再进一步考虑，执行函数能否并发执行，如果不能并发则在上层调用前就要加锁防止重入。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

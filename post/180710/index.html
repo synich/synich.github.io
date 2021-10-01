@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>我司组件化的优劣 | 蛙二的思考</title>
+    <meta property="og:title" content="我司组件化的优劣 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2018-07-10T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2018-07-10T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="我司组件化的优劣">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/180710/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">我司组件化的优劣</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2018年7月10日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="类型剖析">类型剖析</h2>
+<p>组件化在不同的领域有不同的含义，应用在远程管理相机这个领域，最大的优点是两条，生命周期管理和RPC访问。相对较弱的还有弱链接，但这更多的是实现后的副产物，可能不是一开始的设计初衷。</p>
+<p>组件化的入口是用getComponentInstance方法得到组件对象，从这里开始介绍吧。这个函数返回一个TComPtr的泛型指针，刚才提到要管理生命周期，因此TComPtr一定要具备智能指针功能，另外还要支持RPC，要持有一个代表远程连接的标识。看TComPtr的内部，确实是一个泛型的<code>T*</code>和一个<code>IClient*</code>成员。先说智能指针，最简单的方式是引用计数，从刚才的叙述来看，没有保存int变量，但是实现又有AddRef之类的操作，其实是要求<code>T*</code>能支持计数。也就说明T不能是普通的类型，必须是IUnknown类型。</p>
+<p>IUnknown定义了destroy虚接口，内部持有计数变量，和其它是否instance、cid等，先不管它。TComPtr控制这个变量并在计数到0时进行回收，但是计数的智能指针应该是在一体的，却被生生地分开，我觉得是第一个违反直觉的地方。</p>
+<p>再来看IClient管理远程连接，在RPC上，继承了IUnknown的具体的业务指针只处理参数和协议间的转换，并没有接触到相机，协议要通过IClient发送给相机。因此业务类必须要持有IClient的指针。从层级上，这三者应该是TComPtr<code>&gt;</code>IUnknown<code>&gt;</code>IClient关系，实际却是后两者成平级关系。</p>
+<h2 id="客户端使用者角度">客户端使用者角度</h2>
+<p>使用一个远程组件，有三个要素，做什么，怎么做，向谁做。做什么又叫iid，在定义类型的时候强制实现了。怎么做叫clsid，每个继承IUnknown的类一定要实现，且不能相同，否则就会互相覆盖。向谁做取决于ServerInfo或者uid，会保存在IClient里。ServerInfo通常是第一次连接一台设备，一旦连接成功并构造出IClient后，就能从这个IClient得到uid，以后再用uid就能得到同一个IClient对象。使用者可以从代表一个功能的TComPtr取到连接，并构造同一连接上的不同功能TComPtr。</p>
+<h2 id="客户端实现者角度">客户端实现者角度</h2>
+<p>分两个方向考虑，继承IClient的代码，负责登陆。继承IUnknown的业务代码（多种多样），负责将参数转成协议或反之。这两者只有在取组件的那一刻，getComponentInstance才会带来ServerInfo或uid，业务代码必须要利用此机会，在构造中保存uid（最好映射成IClient句柄）。</p>
+<h2 id="服务端实现者角度">服务端实现者角度</h2>
+<p>服务端可以认为没有使用者。也不关心IClient，无非是继承业务定义的I接口，并实现它。所以对大多数只负责实现嵌入式设备功能的开发而言，上面提的几乎不会去接触。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

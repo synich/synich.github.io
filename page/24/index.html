@@ -65,161 +65,161 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+                <a href="/post/161204/" title="FastCGI协议及PHP中的相关部分">FastCGI协议及PHP中的相关部分</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年9月1日
+            2016年12月4日
         </date>
         
         <div class="post-content">
-            单看这两个模型的名字，含义好像是非此即彼的，研究它的时间划分，以及计分细节，才体会到这两个模型想表达含义的差异。 模型定义 昼伏夜出定义了4个时……
+            FastCGI作为解决CGI协议的后继者，已深得人心，在Nginx和PHP中都默认支持。 比如php-cgi虽然名字是cgi，但是-b模式开启……
         </div>
-        <p class="readmore"><a href="/post/210901/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161204/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+                <a href="/post/161125/" title="Apache和Nginx配置的理解">Apache和Nginx配置的理解</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月29日
+            2016年11月25日
         </date>
         
         <div class="post-content">
-            git虽然是个分布式版本管理工具，但在我看来网络协议的支持是开发比较晚的，共有4种协议： local协议，其实就是把另一个目录看成是远程仓库，……
+            前文有提到过PHP是怎么和Apache和Nginx整合的，作为当今最流行的两大Web服务器，从配置文件来看看这二者对Web业务的理解。 还是先……
         </div>
-        <p class="readmore"><a href="/post/210729/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161125/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+                <a href="/post/161124/" title="X509证书与GPG验证">X509证书与GPG验证</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月21日
+            2016年11月24日
         </date>
         
         <div class="post-content">
-            执行过程 常用的有local和yarn两种模式，写代码或调错阶段，无特殊情况用local，速度快很多。 pyspark和scala的spark不……
+            证书定义 加密体系中证书是非常重要的一环，最有名的标准就是X.509。它使用ASN1格式描述，这个标准有3个版本，主要用的是V1和V3版本。证……
         </div>
-        <p class="readmore"><a href="/post/210721/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161124/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+                <a href="/post/161120/" title="PHP两种模式下的调试功能">PHP两种模式下的调试功能</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月14日
+            2016年11月20日
         </date>
         
         <div class="post-content">
-            包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+            PHP语言相较于其它语言一个很大的不同，从一开始就定位在一种宿主语言。 它是由Web服务器来调用，而不像其它脚本语言，如Perl或Python……
         </div>
-        <p class="readmore"><a href="/post/210614/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161120/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+                <a href="/post/161113/" title="简说CSRF">简说CSRF</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月13日
+            2016年11月13日
         </date>
         
         <div class="post-content">
-            熟悉了vim的sexp模式后，再进行lisp编程，这时操作时脑中思考的就不再是一行文本，而是一整个表达式块，我要在这个表达式外再施加一层操作……
+            网络攻击中有种技巧，叫CSRF(Cross-site Request Forgery)，跨站请求伪造。 什么意思呢： 正常用户和服务器之间的请求是真实的请求，而……
         </div>
-        <p class="readmore"><a href="/post/210613/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161113/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+                <a href="/post/161112/" title="通过限制来降低沟通成本">通过限制来降低沟通成本</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月11日
+            2016年11月12日
         </date>
         
         <div class="post-content">
-            写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
+            看了王垠的对Rust语言的分析， 其中提到一点，少用类型推导而用明确的类型声明，大概这种大逆不道的话，也只有王垠敢说吧。 但是他的原因我是深以为……
         </div>
-        <p class="readmore"><a href="/post/210611/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161112/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+                <a href="/post/161104/" title="一个GDB和GCC版本不同引起的定位问题">一个GDB和GCC版本不同引起的定位问题</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月21日
+            2016年11月4日
         </date>
         
         <div class="post-content">
-            理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
+            有同事问起调试过程中，触发了SIGFPE除0错误，但是通过core的bt命令， 却发现出在pthread_create函数上，非常不可思议。今……
         </div>
-        <p class="readmore"><a href="/post/210421/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161104/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+                <a href="/post/161102/" title="设计方案的不动点和弱化点">设计方案的不动点和弱化点</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月4日
+            2016年11月2日
         </date>
         
         <div class="post-content">
-            现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
+            软件开发领域里有句教训：手里拿了锤子，看什么都是钉子。这句话也可以反过来看，并不是所有的需求都是钉子，面对不是钉子的需求，也就不应该用锤子的……
         </div>
-        <p class="readmore"><a href="/post/210404/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161102/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+                <a href="/post/161031/" title="变倍与聚焦">变倍与聚焦</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年3月22日
+            2016年10月31日
         </date>
         
         <div class="post-content">
-            Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
+            监控行业的相机有枪式和球式两种，还有种半球但实质上和枪式一样，只是安装方式不同。 两种相机因为外形和机械结构的不同，使用场景也有很大差异。 比如……
         </div>
-        <p class="readmore"><a href="/post/210322/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161031/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+                <a href="/post/161023/" title="一次安卓刷机失败的修复过程">一次安卓刷机失败的修复过程</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月16日
+            2016年10月23日
         </date>
         
         <div class="post-content">
-            从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
+            手头有个华为手机，自带的EMUI实在太难用，偶然在华为论坛找到一个flyme的链接，大喜过望马上准备刷机。那篇帖子提供了两个链接，并且告诫说……
         </div>
-        <p class="readmore"><a href="/post/210216/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/161023/">阅读全文</a></p>
     </article>
     
     
@@ -228,10 +228,15 @@
 
 <ol class="page-navigator">
     
-
+    <li class="prev">
+        <a href="/page/23/">上一页</a>
+    </li>
     
 
     
+
+    
+        
         
     
     
@@ -239,22 +244,49 @@
     
         
         
-        <li  class="current">
+        <li >
             <a href="/">1</a>
         </li>
         
     
         
-        
-        <li >
-            <a href="/page/2/">2</a>
+        <li>
+            <span>...</span>
         </li>
         
     
         
         
         <li >
-            <a href="/page/3/">3</a>
+            <a href="/page/22/">22</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/23/">23</a>
+        </li>
+        
+    
+        
+        
+        <li  class="current">
+            <a href="/page/24/">24</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/25/">25</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/26/">26</a>
         </li>
         
     
@@ -276,7 +308,7 @@
     
 
     <li class="next">
-        <a href="/page/2/">下一页</a>
+        <a href="/page/25/">下一页</a>
     </li>
     
 </ol>

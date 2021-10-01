@@ -65,161 +65,97 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+                <a href="/post/140518/" title="C语言如何获取Lua中的内容">C语言如何获取Lua中的内容</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年9月1日
+            2014年5月18日
         </date>
         
         <div class="post-content">
-            单看这两个模型的名字，含义好像是非此即彼的，研究它的时间划分，以及计分细节，才体会到这两个模型想表达含义的差异。 模型定义 昼伏夜出定义了4个时……
+            C语言要与Lua交互并获取其中定义的函数，网上有些入门教程会用lua_getglobal，如果只是写demo这样是没有问题的，但显然用全局变……
         </div>
-        <p class="readmore"><a href="/post/210901/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/140518/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+                <a href="/post/140517/" title="Lua的require机制及限制">Lua的require机制及限制</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月29日
+            2014年5月17日
         </date>
         
         <div class="post-content">
-            git虽然是个分布式版本管理工具，但在我看来网络协议的支持是开发比较晚的，共有4种协议： local协议，其实就是把另一个目录看成是远程仓库，……
+            Lua与C的交互利用了lua_State这个结构，所有的参数传递、函数的调用及表数据的获取都在这个栈中完成。网上有的教程在介绍这个栈用法时，……
         </div>
-        <p class="readmore"><a href="/post/210729/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/140517/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+                <a href="/post/140313/" title="数字的精确与不精确">数字的精确与不精确</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月21日
+            2014年3月13日
         </date>
         
         <div class="post-content">
-            执行过程 常用的有local和yarn两种模式，写代码或调错阶段，无特殊情况用local，速度快很多。 pyspark和scala的spark不……
+            很久不写Scheme，写了个判断质数的函数却永远返回成功，看代码逻辑看不出问题，于是只能一个个函数去试验，好在Scheme交互式写法很容易就……
         </div>
-        <p class="readmore"><a href="/post/210721/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/140313/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+                <a href="/post/140307/" title="UDP广播多播和IPv6记要">UDP广播多播和IPv6记要</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月14日
+            2014年3月7日
         </date>
         
         <div class="post-content">
-            包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+            广播与多播 UDP的socket才有的特性，其中广播是socket级的特性，需要setsockopt时指定SO_BROADCAST选项，而多播……
         </div>
-        <p class="readmore"><a href="/post/210614/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/140307/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+                <a href="/post/140303/" title="精巧的安全和DH算法">精巧的安全和DH算法</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月13日
+            2014年3月3日
         </date>
         
         <div class="post-content">
-            熟悉了vim的sexp模式后，再进行lisp编程，这时操作时脑中思考的就不再是一行文本，而是一整个表达式块，我要在这个表达式外再施加一层操作……
+            连续的每周六天上班着实太累，周日外面阳光明媚可却在家睡了一下午觉，到了晚上才缓过劲来。基本就在昏睡中度过一个周日。周末只有一天的感觉真是太不……
         </div>
-        <p class="readmore"><a href="/post/210613/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/140303/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+                <a href="/post/140225/" title="【译】Scheme的面向对象呈现（部分）">【译】Scheme的面向对象呈现（部分）</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月11日
+            2014年2月25日
         </date>
         
         <div class="post-content">
-            写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
+            关于Scheme的OO呈现。 话题因为读者疑议而起，川合先亮出自己的观点，Scheme的OO呈现和别的语言并无太多不同，只是因为规范里没有定义……
         </div>
-        <p class="readmore"><a href="/post/210611/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年4月21日
-        </date>
-        
-        <div class="post-content">
-            理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
-        </div>
-        <p class="readmore"><a href="/post/210421/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年4月4日
-        </date>
-        
-        <div class="post-content">
-            现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
-        </div>
-        <p class="readmore"><a href="/post/210404/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年3月22日
-        </date>
-        
-        <div class="post-content">
-            Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
-        </div>
-        <p class="readmore"><a href="/post/210322/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年2月16日
-        </date>
-        
-        <div class="post-content">
-            从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
-        </div>
-        <p class="readmore"><a href="/post/210216/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/140225/">阅读全文</a></p>
     </article>
     
     
@@ -228,10 +164,15 @@
 
 <ol class="page-navigator">
     
-
+    <li class="prev">
+        <a href="/page/28/">上一页</a>
+    </li>
     
 
     
+
+    
+        
         
     
     
@@ -239,22 +180,8 @@
     
         
         
-        <li  class="current">
+        <li >
             <a href="/">1</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/2/">2</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/3/">3</a>
         </li>
         
     
@@ -267,17 +194,25 @@
         
         
         <li >
+            <a href="/page/27/">27</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/28/">28</a>
+        </li>
+        
+    
+        
+        
+        <li  class="current">
             <a href="/page/29/">29</a>
         </li>
         
     
 
-    
-    
-
-    <li class="next">
-        <a href="/page/2/">下一页</a>
-    </li>
     
 </ol>
 

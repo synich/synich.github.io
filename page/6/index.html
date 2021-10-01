@@ -65,161 +65,161 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+                <a href="/post/190912/" title="Kerberos与SASL的理解">Kerberos与SASL的理解</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年9月1日
+            2019年9月12日
         </date>
         
         <div class="post-content">
-            单看这两个模型的名字，含义好像是非此即彼的，研究它的时间划分，以及计分细节，才体会到这两个模型想表达含义的差异。 模型定义 昼伏夜出定义了4个时……
+            实现用得最多MIT的版本（Heimdal有，微软有个非兼容版本SSPI，而AD则是KDC和LDAP的结合体），协议在RFC定义。理念和用途与……
         </div>
-        <p class="readmore"><a href="/post/210901/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190912/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+                <a href="/post/190907/" title="数据库的行转列与列转行">数据库的行转列与列转行</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月29日
+            2019年9月7日
         </date>
         
         <div class="post-content">
-            git虽然是个分布式版本管理工具，但在我看来网络协议的支持是开发比较晚的，共有4种协议： local协议，其实就是把另一个目录看成是远程仓库，……
+            行转列 指把键值关系表（如从BerkleyDB导入的数据），变成围绕一个中心元素的详细表（列通常会很多）。就从原始的很多行的KV数据，变成行数……
         </div>
-        <p class="readmore"><a href="/post/210729/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190907/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+                <a href="/post/190901/" title="traceroute原理和ICMP">traceroute原理和ICMP</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月21日
+            2019年9月1日
         </date>
         
         <div class="post-content">
-            执行过程 常用的有local和yarn两种模式，写代码或调错阶段，无特殊情况用local，速度快很多。 pyspark和scala的spark不……
+            项目中遇到ping返回time to live exceeded，即TTL超出，展开讲讲。 ping是基于ICMP协议，它是附在IP协议的数据段的一种应用协……
         </div>
-        <p class="readmore"><a href="/post/210721/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190901/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+                <a href="/post/190827/" title="数据挖掘、机器学习和深度学习">数据挖掘、机器学习和深度学习</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月14日
+            2019年8月27日
         </date>
         
         <div class="post-content">
-            包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+            数据挖掘是应用方向，挖掘有两种含义，广义的指从数据中得到有用的信息。狭义的挖掘和传统的机器学习可以近似认为一回事，通过公式进行计算。要解决的……
         </div>
-        <p class="readmore"><a href="/post/210614/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190827/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+                <a href="/post/190820/" title="类型理论">类型理论</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月13日
+            2019年8月20日
         </date>
         
         <div class="post-content">
-            熟悉了vim的sexp模式后，再进行lisp编程，这时操作时脑中思考的就不再是一行文本，而是一整个表达式块，我要在这个表达式外再施加一层操作……
+            null最好是提升到类型级别，而不是作为特殊值，编译器会推导保证类型正确，而值只能在runtime时直接崩溃。 函数是不是first class……
         </div>
-        <p class="readmore"><a href="/post/210613/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190820/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+                <a href="/post/190817/" title="协程剖析">协程剖析</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月11日
+            2019年8月17日
         </date>
         
         <div class="post-content">
-            写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
+            协程的历史很早，随着非阻塞(NonBlock)操作的日渐普遍，每一次非阻塞指令都配套回调，代码可读性很差，于是协程就重新被人捡起。 分为有栈协……
         </div>
-        <p class="readmore"><a href="/post/210611/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190817/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+                <a href="/post/190815/" title="公安数仓总结">公安数仓总结</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月21日
+            2019年8月15日
         </date>
         
         <div class="post-content">
-            理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
+            和阿里建设大数据为了提高转化率留存率不同，公安并没有明确的提高指标，而是建立尽可能完备的数仓，在遇到案件时能尽量多地挖掘出可能有用的信息。 数……
         </div>
-        <p class="readmore"><a href="/post/210421/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190815/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+                <a href="/post/190808/" title="SQL语言梳理">SQL语言梳理</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月4日
+            2019年8月8日
         </date>
         
         <div class="post-content">
-            现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
+            理论依据 SQL的背后是集合论和一阶谓词逻辑（Codd的原始论文曾设想二阶谓词，因太复杂放弃了）。操作的结果是封闭的，即输入和输出都是关系，这……
         </div>
-        <p class="readmore"><a href="/post/210404/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190808/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+                <a href="/post/190801/" title="数据库和数仓的历史">数据库和数仓的历史</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年3月22日
+            2019年8月1日
         </date>
         
         <div class="post-content">
-            Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
+            数据库是计算机最早的应用系统，阿波罗计划时就有了数据库原型，这便是1968年的IBM ICS系统，69年改名为IMS/360（层次型数据库）。……
         </div>
-        <p class="readmore"><a href="/post/210322/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190801/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+                <a href="/post/190722/" title="学Scheme经历的误区">学Scheme经历的误区</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月16日
+            2019年7月22日
         </date>
         
         <div class="post-content">
-            从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
+            从SICP上手的人往往觉得一个list类型包打天下，以致于看到R5RS中特别定义vector都很惊讶。其实就像其它成熟语言一样，容器有很多分……
         </div>
-        <p class="readmore"><a href="/post/210216/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/190722/">阅读全文</a></p>
     </article>
     
     
@@ -228,10 +228,15 @@
 
 <ol class="page-navigator">
     
-
+    <li class="prev">
+        <a href="/page/5/">上一页</a>
+    </li>
     
 
     
+
+    
+        
         
     
     
@@ -239,22 +244,49 @@
     
         
         
-        <li  class="current">
+        <li >
             <a href="/">1</a>
         </li>
         
     
         
-        
-        <li >
-            <a href="/page/2/">2</a>
+        <li>
+            <span>...</span>
         </li>
         
     
         
         
         <li >
-            <a href="/page/3/">3</a>
+            <a href="/page/4/">4</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/5/">5</a>
+        </li>
+        
+    
+        
+        
+        <li  class="current">
+            <a href="/page/6/">6</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/7/">7</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/8/">8</a>
         </li>
         
     
@@ -276,7 +308,7 @@
     
 
     <li class="next">
-        <a href="/page/2/">下一页</a>
+        <a href="/page/7/">下一页</a>
     </li>
     
 </ol>

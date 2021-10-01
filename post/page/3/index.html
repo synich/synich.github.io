@@ -1,24 +1,27 @@
 <!doctype html>
 <html lang="zh-ch">
 <head>
-	<meta name="generator" content="Hugo 0.88.1" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>蛙二的思考 | </title>
-    <meta property="og:title" content="蛙二的思考 | ">
-    <meta property="og:type" content="website">
+    <title>Posts | 蛙二的思考</title>
+    <meta property="og:title" content="Posts - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+        
     <meta name="Keywords" content="">
-    <meta name="description" content="">
-    <meta property="og:url" content="/">
+    <meta name="description" content="Posts">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="/index.xml" title="蛙二的思考" />
+    <link rel="alternate" type="application/rss+xml" href="/post/index.xml" title="蛙二的思考" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -36,11 +39,9 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <h1>
-                        <a id="logo" href="">
-                            蛙二的思考
-                        </a>
-                    </h1>
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
                 
                 
             </div>
@@ -62,165 +63,185 @@
                     
 <div class="res-cons">
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年9月1日
-        </date>
-        
-        <div class="post-content">
-            单看这两个模型的名字，含义好像是非此即彼的，研究它的时间划分，以及计分细节，才体会到这两个模型想表达含义的差异。 模型定义 昼伏夜出定义了4个时……
-        </div>
-        <p class="readmore"><a href="/post/210901/">阅读全文</a></p>
-    </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+                <a href="/post/200830/" title="多进程与进程间通信">多进程与进程间通信</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月29日
+            2020年8月30日
         </date>
         
         <div class="post-content">
-            git虽然是个分布式版本管理工具，但在我看来网络协议的支持是开发比较晚的，共有4种协议： local协议，其实就是把另一个目录看成是远程仓库，……
+            在linux中，fork和vfork的系统调用都是clone，当然标记是不同。 fork: CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD vfork: CLONE_VM|CLONE_VFORK pthread_create: CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID 以目前的性能优化而言，两者的开销区别并不大，更大的……
         </div>
-        <p class="readmore"><a href="/post/210729/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200830/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+                <a href="/post/200727/" title="神经网络来源与分类">神经网络来源与分类</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月21日
+            2020年7月27日
         </date>
         
         <div class="post-content">
-            执行过程 常用的有local和yarn两种模式，写代码或调错阶段，无特殊情况用local，速度快很多。 pyspark和scala的spark不……
+            神经网络技术起源于上世纪五、六十年代，当时叫感知机（perceptron），包含有输入层、输出层和一个隐藏层。输入的特征向量通过隐藏层变换到……
         </div>
-        <p class="readmore"><a href="/post/210721/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200727/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+                <a href="/post/200725/" title="Spark学习手记">Spark学习手记</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月14日
+            2020年7月25日
         </date>
         
         <div class="post-content">
-            包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+            组件构成 作为一个分布式系统，物理节点分为master和worker节点，master调度，worker计算。 运行职责，即进程级的分为driv……
         </div>
-        <p class="readmore"><a href="/post/210614/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200725/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+                <a href="/post/200606/" title="Python的包机制">Python的包机制</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月13日
+            2020年6月6日
         </date>
         
         <div class="post-content">
-            熟悉了vim的sexp模式后，再进行lisp编程，这时操作时脑中思考的就不再是一行文本，而是一整个表达式块，我要在这个表达式外再施加一层操作……
+            包机制的区别 python社会前后有easy_install的egg和pip的wheel两种机制，另有anaconda给出的conda方案。p……
         </div>
-        <p class="readmore"><a href="/post/210613/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200606/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+                <a href="/post/200530/" title="strace观察程序">strace观察程序</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月11日
+            2020年5月30日
         </date>
         
         <div class="post-content">
-            写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
+            写程序一定要注重观察，原始的如print，而系统级别的过程只能用更复杂的工具观察。用strace观察多线程的始末是个很好的方式，trace内……
         </div>
-        <p class="readmore"><a href="/post/210611/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200530/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+                <a href="/post/200509/" title="代码写法中的状态与异常">代码写法中的状态与异常</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月21日
+            2020年5月9日
         </date>
         
         <div class="post-content">
-            理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
+            最近在做构造数据的工作，代码是另两人写的python，在改造过程中，修正了我以往对对象和异常的认识。 以前写代码既不爱用类和对象，也不用异常捕……
         </div>
-        <p class="readmore"><a href="/post/210421/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200509/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+                <a href="/post/200427/" title="Linux内核与PAM模块简记">Linux内核与PAM模块简记</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月4日
+            2020年4月27日
         </date>
         
         <div class="post-content">
-            现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
+            前因是容器中启动nfsd需要依赖内核加载ko模块，分读写记一下。 lsmod命令，或查看/proc/modules看到内核当前加载的ko模块。……
         </div>
-        <p class="readmore"><a href="/post/210404/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200427/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+                <a href="/post/200411/" title="不可打印字符与转义序列">不可打印字符与转义序列</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年3月22日
+            2020年4月11日
         </date>
         
         <div class="post-content">
-            Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
+            plan9的老人们建过一个网站cat-v.org，影射cat命令加上-v选项是邪恶的。这个选项的作用是把不可打印的控制字符显示出来，低128……
         </div>
-        <p class="readmore"><a href="/post/210322/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200411/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+                <a href="/post/200402/" title="嵌套加载的目录查找方式比较">嵌套加载的目录查找方式比较</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月16日
+            2020年4月2日
         </date>
         
         <div class="post-content">
-            从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
+            动态语言的加载通常会有一个路径列表，加载时按列表顺序寻找。这个列表里大部分是绝对路径，但也会有当前相对路径，当嵌套加载时，相对路径如何定位就……
         </div>
-        <p class="readmore"><a href="/post/210216/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/200402/">阅读全文</a></p>
     </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="/post/200327/" title="数据库计算理论笔记">数据库计算理论笔记</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年3月27日
+        </date>
+        
+        <div class="post-content">
+            分布式 CAP三者只能选其二，也可以只求一个达到最大化，没有见过实际例子。 取CA，又名强一致性 ACID，但是分布式系统必然要求P，所以可以把A……
+        </div>
+        <p class="readmore"><a href="/post/200327/">阅读全文</a></p>
+    </article>
+    
     
     
 
@@ -228,6 +249,10 @@
 
 <ol class="page-navigator">
     
+    <li class="prev">
+        <a href="/post/page/2/">上一页</a>
+    </li>
+    
 
     
 
@@ -236,25 +261,39 @@
     
     
 
+    
+        
+        
+        <li >
+            <a href="/post/">1</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/post/page/2/">2</a>
+        </li>
+        
     
         
         
         <li  class="current">
-            <a href="/">1</a>
+            <a href="/post/page/3/">3</a>
         </li>
         
     
         
         
         <li >
-            <a href="/page/2/">2</a>
+            <a href="/post/page/4/">4</a>
         </li>
         
     
         
         
         <li >
-            <a href="/page/3/">3</a>
+            <a href="/post/page/5/">5</a>
         </li>
         
     
@@ -267,7 +306,7 @@
         
         
         <li >
-            <a href="/page/29/">29</a>
+            <a href="/post/page/29/">29</a>
         </li>
         
     
@@ -276,7 +315,7 @@
     
 
     <li class="next">
-        <a href="/page/2/">下一页</a>
+        <a href="/post/page/4/">下一页</a>
     </li>
     
 </ol>

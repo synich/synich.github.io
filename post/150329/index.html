@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Lua的编译期和运行期区分 | 蛙二的思考</title>
+    <meta property="og:title" content="Lua的编译期和运行期区分 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2015-03-29T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2015-03-29T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Lua的编译期和运行期区分">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/150329/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Lua的编译期和运行期区分</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2015年3月29日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>虽然是一门解释型语言，但Lua其实也分了编译期和运行期，只是通常在lua的程序里顺带把luac的功能给自动执行了。但作为一个运行效率为第一位的语言，编译期更多的意义在于把源码转译为伪字节码，不会作过多语义上的校验。比如下面这个例子。</p>
+<p>function a:foo()  print(&ldquo;hello&rdquo;) end</p>
+<p>如果直接用lua运行，会报attempt to index global &lsquo;a&rsquo;(a nil value)，但实际上在编译期，这仍然是可以通过的。</p>
+<p>如果用luac先执行，会得到两个chunk，一个是main，一个是函数定义。main中有四条语句：</p>
+<p>GETGLOBAL    CLOSURE   SETTABLE  RETURN</p>
+<p>前两句是可以顺利执行的，a虽然不存在，会默认赋值nil。但到SETTABLE时，这个nil就原型毕露了。也就对应上面运行时那句attempt to报错。</p>
+<p>也就是说luac只能做到语法层面的校验，但基于性能的考虑，不会做语义层面的判断(如果要做的话，代码量可就不止当前的2万行了)。</p>
+<p>说下MetaLua对编译的作法，在编译理论里，parse和compile是两个阶段，source经过parse只能生成AST，再把AST送compile才能生成执行码(可以是机器指令或VM指令)。YACC也好ANTLR也好，都只是parse工具。Lisp语法就直接是AST了所以不需要parse但还是要有compile。由于有两个阶段，MetaLua也提供了mlp和mlc两个工具对应。非Lisp风格的编程语言如果要扩展，多少都要在parse阶段做些处理，典型如增加关键字，就在parse阶段把新增的关键字转译成AST里的function，才能在compile后正常执行。</p>
+<p>因为MetaLua的存在，将源程序先编译成luac再执行就能看出明显的区别，compile阶段的操作可以在编译成luac时很直观地看出来，且不会带到执行期。</p>
+<p>最后补充几个Lua的语法细节</p>
+<p>Lua的函数到底是传值还是传引用？这是我从王垠的
+<a href="http://www.yinwang.org/blog-cn/2016/06/08/java-value-type">这篇文章</a>
+想到的。</p>
+<p>上面这篇文章的结论是Java从语义层面，只有引用类型。原生类型看起来像值类型，
+只是一种实现的优化。既然Lua也是从Lisp/Scheme系继承而来，
+就做个实验验证下，到底Lua是否符合王垠所定义的引用类型。</p>
+<p>字符串拼接如果报nil错误，假如有多个nil只会提示最后一个错误，不确定是否lua编译器按从右向左计算参数的方式？</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

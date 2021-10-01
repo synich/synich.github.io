@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>网络代理概念与区别 | 蛙二的思考</title>
+    <meta property="og:title" content="网络代理概念与区别 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-01-20T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-01-20T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="网络代理概念与区别">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/210120/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">网络代理概念与区别</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年1月20日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="模式">模式</h2>
+<ul>
+<li>全局模式 所有连接全从指定的端口转发出去，简单却不灵活</li>
+<li>PAC模式，全称代理自动配置，由网景公司在1996年在2.0版本的navigator上开发，是一段JS脚本。根据目的端地址选择不同的出口。在火狐浏览器上与全局模式是二选一关系，谷歌可以装插件单独设置PAC，但应该也是屏蔽全局模式</li>
+</ul>
+<h2 id="协议">协议</h2>
+<p>最终目的大多是http，连接到代理服务器也需要指定协议</p>
+<ul>
+<li>http 对代理转发端来说最方便，但隐蔽性不够，即使用https也会因为代理多出一条CONNECT从而暴露目的，多用于企业或学校内网</li>
+<li>socks5 专为代理设计的协议，定义足够简洁且历史悠久，支持的软件也很多</li>
+<li>shadow_sock 为解决socks5加密和隐蔽性不够而开发的新协议，有变体，应用较多</li>
+<li>各类VPN 这个工作在IP层，比以上的传输层代理更通用</li>
+</ul>
+<h2 id="socks5应用">socks5应用</h2>
+<p>socks5协议非常简单，版本4只支持TCP，版本5增加了UDP，也成了当今代理界的事实标准。ssh的-D隧道就是在客户端启动的socks5代理。</p>
+<p>整个流程包含认证和确定目标两个阶段，最简单不作认证的情况下，两次交互以后的数据就是纯转发了。因为协议是明文且特征明显，很容易被识别出真正的目的地址，要用socks5穿墙是不可能的，往往是用在本地程序和本地加密代理间。</p>
+<p>shadowsocks的本地端就以socks5方式接受数据，之后把数据混淆后转给ss服务器，回复的数据最终以socks5方式给到应用程序。</p>
+<p>IE浏览器也支持socks5，但要注意不能填http/ftp，只能填写socket那栏，socks5代理才能生效。</p>
+<h2 id="实现一个最简单的http代理">实现一个最简单的HTTP代理</h2>
+<p>最简单的代理，得到HTML的主体内容并回复给请求者，以PHP为例，最简单的做法是用curl取得数据。要注意的是对于HTTPS，要关闭验证否则会得不到数据。另一种做法是用<code>file_get_contents</code>，在某些环境要配置签发CA的根证书，没有无法获取，且只能得到HTTP的body，header描述信息会丢失。</p>
+<p>不管是curl和file函数，获取到的网页主体HTML内容是一致的。但网页的复杂性在于HTML还包含了CSS和JS代码，需要额外下载。如果是绝对地址可能到不可达；相对地址在展开时，浏览器看到的是代理地址，所以会补全成代理的地址，这时显然就不能获取到资源文件了。所以代理的难点，就在于尽可能穷举各种URL的形式，并替换成指向源端的地址。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>对称加密实践 | 蛙二的思考</title>
+    <meta property="og:title" content="对称加密实践 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-05-06T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-05-06T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="对称加密实践">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/190506/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">对称加密实践</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月6日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>所有对称加密的核心是XOR运算，因为XOR运算有一个非常神奇的特性A*B*B=A。也就是说A与B进行XOR运算之后的结果再和B运算就能复原A。A是明文，B是密钥，就是所有对称加密的基础。主流的AES采用块式加密，每次固定加密128位，密钥不能短于块长度（奇怪的是DES的密钥比块要短），当原文比块要长时，显然要迭代进行，如何迭代就分化出ECB，CBC，GCM等众多模式，而AES我的理解是如何把加密块和密钥进行XOR的方式，两者的阶段不同，所以合称AES-GCM。</p>
+<h2 id="aes填充">AES填充</h2>
+<ul>
+<li>PKCS5 : java原生和PHP的默认行为</li>
+<li>PKCS7 : java需要导入bouncy包，PHP的<code>OPENSSL_RAW_DATA</code></li>
+</ul>
+<p>这两种按文档说明是没有差别的，实测下来不同的pad的输出大部分一样，但有差异。而且解密时如果选错pad会解密失败。</p>
+<h2 id="aead">AEAD</h2>
+<p>全称Authenticated Encryption with Associated Data。是一种同时具备保密性，完整性和可认证性的加密形式。</p>
+<p>AEAD 产生的原因很简单，单纯的对称加密算法，其解密步骤是无法确认密钥是否正确的。也就是说，加密后的数据可以用任何密钥执行解密运算，得到一组疑似原始数据，而不知道密钥是否是正确的，也不知道解密出来的原始数据是否正确。因此，需要在单纯的加密算法之上，加上一层验证手段，来确认解密步骤是否正确。</p>
+<p>AEAD的实现方式可以是单纯的CBC和SHA1组合而成，也可以是AES-GCM，AES-CCM，chacha20-poly1305（chacha对称加密，poly是MAC验证）等直接完成。TLS1.2引入AEAD后，1.3就只允许这种算法了，可见安全界的认可。</p>
+<p>GCM本质上是AES的CTR模式加上GMAC（又叫GHASH）进行哈希计算的一种组合模式。GCM来自于AES的CTR模式，CTR是指计数器模式。GCM是利用GMAC（基于伽罗华域的MAC）和AES的CTR模式的组合。GMAC比普通的MAC算法快（毕竟冠以伽罗华之名），GCM模式与CBC的一个最大的区别是GCM模式不再把上一个数据块的计算结果输入到下一个数据块的计算，而是在分好的数据块中任意位置开始计算，由一个计数器和一个不变的IV值（nounce）来控制每一次计算的随机性。由于下一次的计算并不依赖于上一次的结果，所以GCM模式可以实现大规模的并行化，并且Intel还专门推出了clmul指令用于加速GCM的运算速度，可见其应用之广。纯软实现的chacha比aes有4倍的优势，但随着硬件指令加持AES-GCM有一统天下的趋势，也确定了AEAD的演进方向。</p>
+<p>GCM是一种加密范式，不是一种特定的加密算法，在AES中可以应用GCM范式，在Camellia中也可以。除了这种范式外，CCM是另一种广泛应用在Wi-Fi上的范式。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

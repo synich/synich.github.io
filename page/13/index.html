@@ -65,161 +65,161 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+                <a href="/post/180714/" title="Lisp的宏">Lisp的宏</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年9月1日
+            2018年7月14日
         </date>
         
         <div class="post-content">
-            单看这两个模型的名字，含义好像是非此即彼的，研究它的时间划分，以及计分细节，才体会到这两个模型想表达含义的差异。 模型定义 昼伏夜出定义了4个时……
+            都说Lisp的宏很强大，其最大的特征仍然是字符串展开和替换，只是在替换的过程中，可以结合环境进行适合的绑定，加之程序和数据的同构，才使它异常……
         </div>
-        <p class="readmore"><a href="/post/210901/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180714/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+                <a href="/post/180710/" title="我司组件化的优劣">我司组件化的优劣</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月29日
+            2018年7月10日
         </date>
         
         <div class="post-content">
-            git虽然是个分布式版本管理工具，但在我看来网络协议的支持是开发比较晚的，共有4种协议： local协议，其实就是把另一个目录看成是远程仓库，……
+            类型剖析 组件化在不同的领域有不同的含义，应用在远程管理相机这个领域，最大的优点是两条，生命周期管理和RPC访问。相对较弱的还有弱链接，但这更……
         </div>
-        <p class="readmore"><a href="/post/210729/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180710/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+                <a href="/post/180706/" title="Shell编程说明">Shell编程说明</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年7月21日
+            2018年7月6日
         </date>
         
         <div class="post-content">
-            执行过程 常用的有local和yarn两种模式，写代码或调错阶段，无特殊情况用local，速度快很多。 pyspark和scala的spark不……
+            解析顺序与转义 和函数调用类似，一条命令行的多个部分会在不同阶段解析。先判断整行是简单命令还是复合命令，每条简单命令的参数会先解析，像glob……
         </div>
-        <p class="readmore"><a href="/post/210721/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180706/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+                <a href="/post/180702/" title="Lisp文章读后感">Lisp文章读后感</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月14日
+            2018年7月2日
         </date>
         
         <div class="post-content">
-            包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+            RethinkDB作者的理解，从XML，C语言宏等角度作了比喻。 XML是一种数据表示，但Ant中可以表示行为。如果把尖括号和属性(只是为了少……
         </div>
-        <p class="readmore"><a href="/post/210614/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180702/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+                <a href="/post/180621/" title="socket与网络概念">socket与网络概念</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月13日
+            2018年6月21日
         </date>
         
         <div class="post-content">
-            熟悉了vim的sexp模式后，再进行lisp编程，这时操作时脑中思考的就不再是一行文本，而是一整个表达式块，我要在这个表达式外再施加一层操作……
+            socket函数声明传入3个值，依次是domain/type/protocol。域最大，然后是类型，比如连接/无连接/原始等，最后是协议种类……
         </div>
-        <p class="readmore"><a href="/post/210613/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180621/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+                <a href="/post/180618/" title="【译】Eiffel之路">【译】Eiffel之路</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年6月11日
+            2018年6月18日
         </date>
         
         <div class="post-content">
-            写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
+            这是一篇开放式地讨论SP和OO的文章(a free ranging discussion, the reader should view it as a promenade on the border road between SP and OO)。 作者赞成Bottom up甚于Top down设计。不该忘记……
         </div>
-        <p class="readmore"><a href="/post/210611/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180618/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+                <a href="/post/180615/" title="明朝与文官集团">明朝与文官集团</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月21日
+            2018年6月15日
         </date>
         
         <div class="post-content">
-            理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
+            对明史的一些理解，不贴史料更多是一些论述性的东西。 明太祖立国大杀功臣集团，对官僚集团也是异常残酷，俸禄为历朝最少，剥皮实草戴枷上堂都是只在这……
         </div>
-        <p class="readmore"><a href="/post/210421/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180615/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+                <a href="/post/180612/" title="写文件的一些特性">写文件的一些特性</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年4月4日
+            2018年6月12日
         </date>
         
         <div class="post-content">
-            现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
+            先创建一个分区，方式如下 dd if=/dev/zero of=./dummy count=204800 创建一个普通文件，用file看类型是data mkfs.ext4 ./dummy 会提示不是个block special device，是否要继续。选Y继续。……
         </div>
-        <p class="readmore"><a href="/post/210404/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180612/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+                <a href="/post/180609/" title="论RESTFul特性">论RESTFul特性</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年3月22日
+            2018年6月9日
         </date>
         
         <div class="post-content">
-            Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
+            产生RESTFul的领域，似乎不能涵盖API风格。要求URL以名词性单词结尾，典型的比如心跳，要作为什么样的资源呢？也许可以强作令牌，但其它……
         </div>
-        <p class="readmore"><a href="/post/210322/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180609/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+                <a href="/post/180606/" title="Scheme的几个实现Gambit/Chibi/Chicken">Scheme的几个实现Gambit/Chibi/Chicken</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月16日
+            2018年6月6日
         </date>
         
         <div class="post-content">
-            从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
+            Gambit和Chicken都是能把Scheme编译成C源码的实现(另外还有Bigloo)。 Gambit 两个主要执行程序：gsi和gsc，gsi是执行……
         </div>
-        <p class="readmore"><a href="/post/210216/">阅读全文</a></p>
+        <p class="readmore"><a href="/post/180606/">阅读全文</a></p>
     </article>
     
     
@@ -228,10 +228,15 @@
 
 <ol class="page-navigator">
     
-
+    <li class="prev">
+        <a href="/page/12/">上一页</a>
+    </li>
     
 
     
+
+    
+        
         
     
     
@@ -239,22 +244,49 @@
     
         
         
-        <li  class="current">
+        <li >
             <a href="/">1</a>
         </li>
         
     
         
-        
-        <li >
-            <a href="/page/2/">2</a>
+        <li>
+            <span>...</span>
         </li>
         
     
         
         
         <li >
-            <a href="/page/3/">3</a>
+            <a href="/page/11/">11</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/12/">12</a>
+        </li>
+        
+    
+        
+        
+        <li  class="current">
+            <a href="/page/13/">13</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/14/">14</a>
+        </li>
+        
+    
+        
+        
+        <li >
+            <a href="/page/15/">15</a>
         </li>
         
     
@@ -276,7 +308,7 @@
     
 
     <li class="next">
-        <a href="/page/2/">下一页</a>
+        <a href="/page/14/">下一页</a>
     </li>
     
 </ol>

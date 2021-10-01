@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Spark学习手记 | 蛙二的思考</title>
+    <meta property="og:title" content="Spark学习手记 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-07-25T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-07-25T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Spark学习手记">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/200725/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Spark学习手记</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年7月25日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="组件构成">组件构成</h2>
+<p>作为一个分布式系统，物理节点分为master和worker节点，master调度，worker计算。</p>
+<p>运行职责，即进程级的分为driver（属于master）和executor（属于worker），另外还有类似接口协议的进程cluster Manager（和driver通信）。既然是接口，就有多种实现，常见的有spark clusterManager（standalone和local cluster两种运行模式）、yarn clusterManager（spark on yarn） 和mesos clusterManager（spark on mesos）。</p>
+<p>driver端执行main函数，并创建SparkContext，这是Spark启动最重要的类，包含两个必须设置的属性：master和appName。Executor并行计算，是一个执行Task的容器，初始化程序要执行的上下文SparkEnv，解决应用程序需要运行时的jar包的依赖，加载类。SparkContext可以创建RDD。</p>
+<h2 id="从rdd到sql的转变">从RDD到SQL的转变</h2>
+<p>Spark最初只是个利用RDD做通用计算的引擎，也称为Spark Core，并没有SQL功能。因为性能优化遇到瓶颈，在1.3版本演化出了DataFrame，天然和SQL相近，此时整个项目的核心也迁移到Spark SQL。为了管理库和表元数据，在SparkContext基础上，加入SQLContext（是个InMemory实现，2.0版本还有一个外部源实现HiveContext），就变成了SparkSession。session类有个catalog成员可以查看映射的库和表。SQL也是被编译为DataFrame执行。</p>
+<p>2.0版本只能指定一个catalog，3.0版开始支持multiple catalog。</p>
+<h2 id="任务执行过程">任务执行过程</h2>
+<p>整个过程分4步</p>
+<ol>
+<li>解析代码中的RDD对象，根据转换关系形成DAG图</li>
+<li>将DAG图交给DAGScheduler组件（包含在SparkContext中）进行逻辑拆分，具体做法是从最后一个RDD向前回溯，遇到shuffle类操作就划分stage</li>
+<li>拆分后的stage链，交给TaskScheduler（包含在SparkContext中）做物理执行，分派到具有空闲资源的worker结点</li>
+<li>work对收到的每个调度，启动一个线程执行task，结果结果返回给TaskScheduler，最终在driver端汇总</li>
+</ol>
+<p>从运行界面上看，application运行粒度分为大小两种，app(1个) &gt; job &gt; stage。每当代码中遇到transformation（意味着要创建新的RDD），会继续分析，直到遇到action类操作，才以此action为边界，产生前后两个job。一个job中一旦产生shuffle操作（trans和action都会产生shuffle），就会产生前后两个stage（HDFS读写文件是stage内的操作，不会产生切分）。也可以说每个stage内部是窄依赖，会做fusion优化，而stage之间则是宽依赖。每个stage处理的rdd数据，又会根据其有多少个 partition，运行相同个数的 task（每个task是一个线程），每个 task 只处理一个 partition 上的数据。所以一个stage也叫一个taskset。</p>
+<h2 id="rdd">RDD</h2>
+<p>它是Spark中最早定义，也是最基础的计算元素，可以理解为元素无序的向量（数组）。由于不可变性，每个RDD在Spark会话中都会被赋予一个惟一ID，这些ID又构成计算的链路，在计算出错需要重算时可以方便地恢复。</p>
+<p>RDD的所有元素类型相同，分为2种值类型</p>
+<ol>
+<li>单Value类型：存放简单类型，如int，string</li>
+<li>Key-Value类型：整个值的类型称为Row，Row类型的第一列是key，剩下的是values，可以想象成lisp的list，key和value分别对应car和cdr操作。针对key可以进行lookup、join等运算。当value包含的内容很多时，为了更细粒度地操作，还可以把Row类型转换为DataFrame，就能对每一列单独指定操作方法。</li>
+</ol>
+<p>有4种操作类型：</p>
+<ol>
+<li>创建操作（creation）：pyspark只提供了parallelize；scala还提供makeRDD</li>
+<li>转换操作（transformation）：从一个RDD得到另一个RDD，绝大部分都是此类操作</li>
+<li>控制操作（control）：persist和cache，优化性能</li>
+<li>行为操作（action）：将惰性计算进行求值，比如collect, count, take, save, foreach, reduce。特别要提的是，<strong>reduce是行为，但reduceByKey是转换</strong>，二者不可混为一谈。</li>
+</ol>
+<p>RDD的五大属性和若干种实现</p>
+<ol>
+<li>partitions(分区数量)</li>
+<li>partitioner(分区方法，可以为None)</li>
+<li>dependencies(依赖关系): 运算就是在多个RDD间的变换，如果一个父RDD变换后得到多个子RDD，就是宽依赖，也称为shuffle；一个父RDD只得到一个子RDD，则称为窄依赖。</li>
+<li>compute(获取分区迭代列表)</li>
+<li>preferedLocations(优先分配节点列表)</li>
+</ol>
+<h3 id="分区的解释">分区的解释</h3>
+<p>RDD是个逻辑概念，它的数据通常会分布在多个worker节点，拆分的个数由partition决定，partition数量既可以大于，也能小于worker数量，计算一个真实有数据的partition对应一个task任务。分区的数量，如果直接创建，可以在参数指定，如果是从HDFS读取，则由文件分块数量决定，最小是2，大的有十几甚至上百。题外话，正因为数据是分散在多个worker节点，如果想要看到全貌，要用collect()，方法命名非常到位。</p>
+<p>RDD实现类举例</p>
+<ol>
+<li>MapPartitionsRDD</li>
+<li>ParalellCollectionRDD</li>
+<li>ShuffledRDD</li>
+<li>ReliableCheckpointRDD</li>
+</ol>
+<h2 id="dataframe">DataFrame</h2>
+<p>是Row类型RDD被绑定schema后的强化版。RDD用.toDF转化为DF（简单类型的RDD不可以转化为DF），每个DF也可以通过.rdd属性得到对应的RDD实例，通过.schema得到结构。多说一句，RDD的toDF方法，其实是构建SparkSession的时候，硬塞在RDD上的猴子方法，最终调用的还是SparkSession.createDataFrame方法。由于是从RDD转化而来，分区数和RDD一致。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

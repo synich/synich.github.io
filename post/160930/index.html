@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>大华设备协议兼容策略说明 | 蛙二的思考</title>
+    <meta property="og:title" content="大华设备协议兼容策略说明 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2016-09-30T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2016-09-30T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="大华设备协议兼容策略说明">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/160930/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">大华设备协议兼容策略说明</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2016年9月30日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>大华设备在发展的过程中，产生了二代和三代两套协议。
+三代协议使用前期由于缺乏管控，同样功能的三代协议会有不同的表现形式，
+(比如摄像头属性的配置)。且在不同产品线间使用也不一致。
+另外同样功能也存在三代协议和二代协议的冗余，
+曾经试图不再使用二代协议，但从市场接受度和技术角度两方面看，
+这种作法既不可行，也没有必要。
+但是存在多套协议的混乱局面，必须要明确协议与业务功能的对应关系，
+本文档定义两套协议的适用场景、及如何选择的原则。</p>
+<h2 id="二三代协议的使用总原则">二、三代协议的使用总原则</h2>
+<p>先来简单看看两套协议的特性：</p>
+<ul>
+<li>二代协议：所有设备都支持，但协议为二进制，Web无法使用</li>
+<li>三代协议：协议扩展性好，支撑业务迅速</li>
+</ul>
+<p>综上协议总原则：SDK的基础业务使用二代协议，扩展业务则使用三代协议。
+Web全部使用三代协议。</p>
+<h2 id="登陆协议">登陆协议</h2>
+<ul>
+<li>SDK &ndash; 0xA0</li>
+<li>Web &ndash; global.login</li>
+</ul>
+<p>登陆协议作为使用设备的第一步，基础性不言而喻。
+由于二代和三代协议有各自的登陆协议，
+但是一台设备显然只需要一种登陆协议就够了，
+综合考虑设备使用面、协议扩展性，NetSDK使用二代协议作为设备的登陆协议。
+设备保留三代登陆协议给Web使用。</p>
+<h2 id="音视频类协议">音视频类协议</h2>
+<p>作为一个监控厂商，视频是基础功能。音视频部分包含流的获取、
+音视频参数设置、语音对讲等功能。</p>
+<h3 id="媒体流协议">媒体流协议</h3>
+<ul>
+<li>SDK &ndash; 0xF4</li>
+<li>Web &ndash; RTSP(前端)/0xF4(存储)</li>
+</ul>
+<p>视频流协议有三种，其中二代支持静态多连接和动态多连接两种，
+同时三代协议也有部分产品线在使用。
+从协议使用的覆盖面和演进方向综合评估，
+NetSDK使用二代的动态多连接协议，即0xF4作为未来的支持重点。
+使用登陆返回的版本号是否为6，来区分设备是否支持动态多连接。</p>
+<h3 id="摄像头属性sdkweb使用相同协议">摄像头属性(SDK/Web使用相同协议)</h3>
+<ul>
+<li>如果产品定义包含CameraAttribute，则使用VideoInXX配置族</li>
+<li>如果产品定义不包含，则使用VideoInOptions/VideoInPreviewOptions配置</li>
+</ul>
+<h3 id="通道标题">通道标题</h3>
+<ul>
+<li>SDK &ndash; 0xA8</li>
+<li>Web &ndash; VideoIn/ChannelTitle</li>
+</ul>
+<h2 id="存储类协议">存储类协议</h2>
+<p>设备通常都带有一定的存储介质，比如相机的SD卡或者存储类设备带硬盘，
+这部分涉及的协议，主要包括管理这些介质，或者查找存储介质上的录像/图片。
+其中尤其以查找录像/图片最为重要。磁盘管理对于运维平台来说，也有很大的价值。</p>
+<h3 id="录像查询">录像查询</h3>
+<ul>
+<li>SDK &ndash; 0xF6 or 0xA5</li>
+<li>Web &ndash; MediaFileFind.xxx</li>
+</ul>
+<p>SDK通过0xA4查询设备的返回，如果xxx，则支持0xF6，否则使用0xA5。</p>
+<h2 id="外设功能">外设功能</h2>
+<h3 id="云台控制">云台控制</h3>
+<ul>
+<li>SDK &ndash; 0x12(基础)+0xF6/Json(扩展)</li>
+<li>Web &ndash; Json Over HTTP</li>
+</ul>
+<h3 id="事件上报">事件上报</h3>
+<ul>
+<li>SDK &ndash; 0x68/0x69+0xF6</li>
+<li>Web &ndash; 如何保持长连接？</li>
+</ul>
+<h2 id="网络功能">网络功能</h2>
+<p>包括有线、无线网卡的管理</p>
+<h2 id="用户管理">用户管理</h2>
+<ul>
+<li>SDK &ndash; 0xA6</li>
+<li>Web &ndash; UserManager.xxx</li>
+</ul>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

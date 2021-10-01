@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>一个GDB和GCC版本不同引起的定位问题 | 蛙二的思考</title>
+    <meta property="og:title" content="一个GDB和GCC版本不同引起的定位问题 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2016-11-04T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2016-11-04T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="一个GDB和GCC版本不同引起的定位问题">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/161104/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">一个GDB和GCC版本不同引起的定位问题</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2016年11月4日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>有同事问起调试过程中，触发了SIGFPE除0错误，但是通过core的bt命令，
+却发现出在pthread_create函数上，非常不可思议。今天找了部门对汇编最熟悉的大师，
+原来问题是出在编译使用的是GCC5.2版本，但是调试用的GDB因为使用的libc和GCC不匹配，
+导致符号表错误，而GDB是通过偏移量并从符号表中读取符号，
+一旦版本不匹配，读到的符号也是错误的。</p>
+<p>解决方案是通过GDB的set sysroot命令来重新定位到GCC的库中，强制确保libc库的正确性。
+怎么知道正确的sysroot路径呢？就从编译的信息来，通过ld的-t选项，能得到libc的路径。
+比如写一个gcc hello.c -Wl,-t的方式，就知道从哪个目录下引用了哪些库。
+把这个目录再通过set sysroot在GDB环境中设置一遍。
+但是仅有sysroot还不够，因为出问题的往往是自己写的库，因此还要用
+solib-search的方式把自己编写的库，导入GDB的搜索路径下，
+经过这样一遍的尝试，再用bt命令就能定位到正确的函数了。</p>
+<p>顺便再说说用GDB查看栈帧的理解：</p>
+<p>程序被加载到内存后，以windows为例，程序数据如main，func这些函数的汇编语言代码，用disas main来观察，保存在0x00401300左右的内存空间，而栈空间在0x0028ff00左右位置。用i reg仔细看eip,ebp,esp这三个寄存器，eip始终在代码区徘徊，而ebp和esp沿着栈空间一直向下生长（值不停地变小）。</p>
+<p>每次汇编的call一执行，会把当前的ebp、eip、函数参数(如果有的话)依次保存在栈上，所以入参从0x8(%ebp)开始算，而eip的值通过反汇编可以看到，是call的下一条指令位置。从而在leave指令可以用上次的栈和pc值回到上层函数的call之后继续执行。也可以用disas eip的值，看eip要执行的汇编代码是什么。</p>
+<p>所以递归的时候，每一次的函数入参和返回地址eip，用x/50x ebp address命令能看得很清楚。这就是bt能打印函数执行地址的原因，那些值其实都沿着栈内存写着，bt只是帮人翻译出来罢了。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

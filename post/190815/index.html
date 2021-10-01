@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>公安数仓总结 | 蛙二的思考</title>
+    <meta property="og:title" content="公安数仓总结 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-15T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-15T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="公安数仓总结">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/190815/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">公安数仓总结</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月15日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>和阿里建设大数据为了提高转化率留存率不同，公安并没有明确的提高指标，而是建立尽可能完备的数仓，在遇到案件时能尽量多地挖掘出可能有用的信息。</p>
+<h2 id="数据中台">数据中台</h2>
+<p>中台是在数仓上的概念，为了应对业务变化快速，基于数仓的宽表去碰撞出更有效的数据。</p>
+<p>建设数仓的工具计算平台，整合各种工具，如采集kettle、计算MPP、Hadoop或Spark，调度XXL.job，并辅以运维监控，提高项目落地速度。</p>
+<h3 id="数据组织">数据组织</h3>
+<p>数据元（公安另外定义的数据基本单位）：DE开头，如DE90088 事权单位代码。有类型和长度，但编辑点开没有具体的值。通常是选择关联字典表，数字编号和关联的字典相同。有近1500条数据。</p>
+<p>数据字典：DM开头，遵照规范复制得来的字典，有发布按钮。可以编辑或删除字典值</p>
+<p>逻辑模型：台州分5大类，新增逻辑模型可以认为是一张表。可以开启分区，这个功能不明白。模型的每个字段可以和数据元关联</p>
+<ul>
+<li>原始数据 STG    Stage，通常是原始数据的镜像，台州未见STG</li>
+<li>基础数据 ODS    逻辑模型没有，但物理表有ODS，计算平台部署在公安网，直接从公安Oracle原始库拉。和原始采集对象对应的表，会做字段全名标准化</li>
+<li>明细数据 DWD    旅馆基本信息 常住人员信息 接处警反馈信息。从ODS经过去特殊字符，全角转半角，字典转换得来</li>
+<li>融合数据 DWS    主题表 or 中间表，比如 人员主题表·人员主题中间表 车辆主题表 车辆主题中间表</li>
+<li>应用数据 ADS    暂未开始建设业务库</li>
+</ul>
+<p>对一些有图片或长文本的数据，需要由8902先写入云存储，得到云存储地址再导入kafka，最后被中台消费。8902会做轻度清洗，包括1. 字段名重映射 2. 从源数据摘取一部分关心的数据。</p>
+<p>DWD明细物理表，前缀都是<code>dwd_</code>。每张表涵盖一类原始库的内容，比如卡口设备信息、旅馆入住信息</p>
+<p>DWS主题物理表，前缀有<code>theme_</code>(主题)和<code>res_</code>(关系)两种。</p>
+<p>部标定义7种主题。相关性含关联和关系：物品要素关系、人员要素关系等很多种。</p>
+<p>每种类目包含的表数目不一样，<code>theme_</code>类目开始是4张表，后来改成3张表。比如人员、车辆、设备、警情。有1个主题表和3个对应的中间表，分别是主题中间表、主题数据中间表、主题元数据中间表。最终给业务方的是主题表，其它3张中间表是在生成主题表过程中产生的副产物，具体流程附后。</p>
+<p><code>res_</code>类目2张表，比如主题对象关系、物品要素关系、物品要素关联、案件要素关系、案件要素关联、人员要素关系、只有关联表和1个中间表。</p>
+<p>人员主题表 含有具体的年龄、性别、身份证号、出生日期信息</p>
+<p>主题中间表：惟一标识、一级描述维度、二级描述维度、属性标识符、属性代码、属性中文名称、属性类型、属性值</p>
+<p>主题数据中间表： 对象属性标识符，对象属性值，数据优先级</p>
+<p>主题元数据中间表(后来被删除了)： 惟一标识、数据元内部标识符、限定词标识符、一级描述维度、二级描述维度、对象属性代码、对象属性代码、对象属性中文名称、对象属性类型</p>
+<p>警情如接警来源，报警方式，报警电话，报警地址</p>
+<p>逻辑模型的每张表，字段信息要关联数据元(目前没做)</p>
+<p>物理模型：加入项目后才能在数据库真正创建。新建物理模型时，可以选择从逻辑模型导入表定义，建表后对应到mpp中会有真实的表，比如：挂号信息增量表 <code>ods_wjj_wj_ga_ghxx_delta_ds</code> (保留30天)，每天采集最新的数据入库（要求原始库有标识时间的字段，否则要自己分析），和 <code>ods_wjj_wj_ga_ghxx_ds</code>(保留7天)。dd表示每个分区放完整数据，ds表示每个分区放增量数据。</p>
+<h3 id="数据接入">数据接入</h3>
+<p>离线数据(历史数据)用DataX，增量数据中台直接连业务库。输入表属性 增量 增量字段 ETLTIME，没有增量字段的话，用触发器导出流水表。</p>
+<p>采集配置 <code>conf_wjj_wj_ga_ghxx_zl</code> 输入 <code>wj_ga_ghxx</code> ， 输出 <code>ods_wjj_wj_ga_ghxx_delta_ds</code>。每天都有增量数据，所以表名<code>delta_ds</code>。</p>
+<p>采集管理 <code>job_wjj_wj_ga_ghxx_zl</code> 关联配置 <code>conf_wjj_wj_ga_ghxx_zl</code></p>
+<h3 id="数据开发">数据开发</h3>
+<p>ODS环节，会从增量数据汇总到历史表， 示例: <code>INSERT INTO _ds() SELECT DISTINCT FROM _delta_ds WHERE</code></p>
+<p>数据开发DWD环节，数据清洗示例</p>
+<p><code>INSERT dwd_ghxx_ds SELECT DISTINCT string_agg(), min() from ods_wjj_wj_ga_ghxx_ds</code></p>
+<p><code>INSERT dwd_rk_wjj_ghxxb_ds SELECT uuid() FROM SELECT cls_special_character(清洗) / CASE WHEN ELSE END FROM ods_wjj_wj_ga_ghxx_ds LEFT JOIN dwd_rk_wjj_jzryxxb_dd(就诊人员信息表) LEFT JOIN dwd_jg_wjj_yyxxwdb(医院信息维度表)</code></p>
+<p>类似的出院信息只看到 INSERT 一张表，可能没完成？</p>
+<h3 id="建议">建议</h3>
+<ul>
+<li>生产和开发项目要隔离。</li>
+<li>表名后台保存是全小写，但前台显示的是用户输入名，要统一。</li>
+<li>开发模块的连接线不能编辑和删除</li>
+<li>开发面板的高亮功能不友好</li>
+<li>数据巡检要依靠人，不能做到机器报警</li>
+<li>迅飞的平台分成8个子平台，可以考虑分拆</li>
+</ul>
+<h2 id="业务概念">业务概念</h2>
+<p>公安部标对自身业务有明确定义，有原始库，资源库，主题库，非常详细到字段级(类似传统DWS)，最有用的业务库并没有详细定义，只要求数据向上级单位汇总。</p>
+<p>数据开发有两种</p>
+<ol>
+<li>
+<p>传统数仓的清洗。 有1或2个步骤，ODS和DWD。 ODS做增量处理，数据不能丢(是不是采集模块做的事？)，DWD做维度退化(把外键关联数据回填到一张表)和标准字典(不同的数据源，字典定义不同，归一化处理)</p>
+</li>
+<li>
+<p>从各种业务表提取主题表(有虚拟节点start、join)。流程： DWD -&gt;(行转列操作) 主题数据中间表datamanager_tmp -&gt;(列转行) 主题中间表data_tmp -&gt;(通过优先级合并，会用到rand窗口函数) 主题表data_result</p>
+</li>
+</ol>
+<h2 id="现场困难">现场困难</h2>
+<p>数据治理 架构（4人）-&gt; 接入(3人) -&gt; 分析(2人) -&gt; 开发(5人)</p>
+<p>接入时，用户会很随意，提的需求和表名无法对应，依靠分析团队猜测和定义。</p>
+<h2 id="警务业务和图库">警务业务和图库</h2>
+<p>对数据的利用，有三大方向</p>
+<ul>
+<li>实体画像：打标签，分析出实体各种维度的属性</li>
+<li>人物扩线：找出和某人有关联的人员列表，最好排序</li>
+<li>时空复现：找到某人的出没瞬间，还原出前后时间空间上的轨迹</li>
+</ul>
+<p>图谱的典型应用场景（搜索、问答、决策、推荐）来说，我觉得存在如下分析：</p>
+<p>决策（情报）、推荐更强调的是关系密集型，是图结构的关系连接，是网络特性；
+搜索、问答则更强调语义规则，强调语义精准性；</p>
+<p>所以关于情报决策以及推荐类的应用可能使用属性图更合适，而搜索、问答类的应用使用更完整的知识图谱则显得更靠谱。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

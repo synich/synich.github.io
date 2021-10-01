@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>LuaUnit记录 | 蛙二的思考</title>
+    <meta property="og:title" content="LuaUnit记录 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2017-03-01T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2017-03-01T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="LuaUnit记录">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/170301/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">LuaUnit记录</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年3月1日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>单元测试的条件如果是函数，则首4字母为test，如果是表，则表名和函数名前4字母都为test，均忽略大小写。判断代码</p>
+<ul>
+<li>if string.sub(s,1,4):lower() == &lsquo;test&rsquo; then</li>
+</ul>
+<p>可以这样来执行测试命令</p>
+<ul>
+<li>lua example.lua test1 test2</li>
+</ul>
+<p>表示只测试test1和test2，注意这里大小写必须匹配上才行。
+如果没有，则还按全局搜索出来的测试。</p>
+<p>函数入口上看，首先是runSuiteByNames，然后会从<code>_G</code>中取合适的名字，
+生成table后再调用runSuiteByInstances</p>
+<p>用过luaunit的两个版本，3.0和3.2。其中3.0的内部函数大量使用了全局函数，甚至一些标记开关都用了全局函数，这显然破坏了环境。
+到了3.2版本则全面收敛了这种往全局空间写符号的恶习，包括assertEquals等都在table里，不再是全局函数。
+但是3.2在执行时一定要用.run(&hellip;)语法。开始我误写成:run()语法，在3.0能正常执行，到了3.2总是出错，经过打印才恍然大悟把self给压栈了。
+执行的时候可以传入各种参数，非常灵活方便。</p>
+<ul>
+<li>ut.run('-v', &lsquo;-o&rsquo;, &lsquo;tap&rsquo;, &lsquo;testA&rsquo;, &lsquo;testAa1&rsquo;)</li>
+</ul>
+<p>再比如执行测试时，有些函数需要一些特殊的参数，比如一个文本解析函数，需要传入一个文件对应的fd，这时使用class的测试方式就能提供额外的便利，可以给这个class定义setUp和tearDown方法(命名全小写也可以)，而且用testA:setup() self.xxx end这种格式也是允许的。luaunit框架这部分的执行流程是这样：
+每个test函数都会进入execOneFunction执行一次，执行前后判断有无setup/teardown，有就自动调用这两个方法，执行则通过xpcall因此即使内部assert/error也不会异常退出。执行结果保存下来后，退出前执行endTest函数，会根据PASS/FAIL/ERROR分别增加计数结果。</p>
+<p>如何非侵入式地写测试呢？比如有个lib.lua库，想对其中很多的内部函数写测试，
+直接在lib.lua写显然相当不友好，肯定再建立一个ut.lua来放置测试用例。两者如何关联呢？</p>
+<p>1.lib.lua中require &lsquo;ut&rsquo;，这种方式相当于把require之前的lib.lua的环境作为ut的ENV，所有想导入ut.lua的符号只能走这个ENV，
+显然只能以全局函数的方式传递给ut.lua，明显不合理，放弃。</p>
+<p>2.ut.lua中require &lsquo;lib&rsquo;，这种方式可以把lib.lua中要测试的函数封装在另一个专门做ut的导出表，并在ut.lua中接收并测试，
+但是有个问题，就是lib.lua到底要返回正常的导出表，还是给测试的导出表，无法区分。目前想到的办法，只能在导出的附近定义一个常量，
+通过修改常量的方式来测试。虽然还是有改动，但也是目前惟一能想到的方式了。</p>
+<p>说完luaunit，再引申说说PHPUnit，其实单元测试在我理解，就是语言有机制能提供当前环境中的所有符号名，lua用<code>_G</code>变量，而PHP有<code>get_defined_functions</code>和<code>get_declared_classes</code>这两个方法，通过同样的策略可以实现和luaunit一样的调用方式。不过PHPUnit似乎要指定类名才能执行测试，我觉得这种方式未免笨拙了。</p>
+<p>最后附记两个Lua小技巧：</p>
+<p>1.检查一个字符串是否全落在字符集中，执行string.gsub('[]', &lsquo;')，并检测结果是否为空串</p>
+<p>2.判断string.find的返回布尔值，使用return not not string.find方式</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

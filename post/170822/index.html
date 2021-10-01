@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>【翻译】select的历史和epoll的不足 | 蛙二的思考</title>
+    <meta property="og:title" content="【翻译】select的历史和epoll的不足 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2017-08-22T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2017-08-22T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="【翻译】select的历史和epoll的不足">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/170822/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">【翻译】select的历史和epoll的不足</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年8月22日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="5种io模型">5种IO模型</h2>
+<ol>
+<li>阻塞IO</li>
+<li>非阻塞IO</li>
+<li>多路复用</li>
+<li>信号驱动</li>
+<li>异步IO</li>
+</ol>
+<p>阻塞IO不提，非阻塞IO只是减少了从请求发出到真正开始读的时间，但把数据从内核读到应用层，仍然会阻塞进程，只有异步IO才是完完全全的，从请求发出到得到数据的过程，应用侧完全感知不到，最典型的就是windows的IOCP了。据说Java的模型只用到了多路复用模型，IOCP无用武之地，所以为了跨平台考虑，还是Linux的epoll更好，如果到windows平台只能降级到select模型。但是不明白.Net怎么在Linux下实现异步IO模型？</p>
+<p>要谈多路复用，就要对Unix进行一次考古。</p>
+<p>诞生于1960年代中期的分时复用理念，相对于当时的批处理模式(batch-processing)，可谓是巨大的革新。而Unix是1970年才有的，因此它也要面对并试图解决批处理模式的问题。
+此时Unix面临的阻塞有3种，CPU、磁盘IO、用户输入。</p>
+<p>接着谈谈pipe，此时并没有通用的进程间消息机制，也没有semaphore，pipe足以解决当时的问题。因为在3BSD的时候，每个进行只允许最多20个FD，每个用户最多只有20个进程，这种限定下确实不需要IPC和IO复用。同时正是这个限制，也导致了为什么select的接口参数<code>fd_set</code>会设计成一个长数组(在当时却并不长)。</p>
+<h2 id="然后tcpip诞生了">然后TCP/IP诞生了</h2>
+<p>1983年诞生的4.2BSD引入了早期版本的TCP/IP协议栈和BSD socket API，虽然在今天看来似乎是理所当然的，其实当时还有一套System V Revision 3的STREAMS接口作为竞争者(现在已经没有人用了)。BSD socket API同时带来了select。</p>
+<p>同样的1983年，Rob Pike为Unix 8th Edition开发了Blit，一个图形化的终端。由于当时的BSD并没有类似System V的IPC机制，要实现Blit需要select来实现console的多路复用。
+此处作者向Kirk McKusick求证了select的历史，非阻塞IO和select是同一时间出现的，但非阻塞并不好用，因此select成了最自然的选择。</p>
+<p>早期的Unix没有select，是因为当时只能做文件操作，而网络的出现也必然导致select的诞生。</p>
+<p>有4种避免阻塞的方式</p>
+<ol>
+<li>非阻塞IO模式</li>
+<li>使用signal，即SIGIO，Linux上用<code>fcntl(F_SETSIG)</code></li>
+<li>由系统提供接口，告知哪个FD可读写，select/epoll</li>
+<li>进程告诉系统，对哪些FD感兴趣，并注册回调，kqueue/IOCP</li>
+</ol>
+<p>三大平台IO复用的时间，依次是windows在1994年加入了IOCP，FreeBSD在2000年6月引入kqueue，Linux最晚，2002年引入epoll。</p>
+<p>Bryan Cantrill(Joyent)曾猛烈地抨击epoll，提到两个缺陷，在Solaris系统的/dev/poll模型下存在惊群问题，而epoll的语义和/dev/poll很接近，因此也同样存在惊群问题。但是IOCP和kqueue的接口语义和epoll很不一样，似乎这样不容易引起惊群问题。
+另一个问题则是epoll在应用层的语义是整形的fd，但内部实现却是内核对象，两者不一致导致在一些边缘场景下会出现奇怪的问题。</p>
+<p>惊群问题直到内核4.5版本，epoll加入了EPOLLEXCLUSIVE才得以解决，这就限制了epoll在多线程环境的运用。其实如果一开始就设计得好，是不会出现上述两个问题的。这也是要批评epoll的原因。</p>
+<p>先说惊群的问题，多线程使用epoll的典型场景是HTTP 1.0的短连接模型，很自然的会希望利用多CPU来均衡负载，但却做不到。</p>
+<h2 id="电平触发---不必要的唤醒">电平触发 - 不必要的唤醒</h2>
+<p>这种模式epoll和select的语义都会引发惊群问题</p>
+<ol>
+<li>内核收到新的连接</li>
+<li>唤醒线程A和B</li>
+<li>线程A和B都结束<code>epoll_wait</code></li>
+<li>线程A能成功的accept，但B会EAGAIN失败(或者反过来，总之只有一个成功)</li>
+</ol>
+<h2 id="边沿触发---不必要的唤醒且饿死">边沿触发 - 不必要的唤醒且饿死</h2>
+<p>第一种没看懂</p>
+<p>第二种，达不到负载均衡效果</p>
+<ol>
+<li>内核收到两个连接，同时有两个线程A和B，由于是边沿触发，只有一个线程被唤醒，假定A</li>
+<li>线程A结束<code>epoll_wait</code>且accept成功</li>
+<li>内核收到第三个连接，但是socket状态从readable到readable，因为是边沿触发，所以内核不会发起调度！</li>
+<li>线程A必须accept，期望EAGAIN，但是又得到一个socket</li>
+<li>内核收到第四个连接，线程A必须accept，期望EAGAIN，但又得到一个socket</li>
+</ol>
+<p>以上过程中socket只发生了一次从non-readable到readable的切换，因此内核只唤醒一次，导致永远在线程A。</p>
+<p>正确的解决办法</p>
+<p>有两种，最好的方式是用电平触发并加上EPOLLEXCLUSIVE标志(必须4.5内核后)，或者用边沿模式配合EPOLLONESHOT</p>
+<ol>
+<li>内核收到两个连接，线程A和B在等待，由于边沿模式只触发一次，假定线程A被唤醒</li>
+<li>结束<code>epoll_wait</code>并调用accept，成功</li>
+<li>线程A执行<code>epoll_ctl(EPOLL_CTL_MOD)</code>，由于会重置EPOLLONESHOT标志，得以re-arm这个socket</li>
+</ol>
+<p>结论就是你必须理解EPOLLONESHOT和EPOLLEXCLUSIVE(还得内核足够新)。</p>
+<p>说下kqueue的接口语义和epoll的差异：</p>
+<p>epoll和kqueue都会创建一个监听句柄，但是epoll是直接把多个FD放入这个epoll句柄中，但是kqueue却多引入了一个kevent结构，FD通过kevent接口(是的，同名的)和kevent实例以及读写、添加删除等动作先关联，再将这样的一个或多个kevent放入kqueue中。FD和监听句柄中隔了一层。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

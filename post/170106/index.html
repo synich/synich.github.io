@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>排版软件的故事 | 蛙二的思考</title>
+    <meta property="og:title" content="排版软件的故事 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2017-01-06T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2017-01-06T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="排版软件的故事">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/170106/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">排版软件的故事</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年1月6日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>英文中把文字处理分为Typewrites和Word Processors两大类。平常用的Microsoft Word
+是所见即所得的字处理系统，适合日常的书信、报告。而专业的书籍排版由于周期长，
+版面要求精细往往有更高的要求。当前最有名的是TeX，在TeX之前是贝尔实验室诞生的roff系统
+(GNU实现版叫groff)，不过现在比较式微。另外还有XSL-FO也经常被企业用来制作文档，
+好像Apple的一些文档就是用这个格式。不过这个标准实在不怎么样，2013年11月后，
+W3C推荐CSS3 Page作为替代标准，这个XSL也就永远地停留在1.1版本不再演进了。</p>
+<p>先说句题外话，由于这两个排版工具出现的年代还是Unix的远古时期，那时的编辑器分为
+line editor和screen editor。line的典型就是sed，screen则是现在耳熟能详的vim/Emacs。
+不过现在硬件性能提高，各种编程语言也很易用，惟一还有人知道的sed也显得无关紧要了。</p>
+<p>TeX的第一版是1978年发布的，通常也称为TeX78。而roff要早一点1973年。
+既然roff的历史更早，就从它说起吧。roff的全称是run off，和所见既所得的排版区分，用off表示离线的概念。
+roff分为nroff和troff两种实现。现在我们用的GNU groff则是对这两个版本的封装，和gcc封装
+cpp、cc1、as、ld是一个意思。</p>
+<p>nroff使用等宽字体，行为像打字机，man的背后就是用它，在终端上至今都运行得很好。
+而troff可以用各种字体，适合于打印机。最早的nroff只能用在C/A/T打印机上(phototypesetter)，
+原因就是贝尔实验室在1973年买了台C/A/T。这是台1971年设计的打印机，共支持4种字体：
+英文字符Roman的regular/bold/italic再加一个特殊记号的Special。
+买了之后Ossanna才基于C/A/T硬件写出了nroff，在今天看来，只为一种打印机写程序是很死板的，
+直到1979年Brian Kernighan重写了ditroff，取意device independent troff。
+现在看到的troff都是ditroff了。直接的现象是groff程序字体目录下devps、
+devlbp这些带dev前缀的目录，就是能被ditroff处理的字体。</p>
+<p>高德纳发布的TeX由于只支持英文，在东亚国家是无法使用的。最早着手解决这个问题的
+是日本的ASCII社，发布了pTeX程序，p是publishing的意思。慢慢的TeX社区也意识到这个问题，
+就有了XeTeX，后来又有了luaTeX，都能支持Unicode编码。</p>
+<p>中文地区很有名的是CTeX套装包，安装后程序的目录结构是这样的：
+最重要的是miktex目录，是个windows下很好的移植版本。这个目录下的miktex/bin包含各种可执行程序。
+包括pdfTeX、XeTeX、luaTeX三大著名引擎以及其它各种需要的程序。
+其中pdfTeX是三者中最老的，它最早支持了pdf特征，不过似乎不支持Unicode。
+和bin平级的还有各种辅助目录，比如font等等。</p>
+<p>其次重要的就是CTeX目录，这里包含了旧式的cct包和其它中文宏包。
+也是这个套装的命名来源。处理程序有了，Ghostscript和GSview则用于预览。
+WinEdt目录是TeX的集成开发环境，最后一个UserData放的好像也是字体和配置。</p>
+<p>想要从命令行直接运行LaTeX，即使是我都感到非常困难，背后的概念实在太多。
+所以有Lyx这样的套件来简化，它只用到了XeTeX和luaTeX这两种引擎。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

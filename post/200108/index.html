@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>shell的模式与选项 | 蛙二的思考</title>
+    <meta property="og:title" content="shell的模式与选项 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-01-08T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-01-08T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="shell的模式与选项">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/200108/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">shell的模式与选项</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月8日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>起因是看到有人写脚本，用/bin/cp方式复制文件，说是因为cp在复制时如果文件名相同会提示是否覆盖，导致脚本会停住。这个行为是因为操作系统对root用户默认alias cp=&lsquo;cp -i&rsquo;导致的，所以用/bin/cp绕过，我于是想到为何不在脚本开头用unalias去掉cp的定义，后面直接写cp就方便了。</p>
+<p>验证时却发现会提示unalias cp not found。于是在终端下尝试，第一次成功，第二次提示同样错误，这就说明在fork出的shell环境下没有alias，不需要特意用/bin/sh。但是为什么子shell没有继承alias？又加了alias发现不仅cp没有继承，其它的都没有被继承。</p>
+<p>网上有人说这个特性只有交互模式才会打开，即bash &ndash;login才能用，又有人说要用shopt方式显示打开，可是试了似乎都不对。忽然想到alias是shell的buildin命令，说明是进程独有的功能，而fork子进程时，只能通过环境变量传递参数，既然alias不属于环境变量，也就无法自动地传递给子进程，只能显示地加载/etc/profile之类的文件才能使alias生效。</p>
+<h2 id="交互与登陆模式">交互与登陆模式</h2>
+<p>交互模式 interactive，仅输入bash，也是最常见的模式，为交互模式。而参数中有文件名或-c方式调用语句，就是非交互模式。看<code>$-</code>有没有i来判断。由于不需要交互，.bashrc就不会读入(新版本才有的特性)，节约脚本执行时间。</p>
+<p>登陆模式 login，和交互模式是完全正交的。login指非常早期就启动的shell，会读入profile类文件，后面的用户在duplicate shell操作时，是fork了这个login shell，真实得到的是ono login但interac。前文提到的通过ssh触发的bash就是这种模式。登陆模式下可以用logout退出，用shopt 观察。登陆模式用于显示tips或欢迎信息，默认不打开，su的时候就比较静默，也可以强制su &ndash;login显示欢迎词。</p>
+<p>习惯上，non interactive, login是很罕见的，只在部分X程序会用。</p>
+<p>不同模式读入配置是不同的</p>
+<pre tabindex="0"><code>/etc/profile   交互模式读入，似乎有误，当为登陆模式
+/etc/bashrc或bash.bashrc  似乎并不会被读，通用配置保存在这里
+~/.bash_profile   login按序读以下3个，读到停止
+~/.bash_login
+~/.profile
+~/.bashrc    non-login读
+BASH_ENV   非交互模式使用
+</code></pre><h2 id="选项">选项</h2>
+<p>POSIX规范要求用set控制选项，bash增加了特有的shopt并在另一个命名空间保存这些选项。set不能影响shopt，但shopt用-o可以操作set空间。set空间以全大写的环境变量为主，而shopt都是小写。</p>
+<p>选项会对脚本的执行带来微秒的影响，有一次我不经意间引入了<code>set -e -u</code>，导致程序无法执行，看了帮助手册才明白这代表error exit，当命令退出状态是失败时，整个脚本就退出了。由于我原来的代码中会用grep判断tar包中是否有一个文件，当不存在时grep会以失败退出，如果不加-e选项，并不会引起问题，但当更严格的-e开启后，程序就不再继续执行。而-u则对$1这样的变量展开做了更严格限制，如果不存在就退出，$@和$*不受-u开启的影响。</p>
+<h2 id="非阻塞同步">非阻塞同步</h2>
+<p>后台方式调用其它脚本，紧接着用<code>$!</code>记录下进程号，最后用wait方式等待结束。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

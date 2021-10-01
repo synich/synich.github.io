@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>PHP模板引擎学习 | 蛙二的思考</title>
+    <meta property="og:title" content="PHP模板引擎学习 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2016-12-19T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2016-12-19T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="PHP模板引擎学习">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/161219/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">PHP模板引擎学习</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2016年12月19日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>用了3种模板引擎，从Smarty入手，但是这个库很大，文件又多。另外找了两个模板库，
+TinyButStrong(简称TBS)和RainTPL。TBS这个库很有欺骗性，可能和Smarty比确实小，
+但也有近150K。说真的不能算tiny，而且它的功能有点过于强大了。
+可以直接把SQL查询语句写到模板赋值里，
+这大大超过了我的期望。RainTPL是个约30K的单文件，在3者中最符合我胃口。</p>
+<p>既然是模板引擎，除了最常用的赋值，次常用的就是循环了，TBS太复杂，
+就比比Smarty和RainTPL吧。</p>
+<p>Smarty的循环语法相当不直观，类似下面这样</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>尤其是item=和from=那两句，每次都让人无法记住，而且你还不知道怎么表示key。
+反观RainTPL，简单到爆啊有没有</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>RainTPL直接把键值命名固定，和Tiny一样。其实我觉得这种地方真没有定制化的必要，
+都是程序员，简单直观就行了。有现成的$key和$value，谁愿意自定义啊。
+而且自定义又增加了上下文关注的成本，我觉得是非常不划算的。</p>
+<p>从刚才的循环可以看出，RainTPL使用了<code>{}</code>花括号对方式来标记，
+和TBS的<code>[[]]</code>又或者Smarty的自定义一样，和HTML区分开。这里又要说说Smarty，
+这种没有必要的自定义，挺分散精力的。</p>
+<p>RainTPL除了{loop}和{/loop}之外，也提供了常用的其它语法</p>
+<ul>
+<li>{include=&ldquo;xxx&rdquo;} 从html模板的目录下导入文件，由于RainTPL可以配置后缀，
+所以这里不用填.html字样</li>
+<li>{if=&ldquo;expr(true/false)&quot;}{elseif=&quot;&quot;}{else}{/if} 分支语法，风格一致很好记</li>
+<li>{function=&ldquo;foo($bar)&quot;} 在html写函数，不过暂时觉得没什么用？</li>
+<li>{$value.name|strtoupper} 把一个变量作为<code>|</code>后面的函数的参数，用返回值替换，
+有点pipe的味道，不过我还是倾向尽量不要在模板中引进这种太花巧的语法。</li>
+<li>{noparse}{/noparse} 在这中间的变量不作转换</li>
+<li>{ignore}{/ignore} example没有示例</li>
+</ul>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>代码写法中的状态与异常 | 蛙二的思考</title>
+    <meta property="og:title" content="代码写法中的状态与异常 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-05-09T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-05-09T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="代码写法中的状态与异常">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/200509/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">代码写法中的状态与异常</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年5月9日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>最近在做构造数据的工作，代码是另两人写的python，在改造过程中，修正了我以往对对象和异常的认识。</p>
+<p>以前写代码既不爱用类和对象，也不用异常捕获，这次造数据的代码全部是定义各种函数和调用，用法不复杂。但造数据的需求很多，从而就导致函数参数非常多，写起来代码非常啰嗦。参数多的另一个坏处是在多处调用时，不容易一致。</p>
+<h2 id="有状态的执行体">有状态的执行体</h2>
+<p>构造表数据需要带入参数，但是这个数据其实是和函数绑定的，完全可以合并到一起，用闭包或对象来表达。函数式推崇无状态，但我不确定闭包是否为函数式所接受，但在具体的工作中，带状态的可执行体是非常有用的。</p>
+<h2 id="使用异常">使用异常</h2>
+<p>有些表数据的构造有依赖关系，如果前置表没有被构造，这张表就不应该被构造。这时有两个选择：</p>
+<ol>
+<li>隐式构造被依赖项</li>
+<li>返回错误或抛异常</li>
+</ol>
+<p>开始想隐式构造，动态构造函数在main函数中被sys.argv给绑定了，于是转而返回错误，至少显示提示也不失为一种选择。如果返回错误，由于表很多，代码会显得非常啰嗦，所以想到用异常。异常有个好处，具备穿透性，不管层级多深，可以直接穿过多层直到被捕获的地方，另外异常还必须要能携带值，否则只有异常类型，捕获了也无法进一步处理。python3的异常语法和2不兼容，似乎只能带str类型的变量，于是通过这条路径，把缺失的表名用异常抛出来，在main函数中显式地补上。</p>
+<p>反思这次的代码修改，以往偏好理论派的东西其实在实际工作中并不能很好地应对。以我现在的状况，也不可能在理论上有太多的造诣，让更多实际的代码能写得优雅，利用好常见语言的特性，更为重要和实际。</p>
+<h2 id="模拟的隐患">模拟的隐患</h2>
+<p>Python的异常没有ruby的retry机制，为了模拟在try块的外围加了一层while循环，并在except里用count计数累加，保证重试N次后能退出。但过了一段时间，又加了一个种异常捕获，这里忘记对count累加，导致循环无法退出。模拟的方式终归只是权宜之计，最好的办法仍是以DSL配套完整的机制才可行。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

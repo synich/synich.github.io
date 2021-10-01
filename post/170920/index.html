@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-ch">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>动态链接库与符号表 | 蛙二的思考</title>
+    <meta property="og:title" content="动态链接库与符号表 - 蛙二的思考">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2017-09-20T12:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2017-09-20T12:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="动态链接库与符号表">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="/post/170920/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="">
+                        蛙二的思考
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">动态链接库与符号表</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2017年9月20日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>起因是前天向吴惠敏请教gprofile的时候，这个工具要用.a库，不要用.so否则程序会挂掉，原因是gprofile的设计思想在20年前就已固化，而动态加载的重定位细节又经常变化，所以干脆gprofile就只支持静态库了。本篇不说gprofile，单说说动态链接库。内容并不会超出《程序员的自我修养》这本书，更多的还是个读书和操作记录。</p>
+<p>现在的Linux默认都用动态库，比如我最常用的CentOS，/lib/目录下几乎看不见.a库，gcc默认也找的是动态库(真实选项-Bdynamic)，除非用-static选项告诉ld只用静态库。(不过MinGW的gcc即使用了-Bdynamic，在静态和动态都存在的情况下依然会用静态库，原因不详)</p>
+<p>加载动态库是一段专门的程序，它和系统用的C语言库强关联，在不同的系统表现形式也不一样</p>
+<ul>
+<li>CentOS(也是绝大多数Linux)：/lib/ld-2.xx.so 和 /lib/ld-linux-xx.so.2</li>
+<li>Alphine(一个轻量级的Linux)：因为库体积的原因，使用了musl这个C库(libc.musl-xxx.so)，动态加载库和libc是合二为一都指向/lib/ld-musl-xxx.so.1</li>
+<li>FreeBSD：/libexec/ld-elf.so</li>
+<li>OpenBSD：/usr/libexec/ld.so</li>
+</ul>
+<p>其实Cent下ld-linux只是个指向ld.so的软链接，只是因为历史上ld.so处理a.out格式，ld-linux处理ELF格式，为了兼容名字一直保留到今天，其实程序是同一个。从FreeBSD的名字也可以看出，最初的名字叫ld.so，出现elf格式后，FreeBSD不再保留ld.so，全换成ld-elf.so了，但OpenBSD依然沿用。ld.so文件名在Linux中保留了版本号，我猜测这正是它和libc库强关联的证据，即根据编译时链接的libc库版本号，换算成对应的ld.so程序名，进而执行动态加载。</p>
+<p>动态加载必然涉及从遍历目录的过程，这必然涉及配置和更新目录集，虽然不同的系统配置名字不一样，Linux用ld.so.conf，而FreeBSD用libmap.conf，但最终都要通过ldconfig程序将配置转换成更高效率的格式，ldconfig和ldd最早都出现于SunOS 4.0，所以现在大家依然沿用这个名字。</p>
+<h2 id="符号表">符号表</h2>
+<p>so文件有.symtab和.dynsym两种符号表，dynsym看名字就知道是动态，而symtab是normal又称regular符号。用strip只能去掉symtab，但是dynsym不能被删。</p>
+<p>nm默认找symtab，如果被strip会提示no symbol，加-D能显示。objdump的-T是同样功能。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="">蛙二的思考 By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
+    </li>
+    
+    <li>
+        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
+    </li>
+    
+    <li>
+        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
+    </li>
+    
+    <li>
+        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
+    </li>
+    
+    <li>
+        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
+    </li>
+    
+    <li>
+        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
+    </li>
+    
+    <li>
+        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
+    </li>
+    
+    <li>
+        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
