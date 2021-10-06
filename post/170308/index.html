@@ -1,83 +1,53 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>C与和ua的交互问题记录 | 蛙二的思考</title>
-    <meta property="og:title" content="C与和ua的交互问题记录 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2017-03-08T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2017-03-08T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="C与和ua的交互问题记录">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/170308/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>C与和ua的交互问题记录 | 蛙二的思考</title>
+<meta property="og:title" content="C与和ua的交互问题记录 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-03-08T12:00:00+08:00">
+<meta property="article:modified_time" content="2017-03-08T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="C与和ua的交互问题记录">
+<meta name=author content>
+<meta property="og:url" content="/post/170308/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">C与和ua的交互问题记录</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年3月8日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <h2 id="环境变量">环境变量</h2>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>C与和ua的交互问题记录</h1>
+</header>
+<date class="post-meta meta-date">
+2017年3月8日
+</date>
+<div class=post-content>
+<h2 id=环境变量>环境变量</h2>
 <p>用Lua写一个库，在单元测试和正常业务上需要导出不同的符号，但是require机制不支持，偶然想到通过环境变量的方式传递，可是lua原生只能getenv却不能设置。这时有三种解决思路</p>
 <ol>
 <li>在lua调用外层做个shell，在shell中设置环境变量</li>
@@ -89,160 +59,101 @@
 第三条实现也不麻烦，putenv就一个入参数，返回整数代表成功与否，整个扩展写下来15行，大量都是wrap代码，第一次实测没有问题，但奇怪的过一段时间再测的时候，在主程序还是无法读到这个环境变量。</p>
 <p>从以上二、三条的实践来看，不同的dll有各自的环境变量，比如在lua扩展里设置环境变量，但在lua主程序因为是另一个dll，所以直接用os.getenv是得不到的。解决的办法就是第三条策略，扩展里再实现一个和putenv配对使用的getenv，而不是自带的os.getenv。在主程序里调用扩展的getenv，这样就可以读到扩展dll里设置的环境变量了。</p>
 <p>之所以非要用C语言而不是shell，是希望后续能做三语言开发，以C作为胶水，把Lua作为工具再用scheme作为上层调度，强化自己的技术栈，另外也提醒自己不要荒废了C这个老本行。</p>
-<h2 id="lua嵌入c程序">lua嵌入C程序</h2>
+<h2 id=lua嵌入c程序>lua嵌入C程序</h2>
 <p>写了段lua的脚本，想整体打包成可执行程序，总是失败，定位1小时才找到原因。</p>
 <p>首先把dofile换成loadfile和pcall，发现是pcall环节出错返回值是2，表示遇到运行时异常，通常来说大概率是某个变量为nil未捕获。C语言调用，简单的做法把最后参数置为0，错误消息会留在栈的顶上，打印错误值得知是main函数的入参arg为nil，导致索引下标1触发异常，导致程序根本没能运行。</p>
 <p>再看代码原来arg参数是lua.c创建的，如果集成库的方式，显然不会有arg参数，所以能在命令行调用，却无法集成到C语言，换句话说也可以通过根据arg是否为nil来判断是否从命令行触发。</p>
 <p>以前写的混合程序，都是lua中定义好函数，从C语言调用，所以从未遇到arg问题，经此问题也算是有更深刻的理解。总之必须重视错误消息提示，代码中注意捕获并显示异常返回，不要遇到问题乱试一气。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

@@ -1,427 +1,297 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-	<meta name="generator" content="Hugo 0.88.1" />
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>蛙二的思考 | </title>
-    <meta property="og:title" content="蛙二的思考 | ">
-    <meta property="og:type" content="website">
-    <meta name="Keywords" content="">
-    <meta name="description" content="">
-    <meta property="og:url" content="/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="/index.xml" title="蛙二的思考" />
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta name=generator content="Hugo 0.88.1">
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>蛙二的思考 | </title>
+<meta property="og:title" content="蛙二的思考 | ">
+<meta property="og:type" content="website">
+<meta name=Keywords content>
+<meta name=description content>
+<meta property="og:url" content="/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<link rel=alternate type=application/rss+xml href=/index.xml title=蛙二的思考>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <h1>
-                        <a id="logo" href="">
-                            蛙二的思考
-                        </a>
-                    </h1>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<h1>
+<a id=logo href>
+蛙二的思考
+</a>
+</h1>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/160218/" title="使用Lazy-Stream方式实现Fibnacci数列">使用Lazy-Stream方式实现Fibnacci数列</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年2月18日
-        </date>
-        
-        <div class="post-content">
-            起因是看到一篇讲stackless方式coroutine的文章，给的例子是用js写的。用Lua重写了一遍，感觉有些思路上以前没有想到过，做点……
-        </div>
-        <p class="readmore"><a href="/post/160218/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/160214/" title="stackless和stackfull概念在VM上的一些理解">stackless和stackfull概念在VM上的一些理解</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年2月14日
-        </date>
-        
-        <div class="post-content">
-            以前知道有个stackless的python实现，但不明白是什么意思，看一篇分析Lua虚拟机的文章也提到了这个概念，就做个记录。 stackless pytho……
-        </div>
-        <p class="readmore"><a href="/post/160214/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/160204/" title="SSH点滴">SSH点滴</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年2月4日
-        </date>
-        
-        <div class="post-content">
-            验证方式 从日志能看到3种验证方式，debug3: preferred publickey,keyboard-interactive,password。后两种表现……
-        </div>
-        <p class="readmore"><a href="/post/160204/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/160131/" title="Widnows的编译库的理解">Widnows的编译库的理解</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年1月31日
-        </date>
-        
-        <div class="post-content">
-            生成动态库 windows下生成动态库，会输出3个文件。通过dumpbin把三者的段内容分别打印并比较一下。 先说下类型，其中exp也是COFF……
-        </div>
-        <p class="readmore"><a href="/post/160131/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/160109/" title="GCC编译4阶段的一些理解">GCC编译4阶段的一些理解</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年1月9日
-        </date>
-        
-        <div class="post-content">
-            起因是这样的，安装了GCC4.7和4.8两个版本， 但是4.8不知什么原因输出临时目录总是出错，原因及修改方法见这里， 所以只能用4.8配合-p……
-        </div>
-        <p class="readmore"><a href="/post/160109/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/151129/" title="两个一直理解错误的编译问题">两个一直理解错误的编译问题</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2015年11月29日
-        </date>
-        
-        <div class="post-content">
-            1.dll是可以直接替换而不需要重新编译的。 一直以来，我都以为只有so可以做到直接替换，而dll则不同。因为dll可以选择在编译时候通过.l……
-        </div>
-        <p class="readmore"><a href="/post/151129/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/151006/" title="Andoird上用kbox模拟linux环境">Andoird上用kbox模拟linux环境</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2015年10月6日
-        </date>
-        
-        <div class="post-content">
-            随着这几年安卓机的军备竞赛，一拨拨的性能“落后”的旧手机被淘汰下来闲置在家，却又不能发挥作用。手头就有一个13年的老机，A8单核，1G内存放……
-        </div>
-        <p class="readmore"><a href="/post/151006/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/150926/" title="软件可靠性硬件可靠">软件可靠性硬件可靠</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2015年9月26日
-        </date>
-        
-        <div class="post-content">
-            通常我们在写软件时，总会做各种各样的错误或异常判断，比如输入非法啊，执行异常之类的。但我们很少去怀疑是不是硬件本身出现问题，仿佛这个世界，只……
-        </div>
-        <p class="readmore"><a href="/post/150926/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/150904/" title="Chomsky的4型文法与BNF">Chomsky的4型文法与BNF</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2015年9月4日
-        </date>
-        
-        <div class="post-content">
-            按序有4种文法，从强到弱排列如下 Type-0：也称短语文法，产生式为A-〉B，A和B均包含terminal和nonterminal，表达力最……
-        </div>
-        <p class="readmore"><a href="/post/150904/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/150725/" title="信息的价值与一篇机器学习文章读后感">信息的价值与一篇机器学习文章读后感</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2015年7月25日
-        </date>
-        
-        <div class="post-content">
-            当媒体说互联网带来了知识的普及，这句话并没有全部说对。我一直就疑惑， 虽然互联网上看似能搜索到很多东西，但是有两个问题： 信息是谁放上去的，他出……
-        </div>
-        <p class="readmore"><a href="/post/150725/">阅读全文</a></p>
-    </article>
-    
-    
-
-
-
-<ol class="page-navigator">
-    
-    <li class="prev">
-        <a href="/page/26/">上一页</a>
-    </li>
-    
-
-    
-
-    
-        
-        
-    
-    
-
-    
-        
-        
-        <li >
-            <a href="/">1</a>
-        </li>
-        
-    
-        
-        <li>
-            <span>...</span>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/25/">25</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/26/">26</a>
-        </li>
-        
-    
-        
-        
-        <li  class="current">
-            <a href="/page/27/">27</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/28/">28</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/29/">29</a>
-        </li>
-        
-    
-
-    
-    
-
-    <li class="next">
-        <a href="/page/28/">下一页</a>
-    </li>
-    
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/160218/ title=使用Lazy-Stream方式实现Fibnacci数列>使用Lazy-Stream方式实现Fibnacci数列</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年2月18日
+</date>
+<div class=post-content>
+起因是看到一篇讲stackless方式coroutine的文章，给的例子是用js写的。用Lua重写了一遍，感觉有些思路上以前没有想到过，做点……
+</div>
+<p class=readmore><a href=/post/160218/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/160214/ title=stackless和stackfull概念在VM上的一些理解>stackless和stackfull概念在VM上的一些理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年2月14日
+</date>
+<div class=post-content>
+以前知道有个stackless的python实现，但不明白是什么意思，看一篇分析Lua虚拟机的文章也提到了这个概念，就做个记录。 stackless pytho……
+</div>
+<p class=readmore><a href=/post/160214/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/160204/ title=SSH点滴>SSH点滴</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年2月4日
+</date>
+<div class=post-content>
+验证方式 从日志能看到3种验证方式，debug3: preferred publickey,keyboard-interactive,password。后两种表现……
+</div>
+<p class=readmore><a href=/post/160204/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/160131/ title=Widnows的编译库的理解>Widnows的编译库的理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年1月31日
+</date>
+<div class=post-content>
+生成动态库 windows下生成动态库，会输出3个文件。通过dumpbin把三者的段内容分别打印并比较一下。 先说下类型，其中exp也是COFF……
+</div>
+<p class=readmore><a href=/post/160131/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/160109/ title=GCC编译4阶段的一些理解>GCC编译4阶段的一些理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年1月9日
+</date>
+<div class=post-content>
+起因是这样的，安装了GCC4.7和4.8两个版本， 但是4.8不知什么原因输出临时目录总是出错，原因及修改方法见这里， 所以只能用4.8配合-p……
+</div>
+<p class=readmore><a href=/post/160109/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/151129/ title=两个一直理解错误的编译问题>两个一直理解错误的编译问题</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2015年11月29日
+</date>
+<div class=post-content>
+1.dll是可以直接替换而不需要重新编译的。 一直以来，我都以为只有so可以做到直接替换，而dll则不同。因为dll可以选择在编译时候通过.l……
+</div>
+<p class=readmore><a href=/post/151129/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/151006/ title=Andoird上用kbox模拟linux环境>Andoird上用kbox模拟linux环境</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2015年10月6日
+</date>
+<div class=post-content>
+随着这几年安卓机的军备竞赛，一拨拨的性能“落后”的旧手机被淘汰下来闲置在家，却又不能发挥作用。手头就有一个13年的老机，A8单核，1G内存放……
+</div>
+<p class=readmore><a href=/post/151006/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/150926/ title=软件可靠性硬件可靠>软件可靠性硬件可靠</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2015年9月26日
+</date>
+<div class=post-content>
+通常我们在写软件时，总会做各种各样的错误或异常判断，比如输入非法啊，执行异常之类的。但我们很少去怀疑是不是硬件本身出现问题，仿佛这个世界，只……
+</div>
+<p class=readmore><a href=/post/150926/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/150904/ title=Chomsky的4型文法与BNF>Chomsky的4型文法与BNF</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2015年9月4日
+</date>
+<div class=post-content>
+按序有4种文法，从强到弱排列如下 Type-0：也称短语文法，产生式为A-〉B，A和B均包含terminal和nonterminal，表达力最……
+</div>
+<p class=readmore><a href=/post/150904/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/150725/ title=信息的价值与一篇机器学习文章读后感>信息的价值与一篇机器学习文章读后感</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2015年7月25日
+</date>
+<div class=post-content>
+当媒体说互联网带来了知识的普及，这句话并没有全部说对。我一直就疑惑， 虽然互联网上看似能搜索到很多东西，但是有两个问题： 信息是谁放上去的，他出……
+</div>
+<p class=readmore><a href=/post/150725/>阅读全文</a></p>
+</article>
+<ol class=page-navigator>
+<li class=prev>
+<a href=/page/26/>上一页</a>
+</li>
+<li>
+<a href=/>1</a>
+</li>
+<li>
+<span>...</span>
+</li>
+<li>
+<a href=/page/25/>25</a>
+</li>
+<li>
+<a href=/page/26/>26</a>
+</li>
+<li class=current>
+<a href=/page/27/>27</a>
+</li>
+<li>
+<a href=/page/28/>28</a>
+</li>
+<li>
+<a href=/page/29/>29</a>
+</li>
+<li class=next>
+<a href=/page/28/>下一页</a>
+</li>
 </ol>
-
-
-
-
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

@@ -1,253 +1,164 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>表单的请求类型 | 蛙二的思考</title>
-    <meta property="og:title" content="表单的请求类型 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2016-10-19T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2016-10-19T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="表单的请求类型">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/161019/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>表单的请求类型 | 蛙二的思考</title>
+<meta property="og:title" content="表单的请求类型 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-10-19T12:00:00+08:00">
+<meta property="article:modified_time" content="2016-10-19T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="表单的请求类型">
+<meta name=author content>
+<meta property="og:url" content="/post/161019/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">表单的请求类型</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年10月19日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>有很多的文章会讲http协议里，Post和Get的区别，说点我的补充理解。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>表单的请求类型</h1>
+</header>
+<date class="post-meta meta-date">
+2016年10月19日
+</date>
+<div class=post-content>
+<p>有很多的文章会讲http协议里，Post和Get的区别，说点我的补充理解。</p>
 <p>不管是Get或者Post请求，除非是单纯获取信息类请求，总是会带些参数，如果参数有多个，就存在多参数的区分问题。
 Get请求通常只使用Url(注意这只是HTML的用法，不是HTTP的规定)。所以就需要定义规范，在1994年的时候Berners Lee等人制定了RFC1738规范。
-特殊字符用%[0-9A-F]{2}方式转义，使用&amp;来区分多个参数，每个参数再通过=分成key和value。</p>
-<p>所以Get的URL往往像这样：<code>example.com/act.cgi?key1=value1&amp;key2=value2</code>。
+特殊字符用%[0-9A-F]{2}方式转义，使用&来区分多个参数，每个参数再通过=分成key和value。</p>
+<p>所以Get的URL往往像这样：<code>example.com/act.cgi?key1=value1&key2=value2</code>。
 但是Post的请求内容并不在Url中，而是在http协议头之后，这段内容没有规定，只是一段无格式的Buffer。</p>
-<h2 id="applicationx-www-form-urlencoded">Application/x-www-form-urlencoded</h2>
+<h2 id=applicationx-www-form-urlencoded>Application/x-www-form-urlencoded</h2>
 <p>为了解决Post的这个缺失，在http规范里有个Context-Type字段，比如定一个Application/Json，Application/XML等等的格式。
 而html中表单Form元素，使用post method时默认会使用<code>Application/x-www-form-urlencoded</code>格式。
 这个格式命名很好理解，<code>x-</code>表示它是自定义规范，<code>www-form-</code>和HTML的表单能很自然地联系，最后的urlencoded是关键，
-表示它和Get请求在Url中带参数的风格是一样的，也就是用&amp;和=来区分，从而减少开发者的学习成本。如果输入内容包含=或+，也会按urlencoded方式转义，也就意味着内容如果是base64的内容，不需要额外对=进行转码。</p>
+表示它和Get请求在Url中带参数的风格是一样的，也就是用&和=来区分，从而减少开发者的学习成本。如果输入内容包含=或+，也会按urlencoded方式转义，也就意味着内容如果是base64的内容，不需要额外对=进行转码。</p>
 <p>当<code>Content-Type</code>使用了<code>x-www-form-urlencoded</code>时，PHP会把Post内容按上面说的格式来解析，最终赋值给<code>$_POST</code>变量，其它方式不会赋值到<code>$_POST</code>。
-jQuery的post方式也使用HTML的默认格式，在js语言层面看起来写的是json数据，但网络传输时最终把json转化成用<code>=</code>和<code>&amp;</code>分隔的URL方式，
+jQuery的post方式也使用HTML的默认格式，在js语言层面看起来写的是json数据，但网络传输时最终把json转化成用<code>=</code>和<code>&</code>分隔的URL方式，
 到了PHP侧再用<code>$_POST</code>来提取。这个过程中，js/传输/PHP各自用符合自己特性的方式，但最终仍是无疑地进行交互。</p>
-<p>json比urlencoded方式更有表现力的地方在于支持数组，抓包后发现jQuery把数组arr:[1, 2]转换成arr%5B%5D=1&amp;arr%5B%5D=2来发送，
+<p>json比urlencoded方式更有表现力的地方在于支持数组，抓包后发现jQuery把数组arr:[1, 2]转换成arr%5B%5D=1&arr%5B%5D=2来发送，
 相当于服务端依次收到arr[]=1和arr[]=2两个值。至少PHP能够识别这种数组表示法。</p>
-<h2 id="multipartform-data">multipart/form-data</h2>
+<h2 id=multipartform-data>multipart/form-data</h2>
 <p>urlencoded的方式有个不足，就是传输二进制数据的效率非常低，极端情况如果全是不可打印字符的话，数据量会增大3倍。
 如果是传输图片或大文件，Form表单的input使用file类型，enctype要使用<code>multipart/form-data</code>(如果不指定则默认urlencoded方式)。</p>
-<p>multipart表示这个请求有多个部分，每个部分会标记<code>Content-Disposition: form-data; name=&quot;xxx&quot;</code>，如果是file，会额外多出一个filename=&ldquo;file real name&rdquo;。这时二进制数据就不做任何转换地发送到服务器。
+<p>multipart表示这个请求有多个部分，每个部分会标记<code>Content-Disposition: form-data; name="xxx"</code>，如果是file，会额外多出一个filename=&ldquo;file real name&rdquo;。这时二进制数据就不做任何转换地发送到服务器。
 如果有多个二进制数据(即multipart)，就用Boudary来区分。<code>$_POST</code>能解析不带filename的部分，惟独文件不能解析，即使<code>file_get_contents(php://input)</code>方式也不支持(就这一种不支持)，还不知道该怎么读取。</p>
 <p>Get是否支持在body中携带参数？标准没有规定不允许，但是浏览器不支持。为了兼容性考虑，只在URL中带参数是更好的选择。如果真的构造了在body的get请求，可以用原生内容，也可以从<code>$_REQUEST</code>变量读取。但PUT请求时，无法解析，也许是PHP的原因，暂未追究根因。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

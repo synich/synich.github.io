@@ -1,88 +1,58 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>网站项目教训 | 蛙二的思考</title>
-    <meta property="og:title" content="网站项目教训 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2019-04-08T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2019-04-08T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="网站项目教训">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/190408/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>网站项目教训 | 蛙二的思考</title>
+<meta property="og:title" content="网站项目教训 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-04-08T12:00:00+08:00">
+<meta property="article:modified_time" content="2019-04-08T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="网站项目教训">
+<meta name=author content>
+<meta property="og:url" content="/post/190408/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">网站项目教训</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年4月8日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <h2 id="mysql">MySQL</h2>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>网站项目教训</h1>
+</header>
+<date class="post-meta meta-date">
+2019年4月8日
+</date>
+<div class=post-content>
+<h2 id=mysql>MySQL</h2>
 <p>用service 启动MySQL后，会发现进程有两个，mysqld_save和mysqld，save是个shell脚本，做些资源守护。记得开binlog，</p>
 <p>遇到启动不了updating without PID的情况，居然简单地mv /etc/my.cnf /etc/my.cnf.old就解决了。原因是支持无配置文件的启动，用mysqld &ndash;verbose &ndash;help |grep -A 1 &lsquo;Default options&rsquo;察看读取的配置文件。</p>
-<p>本地无法连接，先改配置skip-grant-tables并重启，update mysql.user  set authentication_string=password(&lsquo;newpasswd&rsquo;) where user=&lsquo;root&rsquo;更新密码。事后发现是密码置空所以登陆不进。</p>
+<p>本地无法连接，先改配置skip-grant-tables并重启，update mysql.user set authentication_string=password(&lsquo;newpasswd&rsquo;) where user=&lsquo;root&rsquo;更新密码。事后发现是密码置空所以登陆不进。</p>
 <p>远程无法连接，可能是限制了root的来源，use mysql; select host from user;看是否为localhost，并改为%。改完如果不想重启mysql，执行 flush privileges;相当于刷新权限表。</p>
-<h2 id="nginx">nginx</h2>
+<h2 id=nginx>nginx</h2>
 <p>命令行参数很简洁，要记住。修改配置后用-t验证，重启用-s，而启动前可以用-p, -c, -g指定预加载路径、配置名称和额外的全局变量。</p>
 <p>重定位原理，如果是root配合index指令，浏览器的请求一定要以/结尾，这样才能配合index指令找到文件。可以理解为访问站页，用的就是<code>/</code>路径，返回index.html。</p>
 <p><code>location ~* /js/.*/\.js</code></p>
@@ -96,161 +66,102 @@
 <p>location和proxy_pass配合有个奇怪的特性，路径如果最后带/与否对结果影响很大，比如location /openeco，请求/openeco/user的话，转发后会剥掉匹配部分，实体只会收到/user请求，而location /openeco/，转发就会收到完整的/openeco/user。</p>
 <p>再举个例子，想达到访问首页跳转到某个子文件夹，利用rewrite指令，这条指令的格式是这样</p>
 <ul>
-<li>rewrite  capture-regex  dst-path  flag;  // flag可选，但我试了不填效果不确定，建议填上</li>
+<li>rewrite capture-regex dst-path flag; // flag可选，但我试了不填效果不确定，建议填上</li>
 </ul>
 <p>对flag的选择不同会有少许区别。一种是用redirect或permanent返回给浏览器新地址，由浏览器重新请求，另一种用last或break由nginx在内部完成地址重写。前者适合网站域名迁移，通过HTTP 301/302通知搜索引擎进行域名更新。如果只是网站内的地址重写，最好还是用last或break。要理解这两者的区别，要明白地址重写后，并不会立刻进入下一阶段，而是把重写后的地址，作为源，继续匹配别的location，直到没有可以匹配的时候，才进入下一阶段。break的作用，就是提前终止并立刻进入下一阶段，而last会继续匹配location。感觉last这个叫法不够直观。</p>
 <p>如果是首页重定向，匹配式必须写成<code>^/$</code>，完整匹配根路径，这样下次重新匹配时才不会又匹配上。</p>
 <p>访问限制</p>
 <p>使用allow和deny指令，要注意的是如果只想限制某些IP可以访问，用allow列举了所有可以访问的IP后，要加一句deny all;才行。另外deny all;和allow all;都加上的话，生效的还是deny。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

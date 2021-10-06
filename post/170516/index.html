@@ -1,243 +1,154 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>OpenBSD学习与使用 | 蛙二的思考</title>
-    <meta property="og:title" content="OpenBSD学习与使用 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2017-05-16T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2017-05-16T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="OpenBSD学习与使用">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/170516/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>OpenBSD学习与使用 | 蛙二的思考</title>
+<meta property="og:title" content="OpenBSD学习与使用 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-05-16T12:00:00+08:00">
+<meta property="article:modified_time" content="2017-05-16T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="OpenBSD学习与使用">
+<meta name=author content>
+<meta property="og:url" content="/post/170516/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">OpenBSD学习与使用</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年5月16日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>系统分为内核文件和应用层套件，根目录下放置启动器boot和内核文件bsd，对一些支持多核的芯片，会另有bsd.mp文件，但不清楚此时bsd是否仍必须。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>OpenBSD学习与使用</h1>
+</header>
+<date class="post-meta meta-date">
+2017年5月16日
+</date>
+<div class=post-content>
+<p>系统分为内核文件和应用层套件，根目录下放置启动器boot和内核文件bsd，对一些支持多核的芯片，会另有bsd.mp文件，但不清楚此时bsd是否仍必须。</p>
 <p>用ksh作为默认shell，功能少很多。每个版本升级会带来若干改动，升级换内核前必须做好充分准备工作。</p>
-<h2 id="系统工具">系统工具</h2>
+<h2 id=系统工具>系统工具</h2>
 <ul>
 <li>syspatch 更新系统的应用层套件</li>
 <li>pkg_add 包管理器，修改/etc/installurl可以换源</li>
 </ul>
-<h2 id="ps程序走读">ps程序走读</h2>
+<h2 id=ps程序走读>ps程序走读</h2>
 <p>ps程序要从内核读取进程消息，BSD内核上承SunOS使用了kvm.h，这并不是Linux下的虚拟机，而是kernel virtual memory的意思。是用户态读取内核的交互接口，kvm的一些操作需要root权限，这也是BSD系列的ps和Linux的ps不同的原因。</p>
 <p>大致来说，先用<code>kvm_openfiles</code>打开一个kvm句柄，然后用<code>kvm_getprocs</code>读取内核参数，并返回一个<code>kinfo_proc</code>数组，用qsort对数组进行排序，排序的比较方式有DEFAULT/CPU/MEM三种，内存排序值得说说，<code>kinfo_proc</code>是个非常大的结构，计算内存使用了其中有的tsize/dsize/ssize三个变量，分别表示text/data/stack size，另外还有rssize，即RSS，注释是current resident set size指包括栈和堆在内的占用物理内存。但排序并不把这个值计算在内。显示的时候还有VSZ表示virtual size，但奇怪的是在OpenBSD上，VSZ却比RSS还小。</p>
 <p>ps在检测进程状态有个-t选项，表示只显示与这个tty关联的进程，/dev/下有100多个tty，命名都是/dev/tty开头，这是在paths.h的<code>_PATH_TTY</code>宏来定义，这个文件定义了很多与路径相关的变量，Linux也有，应该是为了让程序跨平台用的。与操作者相关的是ttyp0和ttyp1，另外还有ttyC，ttyc、ttyP、ttyVI等好几个大类的终端。</p>
 <p>另外还有大量的代码都是在处理各种参数，因为ps的参数实在太多了。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

@@ -1,440 +1,303 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-	<meta name="generator" content="Hugo 0.88.1" />
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>蛙二的思考 | </title>
-    <meta property="og:title" content="蛙二的思考 | ">
-    <meta property="og:type" content="website">
-    <meta name="Keywords" content="">
-    <meta name="description" content="">
-    <meta property="og:url" content="/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="/index.xml" title="蛙二的思考" />
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta name=generator content="Hugo 0.88.1">
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>蛙二的思考 | </title>
+<meta property="og:title" content="蛙二的思考 | ">
+<meta property="og:type" content="website">
+<meta name=Keywords content>
+<meta name=description content>
+<meta property="og:url" content="/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<link rel=alternate type=application/rss+xml href=/index.xml title=蛙二的思考>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <h1>
-                        <a id="logo" href="">
-                            蛙二的思考
-                        </a>
-                    </h1>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<h1>
+<a id=logo href>
+蛙二的思考
+</a>
+</h1>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170820/" title="libuv代码走读">libuv代码走读</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月20日
-        </date>
-        
-        <div class="post-content">
-            虽然并不提供Makefile，但通过CMake的脚本很容易就把要编译的文件找到，编译宏只有两个。 uv的核心是loop，加上两个父级的抽象类型……
-        </div>
-        <p class="readmore"><a href="/post/170820/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170818/" title="如何在struct里追加指针">如何在struct里追加指针</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月18日
-        </date>
-        
-        <div class="post-content">
-            这在其它公司或开源项目没有什么用，但至少在我目前的工作上还是有一定价值的。想象一下不同的部门共用同一份头文件，头文件中复杂的类型只能用结构体……
-        </div>
-        <p class="readmore"><a href="/post/170818/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170816/" title="RSA/DSA/EC三种算法记录">RSA/DSA/EC三种算法记录</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月16日
-        </date>
-        
-        <div class="post-content">
-            从Openssl的命令行操作来一探这三种非对称加密的端倪。三者的操作命令并不对称，支持的列表如下 RSA：genrsa/rsa/rsautl D……
-        </div>
-        <p class="readmore"><a href="/post/170816/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170814/" title="重新认识Makefile">重新认识Makefile</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月14日
-        </date>
-        
-        <div class="post-content">
-            不要片面地把Makefile理解成程序编译工具，更广义地说是个基于文件依赖关系的管理工具。可以通过make制定规则、调用shell命令，也可……
-        </div>
-        <p class="readmore"><a href="/post/170814/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170808/" title="flex和bison的理解">flex和bison的理解</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月8日
-        </date>
-        
-        <div class="post-content">
-            这两个工具是编译理论都会介绍的经典工具，分别用于词法和语法分析。词法比较简单，虽然有NFA和DFA的区分，但总的来说就是把原子的字符按规则合……
-        </div>
-        <p class="readmore"><a href="/post/170808/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170806/" title="区块链的运行机制">区块链的运行机制</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月6日
-        </date>
-        
-        <div class="post-content">
-            区域链本质上是一种由交易驱动的，由共识确认并跃迁的状态机。区块链由区块以单向链表方式连接，并利用哈希的特性保证了数据的不可篡改性。 交易可以是……
-        </div>
-        <p class="readmore"><a href="/post/170806/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170802/" title="英语的谓语、表语和动词">英语的谓语、表语和动词</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月2日
-        </date>
-        
-        <div class="post-content">
-            英语五大基本句型和人类历史发展史是完全一样的 主谓就是一个男人和一个女人； 主谓宾就是一个男人和一个女人生个孩子； 一个孩子太寂寞再生一个就是主谓……
-        </div>
-        <p class="readmore"><a href="/post/170802/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170730/" title="如何更好地思考">如何更好地思考</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年7月30日
-        </date>
-        
-        <div class="post-content">
-            这个题目很大，慢慢补充。要学会正确地思考，不被欺骗(不被收智商税)，就一定要提升自己的认知能力。大脑是一切认知的根源，所以必须先从理解这个部……
-        </div>
-        <p class="readmore"><a href="/post/170730/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170728/" title="wren语言记录">wren语言记录</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年7月28日
-        </date>
-        
-        <div class="post-content">
-            一门很小且很快的语言，EOS的作者BM对wren语言非常推崇，并整合到EOS中。 下载源码后先到src目录下看看wren的代码结构。目录结构很……
-        </div>
-        <p class="readmore"><a href="/post/170728/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170707/" title="使用xapian和scws进行全文检索">使用xapian和scws进行全文检索</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年7月7日
-        </date>
-        
-        <div class="post-content">
-            中文的全文检索最难的是分词，暂时只有scws结合xapian能跑起来。scws是个分词库，用在生成倒排索引阶段，建立索引和查询还是要利用xa……
-        </div>
-        <p class="readmore"><a href="/post/170707/">阅读全文</a></p>
-    </article>
-    
-    
-
-
-
-<ol class="page-navigator">
-    
-    <li class="prev">
-        <a href="/page/17/">上一页</a>
-    </li>
-    
-
-    
-
-    
-        
-        
-    
-    
-
-    
-        
-        
-        <li >
-            <a href="/">1</a>
-        </li>
-        
-    
-        
-        <li>
-            <span>...</span>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/16/">16</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/17/">17</a>
-        </li>
-        
-    
-        
-        
-        <li  class="current">
-            <a href="/page/18/">18</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/19/">19</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/20/">20</a>
-        </li>
-        
-    
-        
-        <li>
-            <span>...</span>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/page/29/">29</a>
-        </li>
-        
-    
-
-    
-    
-
-    <li class="next">
-        <a href="/page/19/">下一页</a>
-    </li>
-    
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170820/ title=libuv代码走读>libuv代码走读</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月20日
+</date>
+<div class=post-content>
+虽然并不提供Makefile，但通过CMake的脚本很容易就把要编译的文件找到，编译宏只有两个。 uv的核心是loop，加上两个父级的抽象类型……
+</div>
+<p class=readmore><a href=/post/170820/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170818/ title=如何在struct里追加指针>如何在struct里追加指针</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月18日
+</date>
+<div class=post-content>
+这在其它公司或开源项目没有什么用，但至少在我目前的工作上还是有一定价值的。想象一下不同的部门共用同一份头文件，头文件中复杂的类型只能用结构体……
+</div>
+<p class=readmore><a href=/post/170818/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170816/ title=RSA/DSA/EC三种算法记录>RSA/DSA/EC三种算法记录</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月16日
+</date>
+<div class=post-content>
+从Openssl的命令行操作来一探这三种非对称加密的端倪。三者的操作命令并不对称，支持的列表如下 RSA：genrsa/rsa/rsautl D……
+</div>
+<p class=readmore><a href=/post/170816/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170814/ title=重新认识Makefile>重新认识Makefile</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月14日
+</date>
+<div class=post-content>
+不要片面地把Makefile理解成程序编译工具，更广义地说是个基于文件依赖关系的管理工具。可以通过make制定规则、调用shell命令，也可……
+</div>
+<p class=readmore><a href=/post/170814/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170808/ title=flex和bison的理解>flex和bison的理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月8日
+</date>
+<div class=post-content>
+这两个工具是编译理论都会介绍的经典工具，分别用于词法和语法分析。词法比较简单，虽然有NFA和DFA的区分，但总的来说就是把原子的字符按规则合……
+</div>
+<p class=readmore><a href=/post/170808/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170806/ title=区块链的运行机制>区块链的运行机制</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月6日
+</date>
+<div class=post-content>
+区域链本质上是一种由交易驱动的，由共识确认并跃迁的状态机。区块链由区块以单向链表方式连接，并利用哈希的特性保证了数据的不可篡改性。 交易可以是……
+</div>
+<p class=readmore><a href=/post/170806/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170802/ title=英语的谓语、表语和动词>英语的谓语、表语和动词</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月2日
+</date>
+<div class=post-content>
+英语五大基本句型和人类历史发展史是完全一样的 主谓就是一个男人和一个女人； 主谓宾就是一个男人和一个女人生个孩子； 一个孩子太寂寞再生一个就是主谓……
+</div>
+<p class=readmore><a href=/post/170802/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170730/ title=如何更好地思考>如何更好地思考</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年7月30日
+</date>
+<div class=post-content>
+这个题目很大，慢慢补充。要学会正确地思考，不被欺骗(不被收智商税)，就一定要提升自己的认知能力。大脑是一切认知的根源，所以必须先从理解这个部……
+</div>
+<p class=readmore><a href=/post/170730/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170728/ title=wren语言记录>wren语言记录</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年7月28日
+</date>
+<div class=post-content>
+一门很小且很快的语言，EOS的作者BM对wren语言非常推崇，并整合到EOS中。 下载源码后先到src目录下看看wren的代码结构。目录结构很……
+</div>
+<p class=readmore><a href=/post/170728/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170707/ title=使用xapian和scws进行全文检索>使用xapian和scws进行全文检索</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年7月7日
+</date>
+<div class=post-content>
+中文的全文检索最难的是分词，暂时只有scws结合xapian能跑起来。scws是个分词库，用在生成倒排索引阶段，建立索引和查询还是要利用xa……
+</div>
+<p class=readmore><a href=/post/170707/>阅读全文</a></p>
+</article>
+<ol class=page-navigator>
+<li class=prev>
+<a href=/page/17/>上一页</a>
+</li>
+<li>
+<a href=/>1</a>
+</li>
+<li>
+<span>...</span>
+</li>
+<li>
+<a href=/page/16/>16</a>
+</li>
+<li>
+<a href=/page/17/>17</a>
+</li>
+<li class=current>
+<a href=/page/18/>18</a>
+</li>
+<li>
+<a href=/page/19/>19</a>
+</li>
+<li>
+<a href=/page/20/>20</a>
+</li>
+<li>
+<span>...</span>
+</li>
+<li>
+<a href=/page/29/>29</a>
+</li>
+<li class=next>
+<a href=/page/19/>下一页</a>
+</li>
 </ol>
-
-
-
-
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

@@ -1,91 +1,61 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>不可打印字符与转义序列 | 蛙二的思考</title>
-    <meta property="og:title" content="不可打印字符与转义序列 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2020-04-11T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2020-04-11T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="不可打印字符与转义序列">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/200411/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>不可打印字符与转义序列 | 蛙二的思考</title>
+<meta property="og:title" content="不可打印字符与转义序列 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-04-11T12:00:00+08:00">
+<meta property="article:modified_time" content="2020-04-11T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="不可打印字符与转义序列">
+<meta name=author content>
+<meta property="og:url" content="/post/200411/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">不可打印字符与转义序列</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年4月11日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>plan9的老人们建过一个网站cat-v.org，影射cat命令加上-v选项是邪恶的。这个选项的作用是把不可打印的控制字符显示出来，低128用^，高128用M-前缀，在一些终端类软件上会用到这些符号。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>不可打印字符与转义序列</h1>
+</header>
+<date class="post-meta meta-date">
+2020年4月11日
+</date>
+<div class=post-content>
+<p>plan9的老人们建过一个网站cat-v.org，影射cat命令加上-v选项是邪恶的。这个选项的作用是把不可打印的控制字符显示出来，低128用^，高128用M-前缀，在一些终端类软件上会用到这些符号。</p>
 <p>ASCII的编码0到31，0对应^@，接下来是^A-^Z，从27到31依次是<code>[\]^_</code>，127是^?。从128开始，显示的时候前面会有M-前缀，比如128对应0，显示为M-^@，依此类推。而从160开始，对位字符是可打印字符，在前面加上M-，比如33是!，则161显示为M-!。</p>
 <p>用cat -v显示的话，制表符和回车不会按^I和^J显示，要分别用-T和-E选项，-T会把Tab显示为^I，而-E会把回车显示为$，且实际上也会另起新行。用-A则是结合了vET这三个选项，显示所有不可打印字符。</p>
 <p>题外话：按下键盘上的回车键，相当于按下Ctrl+M，而Tab键则相当于Ctrl+I键。在bash中用bind -P查看按键映射，会发现自动补全的按键序列只显示Ctrl+I，一旦把Ctrl+I映射成其它功能，Tab键的功能也就跟着变了。</p>
-<h2 id="ascii码中不可打印字符">ASCII码中不可打印字符</h2>
+<h2 id=ascii码中不可打印字符>ASCII码中不可打印字符</h2>
 <p>偶然间看OpenBSD开发的mandoc.db格式，提到用了3种格式，32位int和NUL结尾字符串都很普通，但第3种字符串列表的表述<code>lists of NUL-terminated strings, terminated by a second NUL character</code>，0是NUL，second NUL查看了ASCII表，对应的是2，含义是start of text。</p>
 <p>ASCII的前32个是控制字符，用在电传打字时代，来看看相近的几个描述，1-SOH(start of headling), 2-STX(start of text), 3-ETX(end of text), 4-EOT(end of transmission)。可以看到1开始文章标题，然后是2文章正文，3文章结尾，到4结束传输之间可能还有些附录、索引要添加。包括其它的请求应答、回车制表换行等，不可打印字符在文章结构划分、控制版式上是有实实在在的作用的。</p>
-<h2 id="转义序列">转义序列</h2>
-<p>开发出Unix最早版本的PDP系统，既没有光标也没有删除，更没有上下左右键，有兴趣的可以体验<a href="http://pdp11.aiju.de/">模拟器</a>。更友好的显示肯定是刚需，于是各厂商就开发各种转义协议，让屏幕出现光标、重绘、颜色等特性，起初厂商间各自为战，好在美国人向来有搞标准的习惯，1978年的VT100便是符合这个标准最初的成功样本。</p>
+<h2 id=转义序列>转义序列</h2>
+<p>开发出Unix最早版本的PDP系统，既没有光标也没有删除，更没有上下左右键，有兴趣的可以体验<a href=http://pdp11.aiju.de/>模拟器</a>。更友好的显示肯定是刚需，于是各厂商就开发各种转义协议，让屏幕出现光标、重绘、颜色等特性，起初厂商间各自为战，好在美国人向来有搞标准的习惯，1978年的VT100便是符合这个标准最初的成功样本。</p>
 <p>规范规定，转义序列在带内传输，序列总长度不固定，但必须以ESC开头，后面再跟0x40-0x5F字符(<code>@A–Z[\]^_</code>)。比较常见的有</p>
 <ul>
 <li>\033[ 终端显示色彩用的就是这个命令</li>
@@ -94,155 +64,96 @@
 <li>\033\ 字符串终止，可以用于APC的结束</li>
 </ul>
 <p>最早的颜色序列只有3位，共8种颜色，加上粗体被实现为亮色，只有4位。后来又逐步扩展出8位，而libvte库更是支持24位颜色(需要依赖X11，比如xterm等图形界面)。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

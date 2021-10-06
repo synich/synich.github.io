@@ -1,440 +1,292 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>Posts | 蛙二的思考</title>
-    <meta property="og:title" content="Posts - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Posts">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="/post/index.xml" title="蛙二的思考" />
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Posts | 蛙二的思考</title>
+<meta property="og:title" content="Posts - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta name=Keywords content>
+<meta name=description content="Posts">
+<meta name=author content>
+<meta property="og:url" content="/post/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<link rel=alternate type=application/rss+xml href=/post/index.xml title=蛙二的思考>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210211/" title="线程模型与调度">线程模型与调度</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年2月11日
-        </date>
-        
-        <div class="post-content">
-            共有3种线程模型，以x:y命名，即x个用户线程对应y个内核调度实体(Kernel Scheduling Entity，这个是内核分配CPU的对象单位)。 多对一(M……
-        </div>
-        <p class="readmore"><a href="/post/210211/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210205/" title="Linux的权限与sudo辨析">Linux的权限与sudo辨析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年2月5日
-        </date>
-        
-        <div class="post-content">
-            组 id命令显示gid和groups输出，原因是每个用户只有一个初始组，但会加入多个组。当只有一个组时，这两个输出相同，加入多组就能看到区别。……
-        </div>
-        <p class="readmore"><a href="/post/210205/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210202/" title="防火墙与iptables">防火墙与iptables</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年2月2日
-        </date>
-        
-        <div class="post-content">
-            至少要两块网卡分别控制流进和流出，才能实现完整的防火功能，即使是纯软防火墙也要两张卡。 Linux中起防火墙作用的是Netfilter，而ip……
-        </div>
-        <p class="readmore"><a href="/post/210202/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210129/" title="mount和文件路径改写">mount和文件路径改写</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年1月29日
-        </date>
-        
-        <div class="post-content">
-            mount的参数很多，关键概念就是将device挂到mountpoint。其它的参数是因为device必然涉及很多控制选项。 有两个重要的关联……
-        </div>
-        <p class="readmore"><a href="/post/210129/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210120/" title="网络代理概念与区别">网络代理概念与区别</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年1月20日
-        </date>
-        
-        <div class="post-content">
-            模式 全局模式 所有连接全从指定的端口转发出去，简单却不灵活 PAC模式，全称代理自动配置，由网景公司在1996年在2.0版本的navigator……
-        </div>
-        <p class="readmore"><a href="/post/210120/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/210106/" title="多核CPU之间的异同">多核CPU之间的异同</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年1月6日
-        </date>
-        
-        <div class="post-content">
-            Power是标准的SMP架构，而X86则是NUMA。由于SMP访问内存速度一致，因此Power可以轻松上16socket，而NUMA对内存区……
-        </div>
-        <p class="readmore"><a href="/post/210106/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/201225/" title="vim的自动补全">vim的自动补全</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年12月25日
-        </date>
-        
-        <div class="post-content">
-            自动补全有15种模式（:help ins-completion）。其中有两种的补全列表内容与另外两种相同，只是排序不同 文字编辑用的 3 种: K 模式……
-        </div>
-        <p class="readmore"><a href="/post/201225/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/201101/" title="二三层网络和MAC地址">二三层网络和MAC地址</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年11月1日
-        </date>
-        
-        <div class="post-content">
-            根据OSI的七层模型，二层协议包含PPP、ARP，而三层包含IP、IGMP。 不同网段（子网）的ip通信，需要经过三层网络。相同网段的ip通信……
-        </div>
-        <p class="readmore"><a href="/post/201101/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/201009/" title="shell的历史和流派">shell的历史和流派</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年10月9日
-        </date>
-        
-        <div class="post-content">
-            源起Bourne 最初unix系统用的是ken thompson写的shell，不过这个只在贝尔实验室内部用，最早广泛流行的version 7 un……
-        </div>
-        <p class="readmore"><a href="/post/201009/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/200925/" title="python点滴记录">python点滴记录</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年9月25日
-        </date>
-        
-        <div class="post-content">
-            多线程 拜臭名昭著的GIL所赐，多线程只在IO密集场景下有一战之力。即便只能用到一个核，锁还是必须的，但这个锁和OS的锁不同，是语言级别的锁，……
-        </div>
-        <p class="readmore"><a href="/post/200925/">阅读全文</a></p>
-    </article>
-    
-    
-    
-
-
-
-<ol class="page-navigator">
-    
-    <li class="prev">
-        <a href="/post/">上一页</a>
-    </li>
-    
-
-    
-
-    
-        
-    
-    
-
-    
-        
-        
-        <li >
-            <a href="/post/">1</a>
-        </li>
-        
-    
-        
-        
-        <li  class="current">
-            <a href="/post/page/2/">2</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/3/">3</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/4/">4</a>
-        </li>
-        
-    
-        
-        <li>
-            <span>...</span>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/29/">29</a>
-        </li>
-        
-    
-
-    
-    
-
-    <li class="next">
-        <a href="/post/page/3/">下一页</a>
-    </li>
-    
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210211/ title=线程模型与调度>线程模型与调度</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年2月11日
+</date>
+<div class=post-content>
+共有3种线程模型，以x:y命名，即x个用户线程对应y个内核调度实体(Kernel Scheduling Entity，这个是内核分配CPU的对象单位)。 多对一(M……
+</div>
+<p class=readmore><a href=/post/210211/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210205/ title=Linux的权限与sudo辨析>Linux的权限与sudo辨析</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年2月5日
+</date>
+<div class=post-content>
+组 id命令显示gid和groups输出，原因是每个用户只有一个初始组，但会加入多个组。当只有一个组时，这两个输出相同，加入多组就能看到区别。……
+</div>
+<p class=readmore><a href=/post/210205/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210202/ title=防火墙与iptables>防火墙与iptables</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年2月2日
+</date>
+<div class=post-content>
+至少要两块网卡分别控制流进和流出，才能实现完整的防火功能，即使是纯软防火墙也要两张卡。 Linux中起防火墙作用的是Netfilter，而ip……
+</div>
+<p class=readmore><a href=/post/210202/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210129/ title=mount和文件路径改写>mount和文件路径改写</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年1月29日
+</date>
+<div class=post-content>
+mount的参数很多，关键概念就是将device挂到mountpoint。其它的参数是因为device必然涉及很多控制选项。 有两个重要的关联……
+</div>
+<p class=readmore><a href=/post/210129/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210120/ title=网络代理概念与区别>网络代理概念与区别</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年1月20日
+</date>
+<div class=post-content>
+模式 全局模式 所有连接全从指定的端口转发出去，简单却不灵活 PAC模式，全称代理自动配置，由网景公司在1996年在2.0版本的navigator……
+</div>
+<p class=readmore><a href=/post/210120/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210106/ title=多核CPU之间的异同>多核CPU之间的异同</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年1月6日
+</date>
+<div class=post-content>
+Power是标准的SMP架构，而X86则是NUMA。由于SMP访问内存速度一致，因此Power可以轻松上16socket，而NUMA对内存区……
+</div>
+<p class=readmore><a href=/post/210106/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/201225/ title=vim的自动补全>vim的自动补全</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年12月25日
+</date>
+<div class=post-content>
+自动补全有15种模式（:help ins-completion）。其中有两种的补全列表内容与另外两种相同，只是排序不同 文字编辑用的 3 种: K 模式……
+</div>
+<p class=readmore><a href=/post/201225/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/201101/ title=二三层网络和MAC地址>二三层网络和MAC地址</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年11月1日
+</date>
+<div class=post-content>
+根据OSI的七层模型，二层协议包含PPP、ARP，而三层包含IP、IGMP。 不同网段（子网）的ip通信，需要经过三层网络。相同网段的ip通信……
+</div>
+<p class=readmore><a href=/post/201101/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/201009/ title=shell的历史和流派>shell的历史和流派</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年10月9日
+</date>
+<div class=post-content>
+源起Bourne 最初unix系统用的是ken thompson写的shell，不过这个只在贝尔实验室内部用，最早广泛流行的version 7 un……
+</div>
+<p class=readmore><a href=/post/201009/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/200925/ title=python点滴记录>python点滴记录</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年9月25日
+</date>
+<div class=post-content>
+多线程 拜臭名昭著的GIL所赐，多线程只在IO密集场景下有一战之力。即便只能用到一个核，锁还是必须的，但这个锁和OS的锁不同，是语言级别的锁，……
+</div>
+<p class=readmore><a href=/post/200925/>阅读全文</a></p>
+</article>
+<ol class=page-navigator>
+<li class=prev>
+<a href=/post/>上一页</a>
+</li>
+<li>
+<a href=/post/>1</a>
+</li>
+<li class=current>
+<a href=/post/page/2/>2</a>
+</li>
+<li>
+<a href=/post/page/3/>3</a>
+</li>
+<li>
+<a href=/post/page/4/>4</a>
+</li>
+<li>
+<span>...</span>
+</li>
+<li>
+<a href=/post/page/29/>29</a>
+</li>
+<li class=next>
+<a href=/post/page/3/>下一页</a>
+</li>
 </ol>
-
-
-
-
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

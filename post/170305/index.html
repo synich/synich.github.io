@@ -1,84 +1,54 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>系统性能分析的理解 | 蛙二的思考</title>
-    <meta property="og:title" content="系统性能分析的理解 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2017-03-05T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2017-03-05T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="系统性能分析的理解">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/170305/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>系统性能分析的理解 | 蛙二的思考</title>
+<meta property="og:title" content="系统性能分析的理解 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-03-05T12:00:00+08:00">
+<meta property="article:modified_time" content="2017-03-05T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="系统性能分析的理解">
+<meta name=author content>
+<meta property="og:url" content="/post/170305/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">系统性能分析的理解</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年3月5日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>曾经以为性能分析一定要用看起来很高深的工具，实际上重点还是在于对系统各个方面的理解。对《性能之巅》观测指标做个分类，分为软件和硬件，软件类包含操作系统、文件系统和进程，而硬件包含CPU、内存、磁盘和网络。</p>
-<h2 id="进程状态">进程状态</h2>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>系统性能分析的理解</h1>
+</header>
+<date class="post-meta meta-date">
+2017年3月5日
+</date>
+<div class=post-content>
+<p>曾经以为性能分析一定要用看起来很高深的工具，实际上重点还是在于对系统各个方面的理解。对《性能之巅》观测指标做个分类，分为软件和硬件，软件类包含操作系统、文件系统和进程，而硬件包含CPU、内存、磁盘和网络。</p>
+<h2 id=进程状态>进程状态</h2>
 <p>ps会显示多种状态</p>
 <ul>
 <li>S 可中断睡眠，可以被外部信号或内核唤醒，比如网络等待</li>
@@ -92,9 +62,9 @@
 <li>l 多线程</li>
 <li>+ 前台进程组，不理解，似乎不重要</li>
 </ul>
-<h2 id="cpu">CPU</h2>
+<h2 id=cpu>CPU</h2>
 <p>最粗略的观察通过uptime和top，看变化趋势和整体分布，到了进程环节，就要观察usr/sys的占用，上下文切换，iowait等。</p>
-<h2 id="内存">内存</h2>
+<h2 id=内存>内存</h2>
 <p>内存首先分为物理内存和虚拟内存（swap分区）。</p>
 <p>内存有cache和buffer。buffer对应block device，比如文件系统的MetaData，量并不大，知道就好不用太关注。</p>
 <p>cache比较重要，它表示程序曾经往Disk写入的数据，除非系统判断内存不足，不会去清理cache，所以经常看起来很大，但不必担心。</p>
@@ -129,169 +99,110 @@
 <p>跟踪方式：又叫事件，系统级典型如perf/systemtap，进程级有strace/gdb，基于系统事件方式的采样。找到哪个环节出问题，针对性的采集数据。Perf是Linux内核自带的性能监测工具，自2.6.31版开始引入所以发行版都会带这个功能。它配合内核的<code>perf_events_open</code>接口(也是perf惟一的接口)使用。而systemtap更像是CentOS专门的工具，默认不带要另外安装。</p>
 </li>
 </ul>
-<h2 id="计数器方式">计数器方式</h2>
+<h2 id=计数器方式>计数器方式</h2>
 <p>计数器方式可以很快地看出系统的负载，最复杂的命令是sar，用sar -A可以看到所有数据，底层有sadc(采集数据)和sadf(输出格式化数据)支持。再说几个工具的特性。</p>
 <p>iostat可以监视IO(-d)和CPU(-c)，类似的top命令观测CPU时也有iowait指标，也体现了IO的度量，IO不仅受磁盘影响，也会影响CPU的使用率。</p>
 <p>pidstat从名字可以看出，用于找出问题出在哪个进程，指标包括IO，内存缺页，栈的使用大小。</p>
-<h2 id="跟踪方式">跟踪方式</h2>
+<h2 id=跟踪方式>跟踪方式</h2>
 <p>2.5版本出了ftrace，这是个特性，没有ftrace文件，只有切换到root（sudo不行！）并进入/sys/kernel/debug/tracing/目录，并修改一些文件才能打开跟踪。但这种方式显然不友好，就有了trace-cmd文件。到了2.6版本出现了perf，因为ftrace只管抓trace数据并没有分析，perf在trace数据分析方面做出了很多成果。在trace数据采集方面，perf复用了ftrace的所有插桩点，并且加入了采样法(硬件PMU)。PMU是一种非常重要的数据采集方法，因为它大部分是硬件的，所以可以做到一些软件做不到的事情，获取到一些底层硬件的信息。</p>
 <blockquote>
 <p>PMU是什么：像L1 cache失效、分支预测失败等几种处理器特性对软件的性能有很大的影响，然而依赖时钟进行定期采样的 profiler 模式无法揭示程序对这些处理器硬件特性的使用情况。处理器厂商针对这种情况，在硬件中加入了 PMU 单元，即 performance monitor unit。PMU 允许软件针对某种硬件事件设置 counter，此后处理器便开始统计该事件的发生次数，当发生的次数超过 counter 内设置的值后，便产生中断。比如 cache miss 达到某个值后，PMU 便能产生相应的中断。捕获这些中断，便可以考察程序对这些硬件特性的利用效率了。</p>
 </blockquote>
-<p>BPF源于1992年的Berkeley Packet Filter论文，触发Linux社区在97年也跟进并实现了Linux Socket Filter机制，但长久以来只有tcpdump这个应用。BPF原理如下图。经网卡驱动层的报文在上报给协议栈的同时会多出一路来传送给BPF，再经后者过滤后最终拷贝给用户态的应用。除开tcpdump，当时的 RARP 协议也可以利用 BPF 工作(Linux 2.2  起，内核开始提供 rarp 功能，因此如今的 RARP 已经不再需要 BPF 了)</p>
+<p>BPF源于1992年的Berkeley Packet Filter论文，触发Linux社区在97年也跟进并实现了Linux Socket Filter机制，但长久以来只有tcpdump这个应用。BPF原理如下图。经网卡驱动层的报文在上报给协议栈的同时会多出一路来传送给BPF，再经后者过滤后最终拷贝给用户态的应用。除开tcpdump，当时的 RARP 协议也可以利用 BPF 工作(Linux 2.2 起，内核开始提供 rarp 功能，因此如今的 RARP 已经不再需要 BPF 了)</p>
 <p>
-        <img class="mx-auto" alt="bpf-germ" src="/img/bpf-germ.jpg" />   
-    </p>
+<img class=mx-auto alt=bpf-germ src=/img/bpf-germ.jpg>
+</p>
 <p>其中的filter是类似汇编码的指令，为了防止注入，对BPF的指令做了很多数量和长度的限制。由于内核态开销大，3.x时代出现了JIT for BPF，2013年对BPF做了彻底重写，命名为eBPF，最终在3.17时代进化出全新的eBPF，并持续发展了seccomp、XDP、traffic control等机制。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

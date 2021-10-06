@@ -1,85 +1,55 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>Url Rewrite和PHP路由的初步认识 | 蛙二的思考</title>
-    <meta property="og:title" content="Url Rewrite和PHP路由的初步认识 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2016-05-22T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2016-05-22T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Url Rewrite和PHP路由的初步认识">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/160522/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Url Rewrite和PHP路由的初步认识 | 蛙二的思考</title>
+<meta property="og:title" content="Url Rewrite和PHP路由的初步认识 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-05-22T12:00:00+08:00">
+<meta property="article:modified_time" content="2016-05-22T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="Url Rewrite和PHP路由的初步认识">
+<meta name=author content>
+<meta property="og:url" content="/post/160522/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">Url Rewrite和PHP路由的初步认识</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年5月22日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>使用PHP开发网站，最基本的做法是将Url路径指向某个php页面，然后通过GET或POST方法向这个页面传递参数来实现。如果是GET方式，Url通常是这样(POST因为Url上看不出什么，不在本篇讨论之列)：</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>Url Rewrite和PHP路由的初步认识</h1>
+</header>
+<date class="post-meta meta-date">
+2016年5月22日
+</date>
+<div class=post-content>
+<p>使用PHP开发网站，最基本的做法是将Url路径指向某个php页面，然后通过GET或POST方法向这个页面传递参数来实现。如果是GET方式，Url通常是这样(POST因为Url上看不出什么，不在本篇讨论之列)：</p>
 <ul>
-<li>web.site/index.php?key1=value1&amp;key2=value2</li>
+<li>web.site/index.php?key1=value1&key2=value2</li>
 </ul>
 <p>这种风格比较基本，但存在一些问题：</p>
 <ol>
@@ -101,165 +71,106 @@ Apache还可以在每个目录下通过.htaccess文件进行自定义，也更�
 经过这一步，请求就进到PHP的处理领域了。这个index.php并不是通常意义上包含内容的首页，而是一个动态分发器。
 先把Url进行分解，这里你可以自定义分割符，最传统的是'/'，当然也可以用一些古怪的符号，不过我不建议这么做，毕竟会造成理解上的困难。
 如果有些虚拟服务商不允许改写web server的配置，也可以手动地使用index.php/key/value/param的Url风格。</p>
-<h2 id="超小型框架cephp的实现">超小型框架CEPHP的实现</h2>
+<h2 id=超小型框架cephp的实现>超小型框架CEPHP的实现</h2>
 <p>把Url分解成数组后，CEPHP的做法比较死板，取数组的[0]为class名，[1]为method名，后面的就做为参数传递给method了。做了这样的转换，后续就可以对数组如何创建对象做些重定向。</p>
-<p>通过Url得到class名，接下来的关键是如何实例化这个class。直接new一定会提示找不到类定义，就必须依赖语言的动态特性。这里岔开提一句，从表达力上来说比较公认的是Lisp &gt; Ruby == Python &gt; PHP。PHP在灵活性上能和Ruby比肩的也只有OO方面，而函数级别的魔性还是远不如Ruby的。</p>
+<p>通过Url得到class名，接下来的关键是如何实例化这个class。直接new一定会提示找不到类定义，就必须依赖语言的动态特性。这里岔开提一句，从表达力上来说比较公认的是Lisp > Ruby == Python > PHP。PHP在灵活性上能和Ruby比肩的也只有OO方面，而函数级别的魔性还是远不如Ruby的。</p>
 <p>PHP5支持<code>__autoload</code>函数，随后的SPL又定义了6个<code>spl_autoload</code>开头的函数，其中<code>spl_autoload_register</code>且于替代<code>__autoload</code>。它能接受一个string表示的函数名，在new的时候使用register的函数去寻找类的定义。除此之外用define给<code>CLASS_DIR</code>赋值，再配合<code>spl_autoload_extensions</code>也能正常地工作。</p>
 <p>说完了类，再说method。PHP的类支持包括<code>__construct</code>/<code>__call</code>在内的多种魔术方法。比如实现了<code>__call</code>方法，如果调用的方法不存在，就会fallback到<code>__call</code>的实现，然后根据第一个入参即方法名，可以决定要如何处理这个请求。这个特性在Ruby称为<code>method_missing()</code>方法。
 想像一下通过这个特性，像getByName、getById、getByAge这三种Url就可以只实现一个getBy方法，然后把Name、Id、Age作为参数传递到getBy方法中，非常简洁。</p>
-<h2 id="yxcms的路由实现">YXcms的路由实现</h2>
-<p>基于CanPHP的二次开发系统，路径使用index.php?r=default/column/index&amp;col=demoshow风格，估计是为解决在虚拟主机上无法直接配置的缘故，方便一些小企业。index.php入口首先reqiure了protected/core.php并执行run函数。按顺序最关键的两个函数urlRoute和autoload。</p>
-<p>urlRoute将<code>$_REQUEST['r']</code>拆分成app/controller/action三级并用define函数保存，如果没有则分别赋予默认值default/index/index。app似乎是区分Mobile或PC。接着注入的autoload，定义一个array，其中包含9条类名到文件路径的映射。用foreach逐一匹配，一旦匹配就加载这个文件。为什么要设置这么多路径？一方面不会把所有的类放在同一个目录下，另一方面由于是二次开发系统，要保留原有框架的autoload机制，用多路径逐条匹配就成了很好的选择。最后用controller拼接上&quot;Controller&quot;作为类名，通过<code>class_exists</code>判断是否存在，存在则构造对象并调用action方法。默认的首页路径映射到indexController.php，它又层层继承向上5次才能找到根类，每次类声明时的extends语句，同样会触发autoload。</p>
+<h2 id=yxcms的路由实现>YXcms的路由实现</h2>
+<p>基于CanPHP的二次开发系统，路径使用index.php?r=default/column/index&col=demoshow风格，估计是为解决在虚拟主机上无法直接配置的缘故，方便一些小企业。index.php入口首先reqiure了protected/core.php并执行run函数。按顺序最关键的两个函数urlRoute和autoload。</p>
+<p>urlRoute将<code>$_REQUEST['r']</code>拆分成app/controller/action三级并用define函数保存，如果没有则分别赋予默认值default/index/index。app似乎是区分Mobile或PC。接着注入的autoload，定义一个array，其中包含9条类名到文件路径的映射。用foreach逐一匹配，一旦匹配就加载这个文件。为什么要设置这么多路径？一方面不会把所有的类放在同一个目录下，另一方面由于是二次开发系统，要保留原有框架的autoload机制，用多路径逐条匹配就成了很好的选择。最后用controller拼接上"Controller"作为类名，通过<code>class_exists</code>判断是否存在，存在则构造对象并调用action方法。默认的首页路径映射到indexController.php，它又层层继承向上5次才能找到根类，每次类声明时的extends语句，同样会触发autoload。</p>
 <p>默认的controller动作是display，需要用于模板引擎的知识，暂时放一放，从构造函数跟踪进去发现又new了baseModel类，最终使用了CanPHP的cpModel类。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

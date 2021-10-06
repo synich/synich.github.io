@@ -1,88 +1,58 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>PHP与Web服务器的集成方式 | 蛙二的思考</title>
-    <meta property="og:title" content="PHP与Web服务器的集成方式 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2016-06-11T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2016-06-11T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="PHP与Web服务器的集成方式">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/160611/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>PHP与Web服务器的集成方式 | 蛙二的思考</title>
+<meta property="og:title" content="PHP与Web服务器的集成方式 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-06-11T12:00:00+08:00">
+<meta property="article:modified_time" content="2016-06-11T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="PHP与Web服务器的集成方式">
+<meta name=author content>
+<meta property="og:url" content="/post/160611/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">PHP与Web服务器的集成方式</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年6月11日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>PHP是一种宿主语言，即它主要的应用方式是寄宿在其它程序内的。
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>PHP与Web服务器的集成方式</h1>
+</header>
+<date class="post-meta meta-date">
+2016年6月11日
+</date>
+<div class=post-content>
+<p>PHP是一种宿主语言，即它主要的应用方式是寄宿在其它程序内的。
 最直观的理解就是作为动态网页的开发语言，监听HTTP请求并不在PHP
 之内做，一般是由Web服务器(如Apache或Nginx)完成，当检测到是一个
 动态网页的请求，比如Url的后缀是.php，则把请求转给PHP程序，由它来
 处理后续的工作。</p>
-<p>在Windows上个人觉得比较好的集成工具是<a href="http://www.phpstudy.net">PhpStudy</a>，
+<p>在Windows上个人觉得比较好的集成工具是<a href=http://www.phpstudy.net>PhpStudy</a>，
 集成了Apache/Nginx/Lighttpd等多种服务器(最新的2016版把Lighttpd去掉了)，
 而且支持多种PHP版本，就以PhpStudy安装后为例，说说两者的集成方式。</p>
 <p>先说Apache，官方标准的方式有三种，经常用到的有两种(CGI基本用不到，完全
@@ -101,7 +71,7 @@ module更像是个桥接器，真正的任务还是要通过PHP来完成，
 因此和LoadModule配套，还要用LoadFile指令载入php5.dll，负责真正的PHP执行代码。
 另外PHP5.2版本，还通过LoadFile载入了libmysql.dll。也许是PHP和MySQL没有打通吧。
 如果module载入成功，通过</p>
-<p><code>PHPIniDir &quot;D:/phpstudy/php52/&quot;</code></p>
+<p><code>PHPIniDir "D:/phpstudy/php52/"</code></p>
 <p>这句指令来设置php.ini的路径。(命令行的php方式可以使用-c选项，在宿主环境下就要配置了)。
 岔开一句，载入lua扩展只要LoadModule就可以，不需要LoadFile来指定lua.dll的位置。
 遍观所有配置，除了PHP的SAPI方式，也只有httpd-proxy-html.conf配置，
@@ -130,10 +100,10 @@ Apache将会首先在共享内存里面查询，只有在共享内存里面发�
 由于参数由Apache来读取，创建进程，控制进程的数量也同样是Apache。
 所以这种模式下可以看到的httpd进程中，有些并不是执行Web请求，而是执行PHP的宿主。
 有了宿主，接下来就是找到PHP并执行，和php关联的是这句指令</p>
-<p><code>FcgidWrapper &quot;D:/phpstudy/php55n/php-cgi.exe&quot; .php</code></p>
+<p><code>FcgidWrapper "D:/phpstudy/php55n/php-cgi.exe" .php</code></p>
 <p>把请求直接导向了php-cgi程序。php-cgi本身就依赖于php5.dll，
 因此FastCGI方式下不需要通过LoadFile来载入php5.dll。指定php.ini仍然不能少，通过</p>
-<p><code>FcgidInitialEnv PHPRC &quot;D:/phpstudy/php55n&quot;</code></p>
+<p><code>FcgidInitialEnv PHPRC "D:/phpstudy/php55n"</code></p>
 <p>这种方式，Apache会常驻进程，减少每次请求的创建进程开销。
 fcgid的耦合度比Handler方式更小，体现在</p>
 <ol>
@@ -157,7 +127,7 @@ nginx也没有和PHP做整合，在nginx里不会看到PHP路径配置，
 其中的<code>fastcgi_param</code>指令，就对应CGI规范中的Request Meta-Variables。
 比如<code>SRIPT_NAME</code>、<code>QUERY_STRING</code>。这些值需要在nginx.conf中设置，
 nginx会把<code>fastcgi_param</code>设置的值传递到PHP。
-从而在PHP中<code>_SERVER[&quot;SCRIPT_NAME&quot;]</code>的方式可以取值。</p>
+从而在PHP中<code>_SERVER["SCRIPT_NAME"]</code>的方式可以取值。</p>
 <p>比起CGI的RFC规范，PHP可用的Meta-Variables要多一些。比如RFC只定义了
 <code>SCRIPT_NAME</code>和<code>QUERY_STRING</code>，
 PHP多定义了<code>SCRIPT_FILENAME</code>和<code>REQUEST_URI</code>。<code>REQUEST_URI</code>是
@@ -167,7 +137,7 @@ nginx中一定要通过指定<code>SCRIPT_FILENAME</code>才能真正调用到PH
 <code>SCRIPT_NAME</code>就是相对路径了。</p>
 <p>现在RESTFul大行其道，以资源形态表示的URL上，是肯定不会看到
 script.php的字样的，最直接的做法，就是在nginx配置这样一句：</p>
-<p><code>fastcgi_param  SCRIPT_FILENAME  $document_root/script.php;</code></p>
+<p><code>fastcgi_param SCRIPT_FILENAME $document_root/script.php;</code></p>
 <p>也就是说虽然在URL上看到的只是个资源，但是到了Web端仍然是对应到具体的PHP文件。
 在这个script.php中可以再从<code>REQUEST_URI</code>分离出资源信息，
 从<code>REQUEST_METHOD</code>得到操作信息，这样就可以完成资源到操作的转换。
@@ -180,155 +150,96 @@ script.php的字样的，最直接的做法，就是在nginx配置这样一句�
 因此进程管理器看不到php的名字。而nginx更有代理的味道，把请求数据
 向php-cgi监听的端口送去后，就和nginx无关了，因此php-cgi是以独立进程方式存在。
 这方面还遇到过一个奇怪的问题，本地调试网页用httpd正常打开，用nginx却总是超时.nginx下php-cgi默认分配的是9000端口，于是用netstat -ano查了到底哪个进程占用了9000端口，果然这个端口被其它程序给占住了，但是phpstudy并不会报异常，也就表现在nginx超时，如果用openresty方式运行就不会有这个问题，因为openresty也是类似httpd方式，直接在nginx内执行业务逻辑。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

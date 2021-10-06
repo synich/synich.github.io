@@ -1,83 +1,53 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>flex和bison的理解 | 蛙二的思考</title>
-    <meta property="og:title" content="flex和bison的理解 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2017-08-08T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2017-08-08T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="flex和bison的理解">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/170808/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>flex和bison的理解 | 蛙二的思考</title>
+<meta property="og:title" content="flex和bison的理解 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-08-08T12:00:00+08:00">
+<meta property="article:modified_time" content="2017-08-08T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="flex和bison的理解">
+<meta name=author content>
+<meta property="og:url" content="/post/170808/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">flex和bison的理解</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年8月8日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>这两个工具是编译理论都会介绍的经典工具，分别用于词法和语法分析。词法比较简单，虽然有NFA和DFA的区分，但总的来说就是把原子的字符按规则合并成符号，但语法分析就有LL和LR两种差异很大的流派。从词法分析向LL演进，是比较自然的方式，但词法进到LR，中间存在一道鸿沟，这时我觉得更好的做法是先学习LR的语法分析，理解LR的思维，自然就明白为什么、何时需要词法，以及flex和bison两个工具的协作模式。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>flex和bison的理解</h1>
+</header>
+<date class="post-meta meta-date">
+2017年8月8日
+</date>
+<div class=post-content>
+<p>这两个工具是编译理论都会介绍的经典工具，分别用于词法和语法分析。词法比较简单，虽然有NFA和DFA的区分，但总的来说就是把原子的字符按规则合并成符号，但语法分析就有LL和LR两种差异很大的流派。从词法分析向LL演进，是比较自然的方式，但词法进到LR，中间存在一道鸿沟，这时我觉得更好的做法是先学习LR的语法分析，理解LR的思维，自然就明白为什么、何时需要词法，以及flex和bison两个工具的协作模式。</p>
 <p>为什么Bison这种通过工具生成解析代码的方式被称为LR分析器，而手写解析器一般都是LL分析法呢？这两种方式都是BNF的解析方式，而BNF属于产生式文法，指先定义文章包含段落，段落包含句子，句子再包含单词，着眼点是从最顶层的结构，逐步扩展细化，最终推演到单词环节结束的过程。</p>
 <p>不管是LL还是LR，解析词法符号都是从左向右，两者都是L，没有不同。如果将符号形成一个句子，就有了分歧。手写分析器是从左向右一旦符号成为一个合法句子，解析结束，优先从最左侧进行推导，所以称LL法。而Bison的解析思路，即使已经达到推演条件，还会继续读进符号，只有在读进的符号不能推演，才会结束，优先从最右侧进行推导，所以Bison的作法称为LR。看Bison的规则，人脑很难自然地联想出从文章细化到句子乃至单词是怎么结合上的，因此LR方式通常是用机器生成代码。</p>
 <p>LL的术语是First/Follow集，而LR则称为shift/reduce。读入符号(shift)再生成句子(reduce)，这和书写yacc的规则是逆过程，不过不用担心，工具会把正确地完成这个逆过程。既然要先shift，就一定会有栈保存符号，Bison在语法分析前，先创建200长度的数组作为栈。每条规则的执行都会改变栈的深度。默认规则动作$$=$1就是在栈保存值，有这个值后面的解析才能找回值。</p>
@@ -119,155 +89,96 @@ lex可以更改默认的变量名前缀，不用yy。如果把lex和其它语法
 <p>bison的生成代码，虽然是自动生成的，但抛开各种表的数值不谈，流程还是能看明白的。</p>
 <p>yyparse()无参但有输入，输入就来自于其内部调用的yylex()。yyparse()返回的int表示错误码，共有0/1/2三种值，0代表正确，1表示异常，2表示内存耗尽（比如shift导致栈过深）。yylex()没有入参但也有输入，因为它既要接受文件名，又可以接收字符串，因此一种类型无法表示两种含义，只能退而求其次，采用函数外的全局变量的方式来传入参，出参是识别到的终结符类型枚举，因为bison可以直接识别单字符终结符，所以lex识别的标识符枚举就从258开始，需要int来表示。</p>
 <p>yyparse()是双栈式推进，yyssa表示state stack，yyvsa表示value stack。初始长度都是200，如果状态满了之后可以通过自定义的栈生长函数扩容，但最大不要超过10000。每个从yylex()读入的值被依次放到yyvsa，等到yyssa的当前状态，经过yypact和yytable的转换，可以计算出要从yyvsa上POP多少个元素，并根据.y文件的定义对yyvsa的元素做处理。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

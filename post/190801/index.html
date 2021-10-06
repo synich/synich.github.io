@@ -1,83 +1,53 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>数据库和数仓的历史 | 蛙二的思考</title>
-    <meta property="og:title" content="数据库和数仓的历史 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2019-08-01T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2019-08-01T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="数据库和数仓的历史">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/190801/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>数据库和数仓的历史 | 蛙二的思考</title>
+<meta property="og:title" content="数据库和数仓的历史 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-01T12:00:00+08:00">
+<meta property="article:modified_time" content="2019-08-01T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="数据库和数仓的历史">
+<meta name=author content>
+<meta property="og:url" content="/post/190801/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">数据库和数仓的历史</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月1日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>数据库是计算机最早的应用系统，阿波罗计划时就有了数据库原型，这便是1968年的IBM ICS系统，69年改名为IMS/360（层次型数据库）。70年，IBM的研究员Codd提出了关系型模型，虽然关系型理论是IBM提出的，但出于产品惯性IBM没有及时跟进，反而是1983年Oracle率先向市场推广，虽然同年稍晚IBM也发布了DB2产品，但在市场上显然是Oracle胜了。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>数据库和数仓的历史</h1>
+</header>
+<date class="post-meta meta-date">
+2019年8月1日
+</date>
+<div class=post-content>
+<p>数据库是计算机最早的应用系统，阿波罗计划时就有了数据库原型，这便是1968年的IBM ICS系统，69年改名为IMS/360（层次型数据库）。70年，IBM的研究员Codd提出了关系型模型，虽然关系型理论是IBM提出的，但出于产品惯性IBM没有及时跟进，反而是1983年Oracle率先向市场推广，虽然同年稍晚IBM也发布了DB2产品，但在市场上显然是Oracle胜了。</p>
 <p>和数据库相关但又有区别的数据仓库（Data Warehouse），概念早在1970年代就有探讨，Inmon在Kimball分别在1992和1996年出版关于数仓的专著，可以认为数仓正式成型。Inmon定义数仓是一个面向主题的（Subject Oriented）、集成的（Integrate）、相对稳定的（Non-Volatile）、反映历史变化（Time Variant）的数据集合，用于支持管理决策。或者说就是建立围绕主题，并最终要挖掘出主题间关系的库。落地到具体行业，一定要对行业关心的主题建立好模型。支持构建完整数仓的技术有：清洗、集成、OLAP。</p>
 <ul>
 <li>OLTP: 联机事务处理， 关系型数据库(Oracle、MySQL)多属于此类，擅长记录发生的业务内容，多小批量写入，要保证事务性。设计时强调三范式，表结构紧凑，避免冗余</li>
@@ -85,7 +55,7 @@
 </ul>
 <p>数据仓库的来源分为非结构化和结构化数据。非结构化数据要先经NLP提取变为结构化，结构化数据可以用机器学习的方式做分类、聚类，又或者按统计学的方式进行提取。</p>
 <p>数仓的建模方式有多种，国内主流的是阿里推崇的维度建模(kimball)，有星形模型(一个事实表和多个维表，没有二级维表)和雪花模型(在星形基础上允许二级甚至更多级维表)。</p>
-<h2 id="mpp与sql-on-hadoop">MPP与SQL on Hadoop</h2>
+<h2 id=mpp与sql-on-hadoop>MPP与SQL on Hadoop</h2>
 <p>支撑数仓的软件有很多，其中一个大类统称MPP，比较商业的产品是金融领域的TeraData，但价格太贵，多见的是GreenPlum，是基于Postgre开发的主从式分布数据库，master负责调度segment负责执行。引申一句GP最初是EMC开发的，买存储送GP，配合EMC的存储和售后，在银行领域很有竞争力。</p>
 <p>MPP的代表产品有：Vertica/Redshift(Paracel，被Amazon买下了源码的license后变成Redshift)/Greenplum。仔细观察不难发现，这三者其实有非常很多相同点：</p>
 <ol>
@@ -108,155 +78,96 @@
 <p>HADOOP原理更类似batch processing，更细粒度切分task，worker能者多劳（每个worker上执行的任务可以是不平均，不一致的）。
 单独worker看，性能不及MPP，但是胜在scalability优异，几百个节点是没问题的，在集群性上远胜MPP。</p>
 <p>MPP和SQL on Hadoop的最大区别在于，MPP架构是Full-SQL compatiable的，实现不局限于将Query分解为一连串的job去执行。并且由于每一列的数据类型进行了特定的压缩和编码(比如run-length/delta/bytecoding)，能做的优化要比单纯的MapReduce多很多，效率自然也要高不少。相较于SQL on Hadoop，MPP更适合做interactive ad-hoc analysis，前者则更适用于对于海量数据做批处理或者需要使用UDF(自定义函数)的场景。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

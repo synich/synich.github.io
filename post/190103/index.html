@@ -1,83 +1,53 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>网段与路由 | 蛙二的思考</title>
-    <meta property="og:title" content="网段与路由 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2019-01-03T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2019-01-03T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="网段与路由">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/190103/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>网段与路由 | 蛙二的思考</title>
+<meta property="og:title" content="网段与路由 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-01-03T12:00:00+08:00">
+<meta property="article:modified_time" content="2019-01-03T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="网段与路由">
+<meta name=author content>
+<meta property="og:url" content="/post/190103/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">网段与路由</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年1月3日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>对于私网地址的规范，在RFC 1918 - Address Allocation for Private Internets里有完整的规范定义。其中A类，B类，C类网段各取了一部分：</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>网段与路由</h1>
+</header>
+<date class="post-meta meta-date">
+2019年1月3日
+</date>
+<div class=post-content>
+<p>对于私网地址的规范，在RFC 1918 - Address Allocation for Private Internets里有完整的规范定义。其中A类，B类，C类网段各取了一部分：</p>
 <p>10.0.0.0/8 (255.0.0.0)</p>
 <p>172.16.0.0/12 (255.240.0.0)</p>
 <p>192.168.0.0/16 (255.255.0.0)</p>
@@ -94,9 +64,9 @@
 <li>host表示这是一条本地路由，典型的是回环端口，loopback设备使用这种路由条目，该路由条目比link类型的还要严格，约定了都是本机内部的转发，不可能转发到外部。</li>
 <li>site是ipv6专用的路由scope。</li>
 </ol>
-<h2 id="route命令">route命令</h2>
+<h2 id=route命令>route命令</h2>
 <p>Windows和Linux的参数不完全一样，网上找文章时要注意。route命令除了添加了删除，还能屏蔽某种路由路径。route命令除了支持inet协议，还能支持ax25、ipx、netrom等数种二层协议，不过由于/proc/net/下没有对应的文件，所以没有使用。</p>
-<h2 id="路由协议和preference">路由协议和preference</h2>
+<h2 id=路由协议和preference>路由协议和preference</h2>
 <p>到某主机有多条路可选，会挑选优先级高的。比较方式先匹配掩码长度，再比较管理距离(比如metric)。掩码长的高于掩码短的，所以3种路由顺序如下</p>
 <ol>
 <li>主机路由，直接指明某台主机，/etc/hosts</li>
@@ -105,11 +75,11 @@
 </ol>
 <p>路由器往往支持多路由协议，这就有一个多种路由的选择和配合问题。为了解决这个问题，在路由的参数中引入了优先级（preference）的概念。各路由协议一般来说都定一个固定的preference值，preference值越小，协议对应的路由的优先级越高。以下是业务标准的路由协议：</p>
 <ul>
-<li>直接路由  0</li>
-<li>OSPF路由  10</li>
-<li>IS-IS的level 1的路由  15</li>
-<li>IS-IS的level 2的路由  18</li>
-<li>Berkeley的RIP路由   100</li>
+<li>直接路由 0</li>
+<li>OSPF路由 10</li>
+<li>IS-IS的level 1的路由 15</li>
+<li>IS-IS的level 2的路由 18</li>
+<li>Berkeley的RIP路由 100</li>
 <li>BGP路由 170</li>
 <li>EGP路由（已被BGP淘汰） 200</li>
 </ul>
@@ -119,157 +89,98 @@
 <p>BGP路由最复杂，主要用作不同AS间的边界网关，也是互联网惟一的协议。可以配置路由的颗粒度。颗粒度是由路由前缀的长短决定的，比如17.0.0.0/8的颗粒度很粗，17.1.0.0/16就会稍细，当然17.1.1.0/24颗粒度会更细。但是颗粒度太细，又会造成路由表的臃肿不堪。当前对颗粒度的要求是，路由前缀的长度，要≤21。</p>
 <p>BGP是唯一使用TCP作为传输层的路由协议（端口179），其他的路由协议可能都还到不了传输层。TCP连接的窗口是65K字节，也就是说TCP连接允许在没有确认包的情况下，连续发送65K的数据。而其他的路由协议，例如EIGRP和OSPF的窗口只有一个数据包，也就是说前一个数据包收到确认包之后，才会发送下一个数据包。当网络规模巨大时，需要传输的数据也相应变大，这样效率是非常低的。这也是它们不适合大规模网络的原因。而正是由于TCP可以可靠的传输大量数据，使得BGP适合大规模网络环境。</p>
 <p>BGP不同算法对收敛速度影响不同，比较快的有BFD，FRR算法。</p>
-<h2 id="路由metric的含义">路由metric的含义</h2>
+<h2 id=路由metric的含义>路由metric的含义</h2>
 <p>需要区别的是路由开销（metric）和路由优先级（preference）这两个概念。metric是针对同一种路由协议而言，对不同的协议，由于代表的含义不同，比较不同协议的metric是无意义的，所以要在两条不同协议的同信宿路由中作出选择，只能比较路由的优先级。相反，preference是针对不同协议而言，同协议的路由的优先级是一般情况下一样的，metric这时是在两条同信宿路由中作出选择的标准。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

@@ -1,88 +1,58 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>冯东的Lua | 蛙二的思考</title>
-    <meta property="og:title" content="冯东的Lua - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2018-04-06T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2018-04-06T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="冯东的Lua">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/180406/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>冯东的Lua | 蛙二的思考</title>
+<meta property="og:title" content="冯东的Lua - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-04-06T12:00:00+08:00">
+<meta property="article:modified_time" content="2018-04-06T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="冯东的Lua">
+<meta name=author content>
+<meta property="og:url" content="/post/180406/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">冯东的Lua</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2018年4月6日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>Lua vs. Python</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>冯东的Lua</h1>
+</header>
+<date class="post-meta meta-date">
+2018年4月6日
+</date>
+<div class=post-content>
+<p>Lua vs. Python</p>
 <p>在《 Programming in Lua 》系列里谈了 Lua 的 stackless 实现。说到 stackless 设计，难免和 Python 的 stackful 实现比较一下。</p>
 <p>以前总有一个疑惑。为什么 Python 既要采用 native thread，又要用 great-lock 将其变成实质上的协作式 thread。像 Lua 这样的 coroutine 不好么？现在知道了，非不为，不能也。既要尽量保证虚拟机的可移植性，又采用了非常依赖 CRT stack 的 stackful 设计，语言本身没有 synchronous primitive，不能应付真正的 preemptive 多线程。这种情况下，多线程加 big-lock 是唯一的折衷了。由此也知道了 Python 的 generator 为什么只允许在第一层函数中 yield，因为 stackful 设计不允许保存 call stack (说老实话，只允许在第一层函数中 yield 的 coroutine 不过是两个函数调来调去，在 C 里实现起来也不难)。Python 3.3 开始支持更宽松的 yields，不过实现的方式和 Lua 的 yields-in-C 差不多，作为基于虚拟机的语言是比较原始的手段。</p>
 <p>拿 Lua 和 Python 做比较令人恍惚感觉正在比较 Objective-C 和 C++。Lua/Python 和 Objective-C/C++ 都是在共同基础上发展出来：后者扩展 C 语言；前者用 C 语言实现基于 byte-code 的虚拟机。它们都有理想的「标杆」：Objective-C/C++ 的标杆是 Smalltalk/Simula 等面向对象语言先驱；Lua/Python 是 Lisp 这样的高级动态语言先驱。努力的方向都是降低「标杆」过大的性能开销和简化「标杆」过于复杂 (或者过于精简) 的概念。Python 和 C++ 相对较早的尝试，都采用了比较低级的机制：C++ 用函数指针模拟成员函数；Python 依赖 CRT stack 直接实现 byte-code stack。这些「第一次」都没能「do things right」。后来的第二次尝试才作出了更妥当的取舍。</p>
 <p>在《 The Art of UNIX Programming 》里指出了系统设计的「第二系统综合症 (second-system effect)」。乔布斯也提到过「第二个产品」的问题。在一个成功的系统上衍生的第二个系统有时会因为没有理解第一个系统成功的真正原因而失败。但是，如果还有机会的话，由此衍生的「第三系统」往往会做得更好。对于上面所说的语言发展来说，它们的基础 (C 语言) 和「标杆」是「第一系统」，第一次改进的尝试毁誉参半，而后来的「第三系统」更加出色。</p>
-<p>2013/05/13	 Leave a reply
+<p>2013/05/13 Leave a reply
 Programming in Lua（五）－ Coroutine, Lua Stack</p>
 <p>在《 Programming in Lua（三）－ Yields in C 》里讨论了 Lua 虚拟机对 yields-in-C 及其 stack 的处理。当时还未读 Lua 虚拟机的实际代码，只根据语言的行为来推测，有些术语也不符合通常用法。最近从 Lua stack 的实现入手，发现了一些以前没想过的问题：为什么 resumes-in-C 从来不是问题？为什么有 lua_yieldk() 而没有对应的 lua_resumek() ？</p>
 <p>首先从术语的标准化说起。《 Programming in Lua（三）－ Yields in C 》里有多处这样的描述：</p>
@@ -107,7 +77,7 @@ u.l.savedpc 表示函数的返回地址。这个值仅当 Lua 函数作为 calle
 当 C 函数中发生 yield 时，CRT stack 被破坏，该 coroutine 下次被 resume 的执行地址由 u.c.k 来承担。详见《 Programming in Lua（三）－ Yields in C 》。
 这里值得多说一句，为什么在 C 函数中执行 yield 会破坏 CRT stack？上文说过，Lua 的设计主要是 stackless 方式，其具体实现是通过 luaV_execute() 中的循环执行 byte code，通过额外数据结构 (其实是双数据结构) 而非 CRT stack 来维护 call stack。但在 resume coroutine 时，luaV_execute() 间接地递归调用自己并在 callee 的循环中执行 resumed coroutine。也就是说由 CRT stack 来维护 coroutine 上下文切换。Yields 的机制是 longjmp 回到 luaV_execute() 函数递归调用自身的下一条指令 (虚拟机的 native 指令而非 byte-code 指令)，同时把 CRT stack 恢复到 resume 前的状态。所以 yields-in-C 会破坏 C 函数的 call stack。</p>
 <p>尽管 coroutine 涉及了对 CRT stack 的操作，但是和 error 一样，仅限于 ANSI C 支持的 longjmp，不会破坏 Lua 虚拟机的跨平台性。问题是，为什么 Lua 要在总体的 stackless 设计中制造这个 stackful 例外？首先退一步说，即使采用 stackless 方式实现 coroutine 切换，仅仅能避免在 yields-in-byte-code 中使用 longjmp，仍然无法避免在 yields-in-C 中使用 longjmp。这是因为，虽然不再有必要 longjmp 回到最近一次 resume 之处，但是仍然需要从 yield 之处回到最近的 Lua 虚拟机代码。不仅如此，stackless 方式还要给 resumes-in-C 引入类似的 longjmp (因为不再利用 CRT stack，所以 resumes-in-C 也必须立即回到 Lua 虚拟机代码)，破坏调用 resume 的 C 函数的 call stack，给 resumes-in-C 加上同现在的 yields-in-C 一样的局限性。而现在的 stackful 方法则完全没有这方面的问题。这正是无需 lua_resumek() 的原因。Stackful coroutine 是一个非常巧妙的设计。</p>
-<p>2013/05/09	 Leave a reply
+<p>2013/05/09 Leave a reply
 Programming in Lua（四）－ Nil 和 List</p>
 <p>粗浅地看，Lua 的 nil 很容易被等同于「无」。如下面这段代码：</p>
 <p>function r_nil()
@@ -118,17 +88,17 @@ return
 end</p>
 <p>a = r_nil()
 b = r()</p>
-<p>print(a .. &ldquo;, &quot; .. b)  &ndash;&gt;  nil, nil
+<p>print(a .. &ldquo;, " .. b) &ndash;> nil, nil
 尽管函数 r_nil() 和 r() 的返回语句分别带有和不带有 nil，接受它们返回值的变量 a 和 b 的值都是 nil。另一个例子是 nil 对 table 的作用。</p>
 <p>tab_v = { attr1 = 1, attr2 = 2 }
 for k,v in pairs(tab_v) do
-print(k .. &ldquo;, &quot; .. v)
-end  &ndash;&gt;  attr1, 1
-&ndash;&gt;  attr2, 2</p>
+print(k .. &ldquo;, " .. v)
+end &ndash;> attr1, 1
+&ndash;> attr2, 2</p>
 <p>tab_v.attr1 = nil
 for k,v in pairs(tab_v) do
-print(k .. &ldquo;, &quot; .. v)
-end  &ndash;&gt;  attr2, 2
+print(k .. &ldquo;, " .. v)
+end &ndash;> attr2, 2
 将 table 的一个 field 赋值为 nil 不仅仅改变其值，而是让这个 field 本身消失了 (这个例子中是 field attr1)。</p>
 <p>分析 nil 的实际含义可以从 Lua 的另一个比较特殊的概念 —— list 入手。List 的特殊性在于它不是 first-class 类型。「First-class」是动态语言中常被提及的概念。编程语言有越多的构成元素符合 first-class 标准，其概念模型就越一致、越简单。Lua 的基本数据类型 (包括 nil) 和函数都符合 first-class。满足 first-class 标准通常有四个要求：</p>
 <p>可以被赋值给变量；
@@ -137,13 +107,13 @@ end  &ndash;&gt;  attr2, 2
 可以作为数据结构的构成部分。( 注意 nil 并不完全符合这个要求，但是可以通过某个 field 的缺失来表示 nil。)
 在《Programming in Lua, 2ed》的第 5.1 节提到 list 只能用于四种情形：</p>
 <p>These lists appear in four constructions in Lua: multiple assignments, arguments to function calls, table constructors, and return statements.</p>
-<p>List 有两种具体的表现形式，一种是用逗号分割的一组表达式，表示一个具体长度的 list；另一种是三个点构成的省略号 (&hellip;)，表示其长度和内容不定。第二种表示方式不能用在 multiple assignments 的等号左方，也不能创建新 list，只能从函数的形式参数列表中获得。由此可以看出，list 不符合 first-class 标准：</p>
+<p>List 有两种具体的表现形式，一种是用逗号分割的一组表达式，表示一个具体长度的 list；另一种是三个点构成的省略号 (&mldr;)，表示其长度和内容不定。第二种表示方式不能用在 multiple assignments 的等号左方，也不能创建新 list，只能从函数的形式参数列表中获得。由此可以看出，list 不符合 first-class 标准：</p>
 <p>它的部分内容可以赋给几个变量，但本身不能作为整体赋给变量；
 它是参数列表的全部或一部分，但不是任何参数 (注意两者的区别)；
-它不能作为数据结构的构成部分。注意，「&hellip;」不能作为 closure 的 upvalue。用 first-class function 存储 list 的方式行不通。
+它不能作为数据结构的构成部分。注意，「&mldr;」不能作为 closure 的 upvalue。用 first-class function 存储 list 的方式行不通。
 作为非 first-class 类型，list 无法被生命周期较长的数据结构存储。短期的完整传递 list 的内容只能利用函数调用/返回的方式：</p>
-<p>function f_outer(&hellip;) &ndash; important: f_out() must accept
-&ndash; &ldquo;&hellip;&rdquo;.
+<p>function f_outer(&mldr;) &ndash; important: f_out() must accept
+&ndash; &ldquo;&mldr;&rdquo;.
 end</p>
 <p>f_outer(f_inner())
 &ndash; pass the list returned by f_inner() to
@@ -151,28 +121,28 @@ end</p>
 <p>f_outer(1, 2, f_inner())
 &ndash; pass f_outer() a new list, which is &ldquo;1, 2&rdquo; appended
 &ndash; by f_inner()&rsquo;s returned list</p>
-<p>function f_caller(&hellip;)
-f_callee(&hellip;) &ndash; pass argument list of f_caller()
+<p>function f_caller(&mldr;)
+f_callee(&mldr;) &ndash; pass argument list of f_caller()
 &ndash; to f_callee()</p>
-<p>return f()    &ndash; pass list returned by f() to one
+<p>return f() &ndash; pass list returned by f() to one
 &ndash; level up
 end
 另外还有一些反例：</p>
-<p>function f_caller(&hellip;)
-a, b = &hellip;   &ndash; not pass a list, &ldquo;a, b&rdquo; is
+<p>function f_caller(&mldr;)
+a, b = &mldr; &ndash; not pass a list, &ldquo;a, b&rdquo; is
 &ndash; a different list of two elements
-&ndash; obtained by adjusting the &ldquo;&hellip;&rdquo;,
+&ndash; obtained by adjusting the &ldquo;&mldr;&rdquo;,
 &ndash; and this list is very short-live,
 &ndash; existing in this line only</p>
-<p>tab = {&hellip;}  &ndash; not pass a list, tab won&rsquo;t
-&ndash; have fields for nils in the &ldquo;&hellip;&rdquo;</p>
+<p>tab = {&mldr;} &ndash; not pass a list, tab won&rsquo;t
+&ndash; have fields for nils in the &ldquo;&mldr;&rdquo;</p>
 <p>local function test(a, b)
 end
-test(&hellip;)    &ndash; not pass a list, test()&rsquo;s
+test(&mldr;) &ndash; not pass a list, test()&rsquo;s
 &ndash; argument list accepts only the first
-&ndash; two items of &ldquo;&hellip;&rdquo;</p>
-<p>for i in &hellip; do  &ndash; the &ldquo;for&rdquo; uses only the first
-&ndash; three elements in &ldquo;&hellip;&rdquo;
+&ndash; two items of &ldquo;&mldr;&rdquo;</p>
+<p>for i in &mldr; do &ndash; the &ldquo;for&rdquo; uses only the first
+&ndash; three elements in &ldquo;&mldr;&rdquo;
 &ndash; (two accepted by for internally,
 &ndash; and one received by i)
 end
@@ -190,38 +160,38 @@ end</p>
 <p>function r()
 return
 end</p>
-<p>a = select(&quot;#&rdquo;, r_nil())
-b = select(&quot;#&rdquo;, r())</p>
-<p>print(a .. &ldquo;, &quot; .. b)  &ndash;&gt;  1, 0
+<p>a = select("#&rdquo;, r_nil())
+b = select("#&rdquo;, r())</p>
+<p>print(a .. &ldquo;, " .. b) &ndash;> 1, 0
 下面是精确区别 list 结束的一个实际例子 —— 关于 stack 的递归终止条件。若希望一个函数对它的 argument list 中的每个参数执行 op() 操作：</p>
-<p>function map_list(op, &hellip;)
-if select(&quot;#&rdquo;, &hellip;) == 0 then
+<p>function map_list(op, &mldr;)
+if select("#&rdquo;, &mldr;) == 0 then
 return
 else
-local a = &hellip;
+local a = &mldr;
 return op(a), map_list(op,
-sub_list(&hellip;))
+sub_list(&mldr;))
 end
 end
 函数 sub_list() 返回的 list 是其接受的 argument list 去掉第一个元素。这个函数的实现如下 (如果用 C 语言来实现会更简单)。如果 op() 允许接受 nil 并且在此情况下返回有意义的值，或者 map_list() 接受的 list 在中间含有 nil，那么 map_list() 的递归终止条件就必须基于 select() 而不可以基于对 nil 的判断。</p>
-<p>function sub_list(&hellip;)
+<p>function sub_list(&mldr;)
 local list_start
-function list_start(start, &hellip;)
-if start &gt; select(&quot;#&rdquo;, &hellip;) then
+function list_start(start, &mldr;)
+if start > select("#&rdquo;, &mldr;) then
 return
 else
-return select(start, &hellip;),
-list_start(start + 1, &hellip;)
+return select(start, &mldr;),
+list_start(start + 1, &mldr;)
 end
 end
-return list_start(2, &hellip;)
+return list_start(2, &mldr;)
 end
-List 是 Lua 中最不符合 first-class 的数据类型。但由于其不能作为变量但可以被函数的返回值构建的特性，List 反而可能是 Lua 中最纯粹的 functional programming  元素。放弃 table 而完全用 list 来编写 Lua 程序也许是把 Lua 转化为一种 FP 语言最简单的手段。</p>
-<p>2012/12/22	 Leave a reply
+List 是 Lua 中最不符合 first-class 的数据类型。但由于其不能作为变量但可以被函数的返回值构建的特性，List 反而可能是 Lua 中最纯粹的 functional programming 元素。放弃 table 而完全用 list 来编写 Lua 程序也许是把 Lua 转化为一种 FP 语言最简单的手段。</p>
+<p>2012/12/22 Leave a reply
 Programming in Lua（三）－ Yields in C</p>
 <p>Handling Yields in C 是 Lua 5.2 的重大改进之一，最早从 blog《Lua 5.2 如何实现 C 调用中的 Continuation》了解到。这些资料围绕新 API lua_yieldk，lua_callk，和 lua_pcallk 来介绍这个新特性，自然有很多关于新增加的 continuation 参数的讨论。其实以 continuation 参数作为切入点介绍 yields-in-C 容易混淆问题的实质。首先回顾一下《Programming in Lua, 2ed》(中文版) 中的一段话 (第 30.1 章)：</p>
 <p>The only way for a C function to yield is when returning, so that it actually does not suspend itself, but its caller — which should be a Lua function.</p>
-<p>这段话针对 Lua 5.1 而写，当时尚无 continuation 参数。严格地说这会误导读者。根据描述本身，可以理解为 Lua 无法在 C 代码中 yield (包括被 C 代码再次调用的第二层 Lua 代码以及之后的 stack 上更深的执行层次) 是因为无法纪录这种情况下 resume 所需的信息 —— C 代码的 stack 和 program counter。这种解释的推论是，在 C 代码即将返回 Lua 前，由于 C stack 已经恢复为调用前的状态 (可以称为「空 stack」)，program counter 也处于即将进入 Lua 代码的状态，所以可以调用 lua_yield。原理上这个结论可以推广到 lua_call/lua_pcall。如果程序在 Lua 和 C  代码之间调用切换多次，整个 virtual stack 上的 Lua 部分的 stack 会被 C 代码分割成若干段。不过只要这三个 API 总是在 C 代码即将返回 Lua 前被调用，那么这些 C stack 都是空 stack，Lua VM 只需知道 C 代码在 Lua stack 段间的位置，不需要实际纪录 C stack/program counter 本身的内容。「在多于一层 C/Lua 切换的情形下 yield」应该正常工作。</p>
+<p>这段话针对 Lua 5.1 而写，当时尚无 continuation 参数。严格地说这会误导读者。根据描述本身，可以理解为 Lua 无法在 C 代码中 yield (包括被 C 代码再次调用的第二层 Lua 代码以及之后的 stack 上更深的执行层次) 是因为无法纪录这种情况下 resume 所需的信息 —— C 代码的 stack 和 program counter。这种解释的推论是，在 C 代码即将返回 Lua 前，由于 C stack 已经恢复为调用前的状态 (可以称为「空 stack」)，program counter 也处于即将进入 Lua 代码的状态，所以可以调用 lua_yield。原理上这个结论可以推广到 lua_call/lua_pcall。如果程序在 Lua 和 C 代码之间调用切换多次，整个 virtual stack 上的 Lua 部分的 stack 会被 C 代码分割成若干段。不过只要这三个 API 总是在 C 代码即将返回 Lua 前被调用，那么这些 C stack 都是空 stack，Lua VM 只需知道 C 代码在 Lua stack 段间的位置，不需要实际纪录 C stack/program counter 本身的内容。「在多于一层 C/Lua 切换的情形下 yield」应该正常工作。</p>
 <p>问题是 Lua 5.1 不支持「在多于一层 C/Lua 切换的情形下 yield」！</p>
 <p>根据上面的分析，这个限制并非 Lua 语言或 C API 本身的设计所固有，它是一个纯粹的 VM 实现问题。也就是说，即便 Lua 在 5.1 之后不引入 continuation 参数，保留「lua_yield (以及 lua_call/lua_pcall) 只能在即将返回到 Lua 之前调用」这个限制，也还是可以支持从 C 或者从第二层及以上的 Lua 代码中 yield。</p>
 <p>Lua 5.2 实现了「在多于一层 C/Lua 切换的情形下 yield」，这是一个 VM 内部改进，仅仅为此并无必要引入 continuation 参数。 Continuation 参数解决的是另一个问题 ——「Lua 无法跟踪程序在 C 代码中的 stack 和 program counter」，但仍保留诸多限制：首先，它无法解决纪录 C stack 的问题，所以，仍然不允许在 C stack 上有多于一层 C 函数时调用新 API；其次，它也无法纪录 program counter，编写 C 代码时必须手工把可能发生 yield 之后的 C 代码 factor 到一个单独的 C 函数中，通过函数分割这种变通方式部分的模拟 yield 时的 program counter。由于没有真正的管理 C stack，充当 continuation 参数的 C 函数在运行中不能依赖 caller 的 C stack (实际上这个问题不大，因为它只能接受一个 lua_State 结构)。最后，仿照某些评测给 Lua 5.2 的新特性做一个「优雅 / 有待改进 / 丑陋」的总结：</p>
@@ -251,155 +221,96 @@ Raymond Chen 用严密的逻辑和实例说明了编写正确异常处理的代�
 注意这里的「异常处理的代码」指程序员用具备异常处理机制的语言编写处理实际错误的代码，不要和异常机制本身的实现混淆。
 Objective-C/Cocoa 舍弃异常处理的可能原因之一。另一方面，如果在 stack unwinding 时进行特定的处理，也可以用 ref-counting GC 配合异常。比如 C++ 调用 destructor 以及由此衍生的「智能」指针，还有 Python 的机制。但是我不喜欢这种将 unwinding 复杂化的机制。
 导致每行一个 try-catch block。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

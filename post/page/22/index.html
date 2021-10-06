@@ -1,461 +1,301 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>Posts | 蛙二的思考</title>
-    <meta property="og:title" content="Posts - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Posts">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="/post/index.xml" title="蛙二的思考" />
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Posts | 蛙二的思考</title>
+<meta property="og:title" content="Posts - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta name=Keywords content>
+<meta name=description content="Posts">
+<meta name=author content>
+<meta property="og:url" content="/post/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<link rel=alternate type=application/rss+xml href=/post/index.xml title=蛙二的思考>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170227/" title="LuaJIT的编译过程和FFI接口">LuaJIT的编译过程和FFI接口</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月27日
-        </date>
-        
-        <div class="post-content">
-            编译LuaJIT比Lua要复杂很多，共分三个步骤。先看src目录下的host目录，首先要编译出host内的minilua，用它驱动dynas……
-        </div>
-        <p class="readmore"><a href="/post/170227/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170224/" title="Openresty的应用开发">Openresty的应用开发</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月24日
-        </date>
-        
-        <div class="post-content">
-            每个版本都是在nginx的基础上做扩充，所以版本号会多出一位。ngx_lua、memc、srcache都是扩展。自带resty的命令行工具，……
-        </div>
-        <p class="readmore"><a href="/post/170224/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170220/" title="Nginx模块介绍">Nginx模块介绍</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月20日
-        </date>
-        
-        <div class="post-content">
-            要对Nginx做扩展，都是在nginx.conf里通过命令调用来完成的。 这些命令是归属到某个module中的。命令本身不会显式支持命名空间，……
-        </div>
-        <p class="readmore"><a href="/post/170220/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170219/" title="函数式和对象式，表达式和语句">函数式和对象式，表达式和语句</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月19日
-        </date>
-        
-        <div class="post-content">
-            伞哥在微博提到，ML的函数语法如果有多个参数，当参数没有完整传入时，并不是像Lua/PHP等一样赋值为nill，而是返回一个curry化的函……
-        </div>
-        <p class="readmore"><a href="/post/170219/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170207/" title="仔细打磨写过的程序">仔细打磨写过的程序</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月7日
-        </date>
-        
-        <div class="post-content">
-            从去年12月到最近，把公司内的AppWiki网站还有这个博客网站的代码，重新进行了调整，颇多感触。 比如代码中早期很多地方因为求快都是Hard……
-        </div>
-        <p class="readmore"><a href="/post/170207/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170204/" title="Lua栈操作记录">Lua栈操作记录</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月4日
-        </date>
-        
-        <div class="post-content">
-            Lua与C互操作用的是Stack模式，1表示底部，-1表示顶部。除了push/pop还有 lua_insert,lua_remove,lua_……
-        </div>
-        <p class="readmore"><a href="/post/170204/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170203/" title="CSS的一些理解">CSS的一些理解</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月3日
-        </date>
-        
-        <div class="post-content">
-            写在前面的话 HTML是SGML/XML的一种特殊应用或者说DSL， 标准的网页写法是，与之对照的DocBook的首行写法是，而SVG图像的写法……
-        </div>
-        <p class="readmore"><a href="/post/170203/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170202/" title="procfs记录">procfs记录</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月2日
-        </date>
-        
-        <div class="post-content">
-            procfs诞生于1984年的Unix第8版，愿望是对ptrace的一种改良。起初是每个进程对应一个文件，经过Plan9改造成伪文件系统，且……
-        </div>
-        <p class="readmore"><a href="/post/170202/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170125/" title="Lua中udata设置元表机制和回调">Lua中udata设置元表机制和回调</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年1月25日
-        </date>
-        
-        <div class="post-content">
-            在Lua语言中可以给表设置metatable，用C语言写Lua扩展库时，返回的句柄 可以是table(比如luaiconv库)，也可以是use……
-        </div>
-        <p class="readmore"><a href="/post/170125/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="/post/170121/" title="Json中的null和undefined">Json中的null和undefined</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年1月21日
-        </date>
-        
-        <div class="post-content">
-            由于Json是来自于JavaScript，因此讨论Json中的字段必须要回归到JS中。 null在JS语言定义里是一个字面量，且是基本类型。如……
-        </div>
-        <p class="readmore"><a href="/post/170121/">阅读全文</a></p>
-    </article>
-    
-    
-    
-
-
-
-<ol class="page-navigator">
-    
-    <li class="prev">
-        <a href="/post/page/21/">上一页</a>
-    </li>
-    
-
-    
-
-    
-        
-        
-    
-    
-
-    
-        
-        
-        <li >
-            <a href="/post/">1</a>
-        </li>
-        
-    
-        
-        <li>
-            <span>...</span>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/20/">20</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/21/">21</a>
-        </li>
-        
-    
-        
-        
-        <li  class="current">
-            <a href="/post/page/22/">22</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/23/">23</a>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/24/">24</a>
-        </li>
-        
-    
-        
-        <li>
-            <span>...</span>
-        </li>
-        
-    
-        
-        
-        <li >
-            <a href="/post/page/29/">29</a>
-        </li>
-        
-    
-
-    
-    
-
-    <li class="next">
-        <a href="/post/page/23/">下一页</a>
-    </li>
-    
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170227/ title=LuaJIT的编译过程和FFI接口>LuaJIT的编译过程和FFI接口</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月27日
+</date>
+<div class=post-content>
+编译LuaJIT比Lua要复杂很多，共分三个步骤。先看src目录下的host目录，首先要编译出host内的minilua，用它驱动dynas……
+</div>
+<p class=readmore><a href=/post/170227/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170224/ title=Openresty的应用开发>Openresty的应用开发</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月24日
+</date>
+<div class=post-content>
+每个版本都是在nginx的基础上做扩充，所以版本号会多出一位。ngx_lua、memc、srcache都是扩展。自带resty的命令行工具，……
+</div>
+<p class=readmore><a href=/post/170224/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170220/ title=Nginx模块介绍>Nginx模块介绍</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月20日
+</date>
+<div class=post-content>
+要对Nginx做扩展，都是在nginx.conf里通过命令调用来完成的。 这些命令是归属到某个module中的。命令本身不会显式支持命名空间，……
+</div>
+<p class=readmore><a href=/post/170220/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170219/ title=函数式和对象式，表达式和语句>函数式和对象式，表达式和语句</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月19日
+</date>
+<div class=post-content>
+伞哥在微博提到，ML的函数语法如果有多个参数，当参数没有完整传入时，并不是像Lua/PHP等一样赋值为nill，而是返回一个curry化的函……
+</div>
+<p class=readmore><a href=/post/170219/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170207/ title=仔细打磨写过的程序>仔细打磨写过的程序</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月7日
+</date>
+<div class=post-content>
+从去年12月到最近，把公司内的AppWiki网站还有这个博客网站的代码，重新进行了调整，颇多感触。 比如代码中早期很多地方因为求快都是Hard……
+</div>
+<p class=readmore><a href=/post/170207/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170204/ title=Lua栈操作记录>Lua栈操作记录</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月4日
+</date>
+<div class=post-content>
+Lua与C互操作用的是Stack模式，1表示底部，-1表示顶部。除了push/pop还有 lua_insert,lua_remove,lua_……
+</div>
+<p class=readmore><a href=/post/170204/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170203/ title=CSS的一些理解>CSS的一些理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月3日
+</date>
+<div class=post-content>
+写在前面的话 HTML是SGML/XML的一种特殊应用或者说DSL， 标准的网页写法是，与之对照的DocBook的首行写法是，而SVG图像的写法……
+</div>
+<p class=readmore><a href=/post/170203/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170202/ title=procfs记录>procfs记录</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月2日
+</date>
+<div class=post-content>
+procfs诞生于1984年的Unix第8版，愿望是对ptrace的一种改良。起初是每个进程对应一个文件，经过Plan9改造成伪文件系统，且……
+</div>
+<p class=readmore><a href=/post/170202/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170125/ title=Lua中udata设置元表机制和回调>Lua中udata设置元表机制和回调</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年1月25日
+</date>
+<div class=post-content>
+在Lua语言中可以给表设置metatable，用C语言写Lua扩展库时，返回的句柄 可以是table(比如luaiconv库)，也可以是use……
+</div>
+<p class=readmore><a href=/post/170125/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170121/ title=Json中的null和undefined>Json中的null和undefined</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年1月21日
+</date>
+<div class=post-content>
+由于Json是来自于JavaScript，因此讨论Json中的字段必须要回归到JS中。 null在JS语言定义里是一个字面量，且是基本类型。如……
+</div>
+<p class=readmore><a href=/post/170121/>阅读全文</a></p>
+</article>
+<ol class=page-navigator>
+<li class=prev>
+<a href=/post/page/21/>上一页</a>
+</li>
+<li>
+<a href=/post/>1</a>
+</li>
+<li>
+<span>...</span>
+</li>
+<li>
+<a href=/post/page/20/>20</a>
+</li>
+<li>
+<a href=/post/page/21/>21</a>
+</li>
+<li class=current>
+<a href=/post/page/22/>22</a>
+</li>
+<li>
+<a href=/post/page/23/>23</a>
+</li>
+<li>
+<a href=/post/page/24/>24</a>
+</li>
+<li>
+<span>...</span>
+</li>
+<li>
+<a href=/post/page/29/>29</a>
+</li>
+<li class=next>
+<a href=/post/page/23/>下一页</a>
+</li>
 </ol>
-
-
-
-
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

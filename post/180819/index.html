@@ -1,99 +1,69 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>消息队列理解 | 蛙二的思考</title>
-    <meta property="og:title" content="消息队列理解 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2018-08-19T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2018-08-19T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="消息队列理解">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/180819/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>消息队列理解 | 蛙二的思考</title>
+<meta property="og:title" content="消息队列理解 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-08-19T12:00:00+08:00">
+<meta property="article:modified_time" content="2018-08-19T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="消息队列理解">
+<meta name=author content>
+<meta property="og:url" content="/post/180819/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">消息队列理解</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2018年8月19日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>本质是为了实现观察者模式提供的一种中间件，串接起生产者和消费者两端。RabbitMQ有Exchange,Binding,Queue,RouteKey等很多概念，从问题导向逐个研究。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>消息队列理解</h1>
+</header>
+<date class="post-meta meta-date">
+2018年8月19日
+</date>
+<div class=post-content>
+<p>本质是为了实现观察者模式提供的一种中间件，串接起生产者和消费者两端。RabbitMQ有Exchange,Binding,Queue,RouteKey等很多概念，从问题导向逐个研究。</p>
 <p>最重要的是Queue。消费者必须声明一个队列才能收消息，增加队列一方面可以把多个消费者合并，另外能多做些特性，比如消息要不要持久化，要不要做排它性。</p>
 <p>最简单的投递，有了Queue消息就能贯通了。这种模式的Q和设备侧的事件定义很像，生产者指明要发给这个Q，不关心谁来收，需要这个Q的消费者去响应并做逻辑就行。</p>
-<p>但是AMQP规范不允许直接向Q投递，就引入第二个概念Exchange。有3种类型fanout,direct,topic，很像UDP的广播，单播，组播。不管哪种都必须有名字，而前面说的直接发给Q的场景，用了名字是空串&quot;&ldquo;的一个特殊Exchange，不在3种类型内，实际中几乎不可能会用，就不多解释了。</p>
+<p>但是AMQP规范不允许直接向Q投递，就引入第二个概念Exchange。有3种类型fanout,direct,topic，很像UDP的广播，单播，组播。不管哪种都必须有名字，而前面说的直接发给Q的场景，用了名字是空串"&ldquo;的一个特殊Exchange，不在3种类型内，实际中几乎不可能会用，就不多解释了。</p>
 <p>fanout最粗暴，全发送，direct必须严格匹配，简单的分类器。我现在接触最多的，就是topic。可以用通配符模糊地表示关联关系。</p>
 <p>抛开topic不谈，Binding是很简单的，虽然存在但很无脑。只有通配匹配，绑定的算法才变得重要起来。</p>
 <p>绑定是Exchange给消费者的提示，生产者需要给出RouteKey。所以即使同一个Exchange，投递的消费者可以千差万别，它的数量级也是最少的。</p>
 <p>Kafka只有topic和partition，为了从MQ迁移到kafka，在MQ协议中引入了分区概念。</p>
-<h2 id="rabbitmq使用">RabbitMQ使用</h2>
+<h2 id=rabbitmq使用>RabbitMQ使用</h2>
 <p>默认启动会有epmd监听4369端口和beam的25672。启用web插件后，只能用guest用户，再添加admin后，就能用15672端口进入web控制台。</p>
-<pre tabindex="0"><code>rabbitmq-plugins enable rabbitmq_management
+<pre tabindex=0><code>rabbitmq-plugins enable rabbitmq_management
 rabbitmq-server
 rabbitmqctl add_user admin admin
 rabbitmqctl set_user_tags admin administrator
 rabbitmqctl set_permissions -p &quot;/&quot; admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;
 rabbitmqctl shutdown
-</code></pre><h2 id="rabbitmq和kafka的比较">RabbitMQ和Kafka的比较</h2>
+</code></pre><h2 id=rabbitmq和kafka的比较>RabbitMQ和Kafka的比较</h2>
 <p>RabbitMQ的劣势</p>
 <ol>
 <li>在消息投递时必须由客户端指明IP，这就给无感横向扩展带来不便。</li>
@@ -104,155 +74,96 @@ rabbitmqctl shutdown
 <ol>
 <li>由于Kafka每条消息都会写磁盘，当topic数量变多后，并发多进程的随机写入会导致性能会急剧下降，RabbitMQ大多数情况把消息保存在内存，不会有此问题</li>
 </ol>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

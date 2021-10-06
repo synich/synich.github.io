@@ -1,104 +1,74 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>SQL语言梳理 | 蛙二的思考</title>
-    <meta property="og:title" content="SQL语言梳理 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2019-08-08T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2019-08-08T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="SQL语言梳理">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/190808/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>SQL语言梳理 | 蛙二的思考</title>
+<meta property="og:title" content="SQL语言梳理 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-08T12:00:00+08:00">
+<meta property="article:modified_time" content="2019-08-08T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="SQL语言梳理">
+<meta name=author content>
+<meta property="og:url" content="/post/190808/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">SQL语言梳理</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月8日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <h2 id="理论依据">理论依据</h2>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>SQL语言梳理</h1>
+</header>
+<date class="post-meta meta-date">
+2019年8月8日
+</date>
+<div class=post-content>
+<h2 id=理论依据>理论依据</h2>
 <p>SQL的背后是集合论和一阶谓词逻辑（Codd的原始论文曾设想二阶谓词，因太复杂放弃了）。操作的结果是封闭的，即输入和输出都是关系，这也是查询的结果可以作为插入动作的输入的原因。在时间的发展上，关系是在层次模型和网络模型之后提出的，它的目标就是避免出现地址概念，达到彻底的逻辑和物理分离。因此SQL语言没有变量（地址）的概念，AS只能表达不可变引用。</p>
 <p>SQL的计算是基于三值逻辑，所以会存在NULL（严格地说是NULL有未知和不适用两种含义，最原始的也是四值逻辑，但后来被合并，所以仍是三值）。NULL并不是值，只是一个用于填充的标记，所以对它做比较是无意义的，只能IS NULL判断。NULL在计算时会引发propagate，甚至NULL/0也是NULL。AND和OR等短路运算时，NULL的优先级介于TRUE和FALSE中间，即TRUE OR NULL = TRUE；FALSE AND NULL = FALSE。</p>
 <p>虽然很多时候都提倡用NOT NULL，但由于NULL的概念根植于SQL的底层，在外连接或CUBE/ROLLUP的GROUP BY时，还是会不经意间引入NULL。</p>
 <p>SQL基于关系代数，严格的说是Relation Bag Algebra，并不是Codd最原始的Set定义，差异在于Bag允许关系数据重复，而Set的数据必须唯一，所以有DISTINCT和ALL这类关键词来指定结果要set或bag。</p>
 <p>关系代数的核心操作只有5种，分别是并、差、积、选择、投影，操作的都是元组。所有的SQL语句最后都能用这5种操作组合完成。比如一个嵌套子查询可以等价转换成一个连接（join）操作。UPDATE操作看起来是对字段(Attribute)的修改，但严格来说，是用一条记录替换掉原来的记录，本质还是行级。</p>
-<h2 id="表达式类型">表达式类型</h2>
+<h2 id=表达式类型>表达式类型</h2>
 <ul>
 <li>表表达式：对表的操作，FROM、WHERE、GROUP BY、HAVING</li>
 <li>条件表达式：专门用在WHERE表达式，有AND、OR、IN、LIKE</li>
 <li>标题表达式：如各种算术运算符、CASE</li>
 </ul>
-<h2 id="值语法和类型">值语法和类型</h2>
+<h2 id=值语法和类型>值语法和类型</h2>
 <p>所有的值都是用圆括号<code>()</code>包起，可以出现在很多位置，比如VALUES后的字面量，或是FROM后的子查询，甚至在SELECT、WHERE等出现变量名的位置。值有两种类型，标量和集合。</p>
-<h2 id="功能分类">功能分类</h2>
+<h2 id=功能分类>功能分类</h2>
 <p>SQL有几种不同领域的操作，使用的指令不同，虽然最常见的是增删改查，但也不能忽视了其它几种分类。</p>
 <ul>
 <li>DDL - 数据定义语言(CREATE，ALTER，DROP，DECLARE)</li>
 <li>DML - 数据操纵语言(SELECT，DELETE，UPDATE，INSERT)</li>
 <li>DCL - 数据控制语言(GRANT，REVOKE，COMMIT，ROLLBACK)</li>
 </ul>
-<h2 id="查询的顺序">查询的顺序</h2>
+<h2 id=查询的顺序>查询的顺序</h2>
 <p>SELECT语句成分最多，其执行顺序并不是从前到后，正确的顺序如下</p>
 <ul>
 <li>7 SELECT 8 DISTINCT 10 TOP NUMBER</li>
@@ -108,9 +78,9 @@
 <li>9 ORDER BY</li>
 </ul>
 <p>在不影响结果的前提下，优化器对顺序会做微调，比如 FROM a LEFT JOIN b WHERE a.name=swan ，就会先执行WHERE再做JOIN，术语叫Predicate Pushdown Filter。查询如此多的关键字，最核心的有3个：JOIN、WHERE、GROUP BY。</p>
-<h2 id="横向与纵向操作">横向与纵向操作</h2>
+<h2 id=横向与纵向操作>横向与纵向操作</h2>
 <p>SQL是对关系的操作，这种操作有两个方向，横向的代表是JOIN，而纵向的代表是GROUP BY。</p>
-<h2 id="join关联和where谓词">JOIN关联和WHERE谓词</h2>
+<h2 id=join关联和where谓词>JOIN关联和WHERE谓词</h2>
 <p>关系代数鼓励把重复的数据拆分，必然导致查询时要把分开的表再合并起来，这个合并的动作在关系代数里称为JOIN连接。连接分交叉连接（再细分出内连接）和外连接（再细分出左连接、右连接、全连接）。很重要的区别是交叉连接时，两张表是对等关系，而外连接有关注表和补充表的区分。回顾一下SQL规范，</p>
 <ul>
 <li>SQL89时没有明确的JOIN语法，而是用逗号实现CROSS连接。</li>
@@ -122,7 +92,7 @@
 <p>连接首先分交叉连接和外连接，两者结果的约束是很大的。交叉连接的结果数是两张表的积，而外连接则是以一张表为准。</p>
 <p>外连接细分了LEFT、RIGHT、FULL这3种连接，LEFT OUTER JOIN可以简写成LEFT JOIN。左右只是方向不同，只需要实现一种就可以。左连接后面的限定条件<em>可能不生效</em>，结果既包含符合满足限定的连接行，也包含不满足限定的左(或右)行，这些不满足限定的行会由NULL来填充。这正是NULL必须存在的理论依据。所以即使表定义的某列规定了NOT NULL，但在连接结果还是会出现NULL，无法避免。两张表的LEFT JOIN的意义不太明显，如果有多张表会更好理解。</p>
 <p>考虑学生选课场景，学生和课之间是多对多的关系，表s记录了学号和学生的详细信息，表c记录了课程信息，表sc记录了学号和课程号的关联，如果要还原出学生姓名和课程名字，用这句</p>
-<pre tabindex="0"><code>select s.Name,C.Cname from student_course as sc left join student as s on s.Sno=sc.Sno left join course as c on c.Cno=sc.Cno
+<pre tabindex=0><code>select s.Name,C.Cname from student_course as sc left join student as s on s.Sno=sc.Sno left join course as c on c.Cno=sc.Cno
 </code></pre><p>在计算过程中，用sc表作为左连接的左表，先替换学生信息并保持住课程的信息(暂时还无意义)，等第二次左连接的时候，用课程信息替换掉上一次左连接的内容，最终的select结果中不保存sc的任何内容。</p>
 <p>连接的实现有几种</p>
 <ul>
@@ -130,171 +100,112 @@
 <li>Sorted Merge Join:</li>
 <li>Hash Join: 使用hash方式来加速匹配</li>
 </ul>
-<h2 id="group-by-层级和阶">GROUP BY 层级和阶</h2>
+<h2 id=group-by-层级和阶>GROUP BY 层级和阶</h2>
 <p>引入了谓词逻辑中阶(order)的概念，最明显体现在GROUP BY上。一但用了GROUP BY，操作对象就由0阶的行，变为1阶的集合，不同的阶需要用不同的谓词去操作。典型的WHERE操作0阶的行，而HAVING操作1阶的集合，其背后是有严格的理论支撑的。</p>
 <p>GROUP BY后可跟一到多个关键字，将集合按这些关键字形成子集，每个子集内只含一种这些关键字值的组合，此时其它值也在，但因为阶变了，不能显示地查看其它值明细（换句话说，其它值都在子集内，但不能直接查看），但是部分数据库提供了<code>group_concat</code>函数，将所有明细值表示成一个字符串，相当于把明细值做了聚合。</p>
-<h2 id="null的比较与排序">NULL的比较与排序</h2>
+<h2 id=null的比较与排序>NULL的比较与排序</h2>
 <p>排序时如果有多个字段，可以为每个字段分别指定ASC或DESC，默认升序ASC。原理上NULL是不能排序的，在max/min函数也会忽视NULL值（除非数据全部是NULL），甚至count如果指定列名，而这里面如果有NULL值，也不会计入总数。但是ORDER BY的时候，NULL值会在结果里显示出来。排序的结果是实现相关，主流的几种数据库行为分为两派</p>
 <ul>
 <li>NULL比任何值都小： 包括MySQL、SQLServer、SQLite，表现出的行为是，ASC时，NULL值最前，DESC时NULL值最后</li>
 <li>NULL比任何值都大： 包括Oracle和PostgresQL</li>
 </ul>
 <p>为弥补未定义NULL排序的缺失，SQL规范增补了NULLS FIRST或NULLS LAST关键字，通过放在ASC或DESC后来改变行为，遗憾的是只有Oracle、PG以及3.30版本后的SQLite支持。</p>
-<h2 id="索引">索引</h2>
+<h2 id=索引>索引</h2>
 <p>where条件如果是OR，索引不起作用。联合索引符合最左原则，即索引是A,B,C时，支持A或AB或ABC，其它没有作用。</p>
-<h2 id="窗口函数">窗口函数</h2>
+<h2 id=窗口函数>窗口函数</h2>
 <p>SQL99规范定义了窗口函数，反而最常见的MySQL直到8.0版本才支持。窗口函数有点类似GROUP BY，但由于它是函数，并不会改变结果的阶，因此可以作用在每一行上。</p>
 <p>窗口函数有两大类：聚合函数和排序函数，聚合函数和GROUP BY类似，也是SUM、MAX这些，但可以添加到每一行上。</p>
 <p>排序函数用得比较多，有ROW_NUMBER、RANK、DENSE_RANK，结合分组能知道在每个分组内的顺序，进而做一些分析操作，这是GROUP BY不具备的。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

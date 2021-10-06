@@ -1,85 +1,55 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>几种语言作用域的比较 | 蛙二的思考</title>
-    <meta property="og:title" content="几种语言作用域的比较 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2016-07-18T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2016-07-18T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="几种语言作用域的比较">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/160718/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>几种语言作用域的比较 | 蛙二的思考</title>
+<meta property="og:title" content="几种语言作用域的比较 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-07-18T12:00:00+08:00">
+<meta property="article:modified_time" content="2016-07-18T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="几种语言作用域的比较">
+<meta name=author content>
+<meta property="og:url" content="/post/160718/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">几种语言作用域的比较</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2016年7月18日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <h2 id="起因和lua">起因和Lua</h2>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>几种语言作用域的比较</h1>
+</header>
+<date class="post-meta meta-date">
+2016年7月18日
+</date>
+<div class=post-content>
+<h2 id=起因和lua>起因和Lua</h2>
 <p>程序大概是这样的：</p>
-<pre tabindex="0"><code>while do
+<pre tabindex=0><code>while do
   local ctx = ...
 end
 saveToFile(ctx)
@@ -98,12 +68,12 @@ saveToFile(ctx)
 JS的编程风格也一直倡导要尽可能用var定义变量，防止不经意间污染全局空间。
 但是JS的作用域中没有block作用域这一层，因此对照上例，即使在while内用var定义变量，超出while的语法作用域，仍然访问到。
 除非到了function定义结束标识，这个变量的作用域才结束。</p>
-<h2 id="js">JS</h2>
+<h2 id=js>JS</h2>
 <p>作用域混合了动态和静态两种，用this捕获的变量是上下文决定，或者说可以用apply指定。非this捕获的变量是静态的词法作用域。动态作用域臭名昭著，定义lambda语法时，就限定了这种情况下的this是静态捕获的。固然好，但一个this有两种作用域，很多人是迷惑的。</p>
-<h2 id="php">PHP</h2>
+<h2 id=php>PHP</h2>
 <p>作用域和JS有点像，只有function能创建新的作用域，花括号不构成块作用域，但比JS更弱的是，PHP不能链式地向外查找变量。有人说因为解释器用了barrier方式控制变量的绑定，取巧地控制变量的解析规则，这样实现很简单。他认为，严格意义上PHP没有作用域概念。</p>
 <p>在PHP函数作用域内无法直接看到外部定义，所以PHP增加了global关键字，表示这个变量是向最外部环境的引用。以下两句话的效果是一样的。</p>
-<pre tabindex="0"><code>global $var;
+<pre tabindex=0><code>global $var;
 $var =&amp; $GLOBALS[&quot;var&quot;];
 </code></pre><p>同样，用unset($var)也不会影响全局变量，因为只是删除了局部作用域内创建的引用变量而已。</p>
 <p>但是global关键字的局限也很明显，试想定义一个嵌套函数，在内层嵌套中想访问外层函数，但非全局变量，就没有办法了。
@@ -111,176 +81,117 @@ $var =&amp; $GLOBALS[&quot;var&quot;];
 至少我在PHP5.6版本，是无法实现内层函数访问外层函数变量的效果。
 因此PHP也不是一个lexical scope的语言（Lua和JS是的）。在闭包的实现时，
 需要用和global类似的use语句，才能实现向上一级的变量引用。但也不能等同于穿越作用域，而是在这个函数域内新建变量而已。
-至于use中使用&amp;，是被Scheme放弃的动态词法范围语义，在PHP和C++11中，都还是被保存了下来。</p>
+至于use中使用&，是被Scheme放弃的动态词法范围语义，在PHP和C++11中，都还是被保存了下来。</p>
 <p>链式访问我能想到的典型应用是用函数来实现对象，即让函数有状态。Lua或JS通过定义一个函数，并返回这个函数内嵌套定义的另一个函数来实现。
 PHP无法链式访问，但和C语言一样，支持函数内的static关键字，使得函数可以记录一些状态。但是PHP创建的函数，无法多次实例化，而且PHP虽然可以在函数内嵌套定义函数，但语法的限制(变量必须带$前缀，函数没有，类似lisp-2的双命名空间)，不能返回这个函数，也就没有很多烧脑的写法。
 从灵活性来看，使用static变量的函数显然是弱于链式访问构造的闭包。</p>
 <p><strong>PHP虽然加入了namespace机制，但只能保护类、函数、常量。global访问的变量，仍然共享全局命名空间。</strong></p>
-<h2 id="python">Python</h2>
+<h2 id=python>Python</h2>
 <p>没有块作用域，也没有链式作用域。Py3加入了nonlocal，可以在定义空间向上访问。</p>
 <p>Python的global关键字，和PHP有两点区别。</p>
 <ol>
 <li>Python只能访问全局空间的变量，加上global的目的，是未了改写这个全局变量，如果以只读方式用这个变量，不需要加global。</li>
 <li>Python的global只能访问这个文件的命名空间，相当于寻找module内的变量</li>
 </ol>
-<h2 id="ruby">Ruby</h2>
+<h2 id=ruby>Ruby</h2>
 <p>由于语法要素没有花括号，没有块作用域，遇到module/class/def这三个关键字会打开一个新的作用域，这个作用域和外部是隔绝的，无法链式向上级访问。这就造成一个很奇怪的现象，class内定义def却不能访问def外的局部变量。不过Ruby的思想是用@代表实例变量，@@代表类变量的方式来控制。而不是简单的局部变量。加上Ruby的全局变量用$表示，就造成了Ruby有四种变量命名的特色。</p>
 <p>如果想打破常规的作用域，可以用Module.new/Class.new/define_method这三个等价的方法名来替换关键字，使作用域平铺。</p>
-<h2 id="环境和实现">环境和实现</h2>
+<h2 id=环境和实现>环境和实现</h2>
 <p>SICP介绍计算模型有个很重要的概念环境。在教学概念中环境是个链接，当前函数栈帧是链表的最末端，如果当前环境找不到变量unbound，会向外层层寻找。</p>
 <p>lua的环境没有使用outer的概念，但mujs为求简单是这么用的。catch和with会创建新env并用outer指向当前环境，JS除了这两个关键字，callfunction会创建，等执行完再restore旧环境。</p>
-<h2 id="总结">总结</h2>
-<p>从作用域访问灵活性看：Lua/ES6（有块有链式） &gt; ES5（无块有链式）&gt; Python（无块有受限链） &gt; PHP/Ruby（无块无链式）</p>
+<h2 id=总结>总结</h2>
+<p>从作用域访问灵活性看：Lua/ES6（有块有链式） > ES5（无块有链式）> Python（无块有受限链） > PHP/Ruby（无块无链式）</p>
 <p>Python和Ruby本来就没有块作用域的语法要素，比较有无块作用域有失公允。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

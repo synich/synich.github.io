@@ -1,84 +1,54 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>《JS语言精粹》学习记录 | 蛙二的思考</title>
-    <meta property="og:title" content="《JS语言精粹》学习记录 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2018-04-01T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2018-04-01T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="《JS语言精粹》学习记录">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/180401/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>《JS语言精粹》学习记录 | 蛙二的思考</title>
+<meta property="og:title" content="《JS语言精粹》学习记录 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-04-01T12:00:00+08:00">
+<meta property="article:modified_time" content="2018-04-01T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="《JS语言精粹》学习记录">
+<meta name=author content>
+<meta property="og:url" content="/post/180401/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">《JS语言精粹》学习记录</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2018年4月1日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>知乎上看的，融合了自己的理解。</p>
-<h2 id="第一章-精华">第一章 精华</h2>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>《JS语言精粹》学习记录</h1>
+</header>
+<date class="post-meta meta-date">
+2018年4月1日
+</date>
+<div class=post-content>
+<p>知乎上看的，融合了自己的理解。</p>
+<h2 id=第一章-精华>第一章 精华</h2>
 <p>JavaScript有很多优秀的想法也有糟粕；
 优秀的想法在于：弱类型，函数，动态对象和富有想象的对象字面量表示法。
 糟粕在于：基于全局变量的编程模型。</p>
@@ -89,26 +59,26 @@
 <p>this.prototype[ name] = func ;</p>
 <p>Return this;</p>
 <p>}</p>
-<h2 id="第二章-语法">第二章 语法</h2>
+<h2 id=第二章-语法>第二章 语法</h2>
 <p>NaN表示一个数值，是一个不能产生正常结果的运算结果。不等于任何值，包括他自己。Infinity可以表示无穷大。数字拥有方法，有一个对象Math，包含一套用于数字的方法。</p>
 <p>字符串：可以在” ” , ’ ‘里面。\ 是转义字符。有一个length属性，表示长度。可以用 + 连接字符串，字符串也有一些方法。</p>
-<p>语句：每个<code>&lt;script&gt;</code>提供一个被编译且立即执行的编译单元。JavaScript把他们添加到一个全局的名字空间里面去。</p>
+<p>语句：每个<code>&lt;script></code>提供一个被编译且立即执行的编译单元。JavaScript把他们添加到一个全局的名字空间里面去。</p>
 <p>Var在函数内部，定义的是私有变量。代码块在{ } 中，不会创建新的作用域。</p>
 <p>Switch，while，do，for允许有一个可选的标签。可以配合break;</p>
 <p>被判断为 假 的值：False ; null ; undifined ;空字符串 ； 数字0 ； 数字NaN</p>
 <p>For in 语句枚举对象里的所有属性</p>
 <p>如果throw在一个try代码块中，那么控制流会跳转到catch从句中。如果throw语句在函数中，则该函数调用被放弃，控制流跳转到调用该函数的catch中。</p>
 <p>Throw语句的表达式通常是一个对象字面量。通常包含一个message和name。异常捕获器可以利用这些信息知道做什么。</p>
-<p>表达式：最简单的表达式是字面量值，变量，内置的值，new开头的表达式，delete开头提取属性，（&hellip;）,前置运算符，三元，函数调用，属性提取&hellip;.</p>
+<p>表达式：最简单的表达式是字面量值，变量，内置的值，new开头的表达式，delete开头提取属性，（&mldr;）,前置运算符，三元，函数调用，属性提取&mldr;.</p>
 <p>typeof判断类型。</p>
 <p>字面量：对象字面量是一种可以方便的按照指定的规格创建新对象的方法。</p>
 <p>函数：函数字面量定义了函数值。</p>
-<h2 id="第三章-对象">第三章 对象</h2>
+<h2 id=第三章-对象>第三章 对象</h2>
 <p>JavaScript简单的数据类型包括：数字，字符串，布尔类型，null，undifined。除此以外的所有类型都是对象。数字，字符串，布尔值也类似对象，他们有方法，但是他们不可变。</p>
 <p>对象是可变的键值对的组合。数组，函数，正则表达式都是对象。对象是属性的容器，属性都有名字和值。值不可是undifined。对象是无类型的，对象中可以包含对象。</p>
 <p>对象字面量：方便的创建对象。语法有点特殊，只有在等号或圆括号内的花括号才认为是创建对象。</p>
 <p>“||” 可以填充默认值，</p>
-<p>“&amp;&amp;”可以避免typeerror错误，由于在不存在的属性取值产生的。</p>
+<p>“&&”可以避免typeerror错误，由于在不存在的属性取值产生的。</p>
 <p>更新： 赋值语句，存在则更新；不存在则扩充。</p>
 <p>引用：对象通过引用传递，永远不会被复制。</p>
 <p>比较JS和Lua对象，两种语言的实现都有GC和union的值类型，JS会多出两个特殊的字段，properties和prototype。</p>
@@ -123,7 +93,7 @@
 <p>CONF和Frozen相关(ES5特性)。</p>
 <p>删除：删除对象的属性可能会让原型链中的属性透露出来。</p>
 <p>减少全局变量污染：只创建一个全局变量作为容器这样都在一个名称空间下，减少与其他程序的冲突。</p>
-<h2 id="第四章-函数">第四章 函数</h2>
+<h2 id=第四章-函数>第四章 函数</h2>
 <p>函数对象：函数是对象。创建时连接到Function.ptototype。每个函数对象在创建的时候配一个prototype属性。其有一个constructor属性且值为函数。</p>
 <p>函数字面量：函数通过函数字面量来创建。</p>
 <p>Var add = function ( a , b ){
@@ -137,15 +107,15 @@ return a + b ;
 <li>方法调用模式：</li>
 </ol>
 <p>函数在对象中保存为属性的时候，为方法。此时this绑定到该对象。通过this可以取值或对对象进行修改。通过this取得对象上下文的方法称为公共方法。</p>
-<ol start="2">
+<ol start=2>
 <li>函数调用模式：</li>
 </ol>
 <p>当函数不是属性的时候，此时当做一个函数来调用。此时this指向了全局变量。这使得函数中的内部函数不能为外部函数服务。解决的办法：在外部函数里让this赋值给一个变量。</p>
-<ol start="3">
+<ol start=3>
 <li>构造器调用模式：</li>
 </ol>
 <p>Js提供一套和基于类的语言类似的对象构建语法。如果在函数前面添加new来调用，那么会在背地里创建一个连接到这个函数的prototype的新对象，this会绑定到这个新对象。一个函数，构建的目的是希望结合new来用，就是构造器函数。</p>
-<ol start="4">
+<ol start=4>
 <li>Apply调用模式</li>
 </ol>
 <p>函数可以拥有很多方法。Apply方法允许我们传递一个数组参数给函数。其接受两个参数，第一个为this的值，第二个就为参数数组。</p>
@@ -153,155 +123,96 @@ return a + b ;
 <p>返回：return</p>
 <p>异常：throw语句判断函数的执行。会抛出一个exception对象，其中包含异常类型name，以及异常的描述message。一个try语句只会跟随一个捕获所有异常的catch。</p>
 <p>函数的闭包使得具备静态词法作用域，但this的存在又允许动态地打开作用域，兼有动态作用域的效果，很灵活很强大。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

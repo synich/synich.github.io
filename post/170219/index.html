@@ -1,247 +1,158 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>函数式和对象式，表达式和语句 | 蛙二的思考</title>
-    <meta property="og:title" content="函数式和对象式，表达式和语句 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2017-02-19T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2017-02-19T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="函数式和对象式，表达式和语句">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/170219/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>函数式和对象式，表达式和语句 | 蛙二的思考</title>
+<meta property="og:title" content="函数式和对象式，表达式和语句 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-02-19T12:00:00+08:00">
+<meta property="article:modified_time" content="2017-02-19T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="函数式和对象式，表达式和语句">
+<meta name=author content>
+<meta property="og:url" content="/post/170219/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">函数式和对象式，表达式和语句</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年2月19日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>伞哥在微博提到，ML的函数语法如果有多个参数，当参数没有完整传入时，并不是像Lua/PHP等一样赋值为nill，而是返回一个curry化的函数。这种思路如果移到协议处理上来，和组件化的实现是不同的拆分方式。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>函数式和对象式，表达式和语句</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月19日
+</date>
+<div class=post-content>
+<p>伞哥在微博提到，ML的函数语法如果有多个参数，当参数没有完整传入时，并不是像Lua/PHP等一样赋值为nill，而是返回一个curry化的函数。这种思路如果移到协议处理上来，和组件化的实现是不同的拆分方式。</p>
 <p>协议入口收集所有的参数，如果用curry化的思路，则每个步骤只处理一个参数，然后返回新的函数，并处理剩下的参数。如果第一个参数要做分派，则可能会返回两个不同的函数。通过这种方式，把过程拆分。</p>
 <p>如果是对象化的拆分，则根据业务划分若干阶段，每个阶段对应一个类，这种方式不会严格限定参数个数，可能第一次就处理所有的参数。不过函数式其实也可以处理所有参数，返回的函数接收新的参数也无妨。不管怎么样都是一个拆分的过程。</p>
 <p>表达式和语句也是语言中很基础的概念。</p>
 <p>Lua和JavaScript的语言规范都明确区分了expression和statement。Scheme大多是表达式，但也有set!这种没有返回值的。expression的定义是计算并返回值，而statement表示操作，对返回值没有要求。JS还细分了语句和批语句，批语句必须有{}，典型如switch,try,catch,finally。而像if,for,while都可以省略。Lua严谨，只有批语句的概念。expression是statement的子集。</p>
 <p>赋值按说是个语句，不返回值。但C语言为求简洁，把左值也返回了，导致这种语句的行为像表达式，应该当特例理解。</p>
 <p>Lua的函数返回0到多个值，而JS的函数只能且一定会返回一个值。返回多值的函数如Lua和Go，一种惯用法是返回值第一个为bool表示成功或失败，剩下的是实际需要的返回值。而JS和PHP都只能返回单值，加上JS的函数签名不支持显式引用，如果JS要从函数出参取值，只有使用对象才可以。</p>
-<h2 id="函数式典型函数的理解">函数式典型函数的理解</h2>
+<h2 id=函数式典型函数的理解>函数式典型函数的理解</h2>
 <p>scala没有break和continue关键字，因为它并不鼓励中途退出或跳过机制，而应先待循环的数据进行过滤再完整处理。引申出对函数式几个最典型函数的思考。</p>
 <ul>
-<li>filter 传入函数 x =&gt; bool，只保留返回true的内容，达到缩减原始数据的效果</li>
-<li>map 传入函数 x =&gt; z，返回一个新的，但长度不变的向量数据集</li>
-<li>reduce 传入函数 x, y =&gt; z，返回一个“标量值”。之所以打引号，是形式上返回的结果可能不是一个简单的数字，但维度上，和原始向量数据的任一项是相同的</li>
+<li>filter 传入函数 x => bool，只保留返回true的内容，达到缩减原始数据的效果</li>
+<li>map 传入函数 x => z，返回一个新的，但长度不变的向量数据集</li>
+<li>reduce 传入函数 x, y => z，返回一个“标量值”。之所以打引号，是形式上返回的结果可能不是一个简单的数字，但维度上，和原始向量数据的任一项是相同的</li>
 </ul>
 <p>如果要取向量的前3项怎么办？这时可以在filter中传入闭包，用闭包的状态是否到3来控制返回true还是false，因此这三个构成函数式处理的完备集合。另外从这种处理方式可以看出，只要顺序迭代器就能满足计算，并不需要随机迭代器，但从处理的便利性和效率上来说，随机迭代器有其不可替代的优势。</p>
 <p>对一个数据集做groupBy操作的结果，就是典型的顺序迭代器，一方面不知道总长度，更重要的是内部数据的无序性，导致随机访问没有意义。</p>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>

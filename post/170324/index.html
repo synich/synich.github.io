@@ -1,254 +1,167 @@
-<!doctype html>
-<html lang="zh-ch">
+<!doctype html><html lang=zh-ch>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>VPN概念解释 | 蛙二的思考</title>
-    <meta property="og:title" content="VPN概念解释 - 蛙二的思考">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2017-03-24T12:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2017-03-24T12:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="VPN概念解释">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="/post/170324/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>VPN概念解释 | 蛙二的思考</title>
+<meta property="og:title" content="VPN概念解释 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-03-24T12:00:00+08:00">
+<meta property="article:modified_time" content="2017-03-24T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="VPN概念解释">
+<meta name=author content>
+<meta property="og:url" content="/post/170324/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="">
-                        蛙二的思考
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="">首页</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
 </header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">VPN概念解释</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2017年3月24日
-        </date>
-        
-        
-        
-        <div class="post-content">
-            <p>VPN的本章是把来自不同子网的设备放在同一个子网内，构建虚拟网络。既然要并网，肯定要做身份认证，而PPP点对点协议天生就带认证属性，这也是家庭网络都是PPPoE方式接入。</p>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>VPN概念解释</h1>
+</header>
+<date class="post-meta meta-date">
+2017年3月24日
+</date>
+<div class=post-content>
+<p>VPN的本章是把来自不同子网的设备放在同一个子网内，构建虚拟网络。既然要并网，肯定要做身份认证，而PPP点对点协议天生就带认证属性，这也是家庭网络都是PPPoE方式接入。</p>
 <p>实现VPN的协议很多，举我所知的几种</p>
 <ol>
-<li>PPTP  微软出的规范，RFC2637。必须基于IP或TCP协议(至少要3层网络)，加密密钥最高支持到128bit，强度比较弱，甚至在iOS10的时代直接被苹果给抛弃了，但是因为是微软自家的东西，又出了SSTP后继，好像没什么人在用</li>
-<li>L2TP  思科提出，RFC2661，广泛使用</li>
+<li>PPTP 微软出的规范，RFC2637。必须基于IP或TCP协议(至少要3层网络)，加密密钥最高支持到128bit，强度比较弱，甚至在iOS10的时代直接被苹果给抛弃了，但是因为是微软自家的东西，又出了SSTP后继，好像没什么人在用</li>
+<li>L2TP 思科提出，RFC2661，广泛使用</li>
 <li>IPSec 用XAuth认证用户，model config分配IP。由于XAuth有版权且没有标准化，兼容性不如L2TP。运行在用户态的IKE daemon和处理实际IP报文并运行在内核态的IPSec协议栈，不同的OS实现不同。</li>
 <li>IKEv2 iOS10去掉PPTP后，新支持的类型。特性是IKEv2的MOBIKE(见RFC4555)扩展，VPN建立后切换网络(如从4G到3G)不会掉线。另外认证也支持EAP，比IPSec只支持XAuth好像更高级</li>
 <li>OpenVPN/ShadowSocks/V2Ray 这些更多的是穿越工具，分类上有些并不属于VPN，也没有RFC标准，一般都只是某个开源软件的实现，因此Android/iOS系统都需要额外安装对应的客户端软件，系统本身不自带</li>
 </ol>
-<h2 id="l2tp">L2TP</h2>
-<p>Layer 2 Tunnel Protocol的缩写，Layer 2这里指的是PPP协议，通俗地说，就是为了运输二层协议PPP而存在的。L2TP因为有PPP，负责AAA，也就是认证、授权、计费（Authentication, Authorization, Accounting）。除了IP网，还可以跑在ATM, MPLS, 帧中继等网络。，由于L2TP 传输安全性太差，于是人们在 L2TP 外层再套一个 IPSec 来保证传输过程的安全性，传输HTTP的话就是这样一个层级</p>
-<pre tabindex="0"><code>IP/UDP(4500)/ESP/UDP(1701)/L2TP/PPP/IP/TCP/HTTP
+<h2 id=l2tp>L2TP</h2>
+<p>Layer 2 Tunnel Protocol的缩写，Layer 2这里指的是PPP协议，通俗地说，就是为了运输二层协议PPP而存在的。L2TP因为有PPP，负责AAA，也就是认证、授权、计费（Authentication, Authorization, Accounting）。除了IP网，还可以跑在ATM, MPLS, 帧中继等网络。由于L2TP 传输安全性太差，于是人们在 L2TP 外层再套一个 IPSec 来保证传输过程的安全性，传输HTTP的话就是这样一个层级</p>
+<pre tabindex=0><code>IP/UDP(4500)/ESP/UDP(1701)/L2TP/PPP/IP/TCP/HTTP
 </code></pre><p>IPSec使用ESP加密，除上面介绍的传输模式外，还有另一种方式IP/ESP/UDP(1701)/L2TP/PPP，也叫隧道模式。这种方式IP层的负载是ESP，往往过不了NAT，并不适用于发起VPN者的网络环境。而前面提到的方式虽然会有两层UDP，但容易过NAT，这也是单纯技术上最佳的选择并不会被市场接受。</p>
 <p>L2TP似乎只有6个字节，每两字节一段，分为3段。第1段是协议和标志位，第2段是Tunnel ID，第3段是Session ID。后面这两个ID看起来是绑定的，但方向不同值不一样，命名为Session ID有点不对题。其上的PPP只有4个字节，1字节Address，1字节Control，2字节的承载协议类型（此例中指明是IP）。比TCP三卷本的说明少了最开始的0x7E。</p>
-<h2 id="ipsec和ike">IPSec和IKE</h2>
-<p>使用IPSec方式除了必须的服务器名，要配3个参数。用户名/密码和预共享密钥。正好对应了XAuth和PSK/RSA选项。XAuth用于认证，对应配置参数的用户名和密码。PSK是Pre Shared Key的简称，用大白话就是给你一个密钥作为认证手段，如果是RSA则需要配置用户证书/CA证书/服务器证书，一般的用户是搞不清这些概念的。</p>
-<p>中间人攻击是针对加密会话的初始化阶段进行的，而是什么协议初始化了完成 IPSec 的初始化阶段呢？ IKE 协议在1988年11月v1版，2005年升级到v2版。创建在奥克利协议（Oakley protocol）与ISAKMP协议的基础之上，它和IPSec是独立发展出的协议，但人们发现二者组合非常互补，所以现在往往一起提。使用X.509安全认证。那么问题就转化成了，我们要如何去验证 IKE peer 的身份呢？也就是说，我们要如何确定对方就是我们要联络的人呢？IKE 协议里Message type 5 和 type 6 就是负责这个事情的。</p>
-<p>具体来讲有三种方法：</p>
+<h2 id=ipsec和ike>IPSec和IKE</h2>
+<p>IPSec方式工作在IP层，其涵盖的ESP和AH协议主要是规定IP包的格式，因此在连接对端时，只要服务器域名不需要端口。</p>
+<p>中间人攻击是针对加密会话的初始化阶段进行的，IPSec 的初始化阶段显然要考虑这个问题，所以提出了XAuth规范，但该规范不如IKE的EAP，说到这里就要引出IKE协议了。IKE 协议在1988年11月发布v1版，2005年升级到v2版。是在奥克利协议（Oakley protocol）与ISAKMP协议的基础之上发展出来的，它和IPSec是独立的两套协议，但人们发现二者组合非常互补，所以现在往往一起提。由于IKE使用X.509安全认证，问题就转化成了面对中间人攻击，我们要如何去验证 IKE peer 的身份呢？也就是说，我们要如何确定对方就是我们要联络的人呢？IKE 协议里Message type 5 和 type 6 就是负责这个事情的。具体来讲有三种方法：</p>
 <ol>
-<li>预共享密钥</li>
-<li>公钥加密</li>
+<li>预共享密钥：Pre Shared Key，简称PSK。用大白话就是双方商定一个密钥作为彼此认证的手段</li>
+<li>公钥加密：需要配置用户证书/CA证书/服务器证书</li>
 <li>数字签名</li>
 </ol>
-
-        </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
+<p>XAuth似乎只支持预共享密钥和公钥加密，对应了XAuth和PSK/RSA选项，EAP不再依赖PSK。</p>
+<h3 id=strongswan>StrongSwan</h3>
+<p>基于IPSec最早的项目名叫FreeS/WAN，所以现在都沿用了swan这个名字，是Secure Wide-Area Networking首字母的缩写。这个项目停止维护后，衍生出OpenSwan、LibreSwan、StrongSwan。StrongSwan的主程序名就叫ipsec。</p>
 </div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2021 <a href="">蛙二的思考 By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
 </footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="">
-      <button type="submit" class="submit icon-search"></button>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
 </form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="/post/210901/" title="对昼伏夜出和朝九晚五两个技战法的分析">对昼伏夜出和朝九晚五两个技战法的分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210729/" title="git的远程访问辨析">git的远程访问辨析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210721/" title="PySpark分析">PySpark分析</a>
-    </li>
-    
-    <li>
-        <a href="/post/210614/" title="erlang和其上的扩展语言">erlang和其上的扩展语言</a>
-    </li>
-    
-    <li>
-        <a href="/post/210613/" title="lisp编程与结构化思想">lisp编程与结构化思想</a>
-    </li>
-    
-    <li>
-        <a href="/post/210611/" title="理解shell的换行和打印">理解shell的换行和打印</a>
-    </li>
-    
-    <li>
-        <a href="/post/210421/" title="vim的自定义扩展">vim的自定义扩展</a>
-    </li>
-    
-    <li>
-        <a href="/post/210404/" title="数据库的执行优化">数据库的执行优化</a>
-    </li>
-    
-    <li>
-        <a href="/post/210322/" title="对公有云上数仓的调研">对公有云上数仓的调研</a>
-    </li>
-    
-    <li>
-        <a href="/post/210216/" title="hadoop体系理解">hadoop体系理解</a>
-    </li>
-    
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+<li>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</li>
+<li>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</li>
+<li>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</li>
+<li>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</li>
 </ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
 </ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
 </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
 </body>
-
 </html>
