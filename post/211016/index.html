@@ -1,0 +1,150 @@
+<!doctype html><html lang=zh-ch>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>以太和IP网之外的一些网络 | 蛙二的思考</title>
+<meta property="og:title" content="以太和IP网之外的一些网络 - 蛙二的思考">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-10-16T12:00:00+08:00">
+<meta property="article:modified_time" content="2021-10-16T12:00:00+08:00">
+<meta name=Keywords content>
+<meta name=description content="以太和IP网之外的一些网络">
+<meta name=author content>
+<meta property="og:url" content="/post/211016/">
+<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
+<link rel=stylesheet href=/css/normalize.css>
+<link rel=stylesheet href=/css/style.css>
+<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+</head>
+<body>
+<header id=header class=clearfix>
+<div class=container>
+<div class=col-group>
+<div class=site-name>
+<a id=logo href>
+蛙二的思考
+</a>
+</div>
+<div>
+<nav id=nav-menu class=clearfix>
+<a class=current href>首页</a>
+</nav>
+</div>
+</div>
+</div>
+</header>
+<div id=body>
+<div class=container>
+<div class=col-group>
+<div class=col-8 id=main>
+<div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>以太和IP网之外的一些网络</h1>
+</header>
+<date class="post-meta meta-date">
+2021年10月16日
+</date>
+<div class=post-content>
+<p>对网络来说，第一层物理层的种类相对较少，就我所知无非是光纤、双绞线、单芯线，受限于物理介质不会有太多花样。但在这些介质上传输信号，就必然要定义信号的标准和传输方式，所以链路层（二层）的协议可谓数不胜数，不过大浪淘沙，现在几乎只剩下802协议，但是回顾曾经丰富多彩的链路协议也能看出通信发展与演化。</p>
+<h2 id=802x>802.x</h2>
+<p>以太网、令牌环以及无线网络都是这个家族的一个子类别，之所以是同一个家族，是因为共同遵守802.2的LLC链路控制协议，MAC地址也是这套规范定义的。</p>
+<p>以太帧除了承载IP包，还能承载ARP、VLan等。</p>
+<h2 id=atm>ATM</h2>
+<p>现在估计知道ATM网的人不多了，它采用的信元交换理念（cell switch），和电路交换和包交换都不一样。ATM网协议比TCP/IP协议复杂，也完善的多，基于电信思维制定的ATM网明显比基于计算机专家搞的TCP/IP协议完美太多。论技术，ATM协议绝对更适合通信未来发展，采用虚链路的连接方式，QOS有保障，带宽有保障，传输利用率也更高更稳定，整个网络的流量管理更强大，网络可控性高太多，对现在的流媒体等应用绝对更友好，基于ATM网的上层应用应该就简单很多，而不用像面对TCP/IP协议一样需要自己考虑网络稳定性，而且更强的网络控制和流量管理能力，可以大幅度降低大流量下的网络并发难度，减少现在因为突发流量导致网络崩溃。</p>
+<p>ATM网络虽复杂，但是应用层绝对简单，面对用户应该比TCP/IP协议友好很多。其实TCP/IP协议表面看很简单，然而如果真正自己部署，要运营维护好难度相当高，因为自主性太强，灵活度太高，用户需要自己面对很多灵活的规划部署，这其实相当有挑战性。用TCP/IP协议构建一个小网可能很简单，然而网络复杂一点，就相当有难度。至于成本问题，我一直认为ATM设备贵只是因为他没机会像TCP/IP网一样得到大规模推广，没有规模应用，成本是无法降低的，如果当年率先得到推广的是ATM网而不是TCP/IP网，那ATM设备绝对可以降低成本，而且以电信思维制定的电信网络，往往都是网络端功能强大而复杂，但是接入终端则易总简单且成本低廉，就像我们曾经的固定电话一样，复杂而昂贵的电信局端设备干了基本绝大多数工作，用户客户端其实简单而廉价，所以ATM网当年倘若可以得到大规模应用，其整体成本不见得真就高昂，而且现在云计算的大规模应用，更是把这种将复杂工作放在后端，以简化终端的思想，其实挺适合ATM的技术思想。</p>
+<p>ATM输就输在时间上，ITU-T基于电信网思维经验制定出一个庞大复杂的ATM协议花费了巨大精力和时间，然而计算机领域的专家，根本就不考虑那么多，只求简单快捷，有问题后面再迭代修补，结果标准还没定产品已经跑前面去了，以实战替代标准，所以随着TCP/IP协议的一统江湖，却越来越显示出IP协议在面对流媒体，语音，视频电话等应用时的力不从心，通过在IP协议上修修补补，以求弥补TCP/IP协议的不足，然而本质问题解决不了，只能尽力优化，所以导致为了适应新应用需求，整个TCP/IP协议其实越来越复杂，越来越庞大，虽然光传输的兴起极大的解决了带宽问题和部分QOS问题，然而现实中传输带宽用不是无线的，QOS问题不可能全寄托于传输链路没问题。今天各种应用大爆发，全网融合以IP协议一统天下，然而当年那个天赋异禀却时运不济的ATM只能叹息生不逢时。</p>
+</div>
+<div class="post-meta meta-tags">
+没有标签
+</div>
+</article>
+</div>
+<footer id=footer>
+<div>
+&copy; 2021 <a href>蛙二的思考 By </a>
+</div>
+<br>
+<div>
+<div class=github-badge>
+<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</div>
+<div class=github-badge>
+<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
+</div>
+<div class=github-badge>
+<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+</div>
+</div>
+</footer>
+<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<a id=rocket href=#top></a>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
+</div>
+<div id=secondary>
+<section class=widget>
+<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
+<input type=text name=q maxlength=20 placeholder=Search>
+<input type=hidden name=sitesearch>
+<button type=submit class="submit icon-search"></button>
+</form>
+</section>
+<section class=widget>
+<h3 class=widget-title>最近文章</h3>
+<ul class=widget-list>
+<li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
+<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
+</li>
+<li>
+<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
+</li>
+<li>
+<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
+</li>
+<li>
+<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
+</li>
+<li>
+<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
+</li>
+<li>
+<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
+</li>
+</ul>
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/categories/>分类</a></h3>
+<ul class=widget-list>
+</ul>
+</section>
+<section class=widget>
+<h3 class=widget-title><a href=/tags/>标签</a></h3>
+<div class=tagcloud>
+</div>
+</section>
+<section class=widget>
+<h3 class=widget-title>其它</h3>
+<ul class=widget-list>
+<li><a href=index.xml>文章 RSS</a></li>
+</ul>
+</section>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
