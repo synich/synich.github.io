@@ -1,6 +1,6 @@
 <!doctype html><html lang=zh-ch>
 <head>
-<meta name=generator content="Hugo 0.88.1">
+<meta name=generator content="Hugo 0.91.2">
 <meta charset=utf-8>
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -43,6 +43,62 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/190618/ title=性能监测工具选项备忘>性能监测工具选项备忘</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年6月18日
+</date>
+<div class=post-content>
+top 默认显示Task数量，用 top -H 切换到线程模式，显示Thread的数量。也可以 top -H -p xxx 仅显示某进程的线程。top -a按内存使用排序。 ps -T或-……
+</div>
+<p class=readmore><a href=/post/190618/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190615/ title=nginx工作流程>nginx工作流程</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年6月15日
+</date>
+<div class=post-content>
+master-worker的流程如下 当worker被意外终止时，master会启动一个新的，且work-id不变，保持逻辑一贯性。即使mas……
+</div>
+<p class=readmore><a href=/post/190615/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190613/ title=TeX学习笔记>TeX学习笔记</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年6月13日
+</date>
+<div class=post-content>
+到现在TeX还有价值的至少有3块 box-and-glue model hyphenation algorithm line-breaking algorithm 要分清几个概念 引擎: 执行程序，用得最多的是 pdftex(越南人写的)，最近比较新的有 xetex, luate……
+</div>
+<p class=readmore><a href=/post/190613/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190607/ title=网页链接>网页链接</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年6月7日
+</date>
+<div class=post-content>
+OCaml和SML比较 http://adam.chlipala.net/mlcomp/ 目前还在使用中的 Standard ML 实现有4个：经典的 SML/NJ（只有32位版本）、Moscow ML、Poly/ML 和 MLton。……
+</div>
+<p class=readmore><a href=/post/190607/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/190528/ title=批处理的用法>批处理的用法</a>
 </h1>
 </header>
@@ -50,7 +106,7 @@
 2019年5月28日
 </date>
 <div class=post-content>
-工作原因不得不用批处理打包，网上介绍的函数用法并不准确。 用 :func 加 goto eof的方式可以定义一个块，但它还算不上函数，如果执行流到了定义开始处，会继……
+基本语法 分支和判断，如果是字符串比较，一定要两侧加双引号。 if "%1" == "" ( command ) else if %1 equ 5 ( command ) 变量捕获 网上说通过重定向到文件再set /P a=&lt;xx 方式读取回……
 </div>
 <p class=readmore><a href=/post/190528/>阅读全文</a></p>
 </article>
@@ -92,7 +148,7 @@ HTTP初衷是定义为无状态协议，但随着使用日渐广泛，认证也�
 2019年5月20日
 </date>
 <div class=post-content>
-自从2016年5月注册免费的DDNS域名已经过去3年了，一直用却从未深究过其中原理。网上提供免费域名的服务商不少，几个知名的直接在路由器内嵌……
+自从2016年5月注册免费的DDNS域名，一直用却从未深究过其中原理。网上提供免费域名的服务商不少，几个知名的直接在路由器内嵌支持，如果不支……
 </div>
 <p class=readmore><a href=/post/190520/>阅读全文</a></p>
 </article>
@@ -123,62 +179,6 @@ HTTP初衷是定义为无状态协议，但随着使用日渐广泛，认证也�
 调试 一直以来对Web开发调试都没有好的办法，知道了error_log函数可以记日志。记录的文件名通过php.ini来设置 error_log = php_errors.log 这种相对路径的……
 </div>
 <p class=readmore><a href=/post/190504/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190502/ title=蒙古帝国>蒙古帝国</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年5月2日
-</date>
-<div class=post-content>
-成吉思汗传位给窝阔台再传给贵由后，却不能守，被拖雷之子蒙哥抢了帝位，最终传于忽必烈改为元朝。 蒙哥、忽必烈、旭烈兀、阿里不哥是拖雷的4个儿子，……
-</div>
-<p class=readmore><a href=/post/190502/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190501/ title=Linux的软件包管理软件说明>Linux的软件包管理软件说明</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年5月1日
-</date>
-<div class=post-content>
-不同发行版有独特的包管理软件，分为打包软件和包管理两块，相对来说打包软件定义包的格式，而包管理要解决的问题要复杂得多。 添加软件时，要记录所有……
-</div>
-<p class=readmore><a href=/post/190501/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190429/ title=网络文件系统机制>网络文件系统机制</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年4月29日
-</date>
-<div class=post-content>
-几种常见的NAS协议，FTP无法挂载到路径，AFS只有Apple用，几乎遇不到，说说Samba(smb又叫CIFS)和nfs方式 Samba 有1和2两……
-</div>
-<p class=readmore><a href=/post/190429/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190420/ title=浏览器的网络请求发展史>浏览器的网络请求发展史</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年4月20日
-</date>
-<div class=post-content>
-偶然间推论出的历史脉络 HTTP0.9版只有GET，加上当时浏览器最初的定位就是互相看文档，初代只是个能在地址栏发起GET的图形程序。 慢慢地应……
-</div>
-<p class=readmore><a href=/post/190420/>阅读全文</a></p>
 </article>
 <ol class=page-navigator>
 <li class=prev>
@@ -248,6 +248,18 @@ HTTP初衷是定义为无状态协议，但随着使用日渐广泛，认证也�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -264,18 +276,6 @@ HTTP初衷是定义为无状态协议，但随着使用日渐广泛，认证也�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

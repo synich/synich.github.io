@@ -1,6 +1,6 @@
 <!doctype html><html lang=zh-ch>
 <head>
-<meta name=generator content="Hugo 0.88.1">
+<meta name=generator content="Hugo 0.91.2">
 <meta charset=utf-8>
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -43,6 +43,62 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/190815/ title=公安数仓总结>公安数仓总结</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年8月15日
+</date>
+<div class=post-content>
+和阿里建设大数据为了提高转化率留存率不同，公安并没有明确的提高指标，而是建立尽可能完备的数仓，在遇到案件时能尽量多地挖掘出可能有用的信息。 数……
+</div>
+<p class=readmore><a href=/post/190815/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190808/ title=SQL语言梳理>SQL语言梳理</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年8月8日
+</date>
+<div class=post-content>
+历史脉络 首先说一下这帮人当时都在IBM，大概因为大规模的数据应用主要的受众是商业公司，刚好和IBM主业匹配。Codd在1970年发表了关系代……
+</div>
+<p class=readmore><a href=/post/190808/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190801/ title=数据库和数仓的历史>数据库和数仓的历史</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年8月1日
+</date>
+<div class=post-content>
+数据库是计算机最早的应用系统，阿波罗计划时就有了数据库原型，这便是1968年的IBM ICS系统，69年改名为IMS/360（层次型数据库）。……
+</div>
+<p class=readmore><a href=/post/190801/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190722/ title=学Scheme经历的误区>学Scheme经历的误区</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年7月22日
+</date>
+<div class=post-content>
+从SICP上手的人往往觉得一个list类型包打天下，以致于看到R5RS中特别定义vector都很惊讶。其实就像其它成熟语言一样，容器有很多分……
+</div>
+<p class=readmore><a href=/post/190722/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/190708/ title=感悟项目开发和问题分解>感悟项目开发和问题分解</a>
 </h1>
 </header>
@@ -64,7 +120,7 @@
 2019年7月5日
 </date>
 <div class=post-content>
-go.mod 很久不用go，现在module已经是默认行为，不再要求在GOPATH目录编译，而是鼓励在当前或父目录添加go.mod文件来定义工程。配置g……
+go.mod 很久不用go，现在module已经是默认行为，不再要求在GOPATH目录编译，而是鼓励在当前或父目录添加go.mod文件使这个目录成为go……
 </div>
 <p class=readmore><a href=/post/190705/>阅读全文</a></p>
 </article>
@@ -123,62 +179,6 @@ go.mod 很久不用go，现在module已经是默认行为，不再要求在GOPAT
 如今的编辑器没有插件机制都不好意思出来见人，但什么是真正好的机制？ 像Emacs，所有的操作都可以对应函数，再用Elisp把已有的函数和数据结……
 </div>
 <p class=readmore><a href=/post/190620/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190618/ title=性能监测工具选项备忘>性能监测工具选项备忘</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年6月18日
-</date>
-<div class=post-content>
-top 默认显示Task数量，用 top -H 切换到线程模式，显示Thread的数量。也可以 top -H -p xxx 仅显示某进程的线程。top -a按内存使用排序。 ps -T或-……
-</div>
-<p class=readmore><a href=/post/190618/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190615/ title=nginx工作流程>nginx工作流程</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年6月15日
-</date>
-<div class=post-content>
-master-worker的流程如下 当worker被意外终止时，master会启动一个新的，且work-id不变，保持逻辑一贯性。即使mas……
-</div>
-<p class=readmore><a href=/post/190615/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190613/ title=TeX学习笔记>TeX学习笔记</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年6月13日
-</date>
-<div class=post-content>
-到现在TeX还有价值的至少有3块 box-and-glue model hyphenation algorithm line-breaking algorithm 要分清几个概念 引擎: 执行程序，用得最多的是 pdftex(越南人写的)，最近比较新的有 xetex, luate……
-</div>
-<p class=readmore><a href=/post/190613/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190607/ title=网页链接>网页链接</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年6月7日
-</date>
-<div class=post-content>
-OCaml和SML比较 http://adam.chlipala.net/mlcomp/ 目前还在使用中的 Standard ML 实现有4个：经典的 SML/NJ（只有32位版本）、Moscow ML、Poly/ML 和 MLton。……
-</div>
-<p class=readmore><a href=/post/190607/>阅读全文</a></p>
 </article>
 <ol class=page-navigator>
 <li class=prev>
@@ -248,6 +248,18 @@ OCaml和SML比较 http://adam.chlipala.net/mlcomp/ 目前还在使用中的 Stan
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -264,18 +276,6 @@ OCaml和SML比较 http://adam.chlipala.net/mlcomp/ 目前还在使用中的 Stan
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

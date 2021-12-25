@@ -47,12 +47,19 @@
 2019年5月20日
 </date>
 <div class=post-content>
-<p>自从2016年5月注册免费的DDNS域名已经过去3年了，一直用却从未深究过其中原理。网上提供免费域名的服务商不少，几个知名的直接在路由器内嵌支持，如果不支持，通常服务商会提供客户端程序和DDNS服务器通信来达到解析效果，客户端有些从C语言编译，有些就是一行脚本。如果有一台低功率主机，也方便。</p>
+<p>自从2016年5月注册免费的DDNS域名，一直用却从未深究过其中原理。网上提供免费域名的服务商不少，几个知名的直接在路由器内嵌支持，如果不支持，通常服务商会提供客户端程序和DDNS服务器通信来达到解析效果，客户端有些从C语言编译，有些就是一行脚本。如果有一台低功率主机，也方便。</p>
 <p>以公云3322.org为例，不充钱的账号只能开通一个账号。而且登陆管理员的账号密码和域名保活的密码并不相同，一定要分开。</p>
 <p>域名分为顶级域名和壳域名，顶级域名有组织管理，个人要用必须要购买，而免费域名一定是壳域名，通常是公司买下顶级域名，并开放了其二级域名吸引用户去用，所以才会免费。如果有域名和静态IP，可以用dnspod.cn配置绑定。</p>
 <p>DNS是1985年出现的，在那之前ARPANET就有了host.txt方式记录IP和名字的对应关系，随着主机数量日渐增多，文本方式成为辅助，但仍在操作系统中存在。</p>
-<p>gethostbyname函数就是查域名，查询hosts文件或是dns的顺序通过/etc/nsswtich.conf控制，由solaris先发明，被linux继承，以libnss库的形式存在。</p>
-<p>DNS记录称为Resource Record(RR)，有如下几种类型</p>
+<h2 id=域名解析>域名解析</h2>
+<p>查域名函数是gethostbyname，无论是宿主机或是k8s集群，DNS解析会依赖 /etc/host.conf 、 /etc/hosts 和 /etc/resolv.conf 这三个文件，查询顺序通过/etc/nsswtich.conf控制，由solaris发明，被linux继承，以libnss库的形式存在。简单讲解一下/etc/resolv.conf配置，每行都会以一个关键字开头，然后跟配置参数。在k8s集群中主要用到的关键词有3个。</p>
+<ul>
+<li>nameserver #定义 DNS 服务器的 IP 地址</li>
+<li>search #定义域名的搜索列表，当查询的域名中包含的 . 的数量少于 options.ndots 的值时，会依次匹配列表中的每个值</li>
+<li>options #定义域名查找时的配置信息</li>
+</ul>
+<h2 id=dns记录>DNS记录</h2>
+<p>称为Resource Record(RR)，有如下几种类型</p>
 <ul>
 <li>NS记录：Name Server，表示这个域名由谁来解析，通常买域名的厂商就是NS，当然也可以改成dnspod或cloudflare之类。</li>
 <li>A记录： 域名到IP的映射关系，A表示Address。如果要映射到IPv6，称为AAAA记录</li>
@@ -105,6 +112,18 @@
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -121,18 +140,6 @@
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

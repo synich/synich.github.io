@@ -41,6 +41,48 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/160728/ title=使用CVS管理版本>使用CVS管理版本</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年7月28日
+</date>
+<div class=post-content>
+历史 代码的差分和比较一直是存在的，diff和patch干的就是这个，diff看着简单，其背后的理论延伸非常庞大，输出格式也有多种，除了默认的……
+</div>
+<p class=readmore><a href=/post/160728/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/160718/ title=几种语言作用域的比较>几种语言作用域的比较</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年7月18日
+</date>
+<div class=post-content>
+起因和Lua 程序大概是这样的： while do local ctx = ... end saveToFile(ctx) 程序执行到最后，总会报一个写入nil的错误。我一度以为是在处理数据时没有赋值，但反复核对都没有……
+</div>
+<p class=readmore><a href=/post/160718/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/160621/ title=我理解的面向对象设计原则>我理解的面向对象设计原则</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年6月21日
+</date>
+<div class=post-content>
+面向对象的程序设计和面向对象的程序语言，两者并不完全一样。 面向对象的程序设计是一系列原则，是指导思想；而面向对象的语言， 则是把这些原则和思想……
+</div>
+<p class=readmore><a href=/post/160621/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/160611/ title=PHP与Web服务器的集成方式>PHP与Web服务器的集成方式</a>
 </h1>
 </header>
@@ -136,48 +178,6 @@ SSL和OpenSSL的关系，就好比C++和Visual C++的关系。OpenSSL是业界�
 </div>
 <p class=readmore><a href=/post/160412/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/160328/ title=PNG格式的启发>PNG格式的启发</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年3月28日
-</date>
-<div class=post-content>
-都说PNG格式是二进制格式中的优秀范例，文档也写得非常好。这周断断续续看了RFC2083，常有拍案之处。 PNG的总体格式是8字节的格式头和一……
-</div>
-<p class=readmore><a href=/post/160328/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/160313/ title=模块功能的划分与解耦>模块功能的划分与解耦</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年3月13日
-</date>
-<div class=post-content>
-这周工作上解决了一个困惑我很久的需求，记一些要点。 在C-S模型中，向来都是客户端发请求服务端应答，偶尔也会有服务端推送业务，但已经是比较不常……
-</div>
-<p class=readmore><a href=/post/160313/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/160304/ title=Openresty代码初读>Openresty代码初读</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年3月4日
-</date>
-<div class=post-content>
-我在公司内网的服务器从Apache httpd换成Openresty也有半年左右了，切换之后没有去深入研究，最近重新开始研究，一点初步的理解，……
-</div>
-<p class=readmore><a href=/post/160304/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/page/25/>上一页</a>
@@ -246,6 +246,18 @@ SSL和OpenSSL的关系，就好比C++和Visual C++的关系。OpenSSL是业界�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -262,18 +274,6 @@ SSL和OpenSSL的关系，就好比C++和Visual C++的关系。OpenSSL是业界�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

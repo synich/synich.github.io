@@ -41,6 +41,62 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/180813/ title=UDP和相关操作>UDP和相关操作</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2018年8月13日
+</date>
+<div class=post-content>
+TCP属于有连接协议，所以一定需要有bind操作。服务端显式bind，客户端在connect时会内OS隐式bind。一直不确定UDP要不要b……
+</div>
+<p class=readmore><a href=/post/180813/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/180809/ title=操作系统启动器的故事>操作系统启动器的故事</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2018年8月9日
+</date>
+<div class=post-content>
+让我们看看几大主流操作系统的启动区别。 启动顺序的差异 Windows是先认硬盘，再从硬盘分辨分区，其中系统分区中找到ntldr并引导。 Linu……
+</div>
+<p class=readmore><a href=/post/180809/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/180805/ title=版本管理工具的历程>版本管理工具的历程</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2018年8月5日
+</date>
+<div class=post-content>
+到今天为止，版本管理工具可以粗略地分为三代： SCCS在1972年开创了版本管理的理念，最初是用SNOBL4开发，后来借着Unix的东风，以C……
+</div>
+<p class=readmore><a href=/post/180805/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/180801/ title=电话协议的发展>电话协议的发展</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2018年8月1日
+</date>
+<div class=post-content>
+写这篇的起因，是确定了SIP协议更直观的翻译应该叫电话初始化协议。Session在IT领域是个很宽泛的词，只表示两者之间持续的一段互动。而话……
+</div>
+<p class=readmore><a href=/post/180801/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/180714/ title=Lisp的宏>Lisp的宏</a>
 </h1>
 </header>
@@ -122,62 +178,6 @@ socket函数声明传入3个值，依次是domain/type/protocol。域最大，�
 </div>
 <p class=readmore><a href=/post/180618/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/180615/ title=明朝与文官集团>明朝与文官集团</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年6月15日
-</date>
-<div class=post-content>
-对明史的一些理解，不贴史料更多是一些论述性的东西。 明太祖立国大杀功臣集团，对官僚集团也是异常残酷，俸禄为历朝最少，剥皮实草戴枷上堂都是只在这……
-</div>
-<p class=readmore><a href=/post/180615/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/180612/ title=写文件的一些特性>写文件的一些特性</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年6月12日
-</date>
-<div class=post-content>
-先创建一个分区，方式如下 dd if=/dev/zero of=./dummy count=204800 创建一个普通文件，用file看类型是data mkfs.ext4 ./dummy 会提示不是个block special device，是否要继续。选Y继续。……
-</div>
-<p class=readmore><a href=/post/180612/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/180609/ title=论RESTFul特性>论RESTFul特性</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年6月9日
-</date>
-<div class=post-content>
-产生RESTFul的领域，似乎不能涵盖API风格。要求URL以名词性单词结尾，典型的比如心跳，要作为什么样的资源呢？也许可以强作令牌，但其它……
-</div>
-<p class=readmore><a href=/post/180609/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/180606/ title=Scheme的几个实现Gambit/Chibi/Chicken>Scheme的几个实现Gambit/Chibi/Chicken</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年6月6日
-</date>
-<div class=post-content>
-Gambit和Chicken都是能把Scheme编译成C源码的实现(另外还有Bigloo)。 Gambit 两个主要执行程序：gsi和gsc，gsi是执行……
-</div>
-<p class=readmore><a href=/post/180606/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/page/12/>上一页</a>
@@ -246,6 +246,18 @@ Gambit和Chicken都是能把Scheme编译成C源码的实现(另外还有Bigloo)�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -262,18 +274,6 @@ Gambit和Chicken都是能把Scheme编译成C源码的实现(另外还有Bigloo)�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

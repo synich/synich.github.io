@@ -41,6 +41,62 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年4月21日
+</date>
+<div class=post-content>
+理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
+</div>
+<p class=readmore><a href=/post/210421/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年4月4日
+</date>
+<div class=post-content>
+现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
+</div>
+<p class=readmore><a href=/post/210404/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年3月22日
+</date>
+<div class=post-content>
+Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
+</div>
+<p class=readmore><a href=/post/210322/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年2月16日
+</date>
+<div class=post-content>
+我司hadoop在容器环境从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 对应yarn，管理service和node两个维度。no……
+</div>
+<p class=readmore><a href=/post/210216/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/210211/ title=线程模型与调度>线程模型与调度</a>
 </h1>
 </header>
@@ -122,62 +178,6 @@ Power是标准的SMP架构，而X86则是NUMA。由于SMP访问内存速度一�
 </div>
 <p class=readmore><a href=/post/210106/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/201225/ title=vim的自动补全>vim的自动补全</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年12月25日
-</date>
-<div class=post-content>
-自动补全有15种模式（:help ins-completion）。其中有两种的补全列表内容与另外两种相同，只是排序不同 文字编辑用的 3 种: K 模式……
-</div>
-<p class=readmore><a href=/post/201225/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/201101/ title=二三层网络和MAC地址>二三层网络和MAC地址</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年11月1日
-</date>
-<div class=post-content>
-根据OSI的七层模型，二层协议包含PPP、ARP，而三层包含IP、IGMP。 不同网段（子网）的ip通信，需要经过三层网络。相同网段的ip通信……
-</div>
-<p class=readmore><a href=/post/201101/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/201009/ title=shell的历史和流派>shell的历史和流派</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年10月9日
-</date>
-<div class=post-content>
-源起Bourne 最初unix系统用的是ken thompson写的shell，不过这个只在贝尔实验室内部用，最早广泛流行的version 7 un……
-</div>
-<p class=readmore><a href=/post/201009/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/200925/ title=python点滴记录>python点滴记录</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年9月25日
-</date>
-<div class=post-content>
-多线程 拜臭名昭著的GIL所赐，多线程只在IO密集场景下有一战之力。即便只能用到一个核，锁还是必须的，但这个锁和OS的锁不同，是语言级别的锁，……
-</div>
-<p class=readmore><a href=/post/200925/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/>上一页</a>
@@ -237,6 +237,18 @@ Power是标准的SMP架构，而X86则是NUMA。由于SMP访问内存速度一�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -253,18 +265,6 @@ Power是标准的SMP架构，而X86则是NUMA。由于SMP访问内存速度一�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

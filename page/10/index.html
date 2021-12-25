@@ -1,6 +1,6 @@
 <!doctype html><html lang=zh-ch>
 <head>
-<meta name=generator content="Hugo 0.88.1">
+<meta name=generator content="Hugo 0.91.2">
 <meta charset=utf-8>
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -40,6 +40,62 @@
 <div class=col-group>
 <div class=col-8 id=main>
 <div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190220/ title=程序语言的依赖包管理>程序语言的依赖包管理</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年2月20日
+</date>
+<div class=post-content>
+没有人可以写从到尾写完一个程序，除了内核这种项目，多都需要依赖其它库或源码，解决依赖也成了各种语言的基本功。又细分了两个需求：全局的包管理和……
+</div>
+<p class=readmore><a href=/post/190220/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190215/ title=Android安装Linux环境>Android安装Linux环境</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年2月15日
+</date>
+<div class=post-content>
+15年时试用过kbox，毕竟是个半成品，到2019年2月，安卓跑终端已经很成熟了。和Linux比，安卓的模拟环境是单用户且用户名已预置，在4……
+</div>
+<p class=readmore><a href=/post/190215/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190209/ title=vim的概念和配置>vim的概念和配置</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年2月9日
+</date>
+<div class=post-content>
+编译遇到的问题 在cent6上遇到Python无法编译出动态库，只有.a库，这时编译vim的选项 ./configure &ndash;with-features=huge &ndash;enable-python3interp=yes &ndash;enable-luainterp &ndash;enable-multibyte &ndash;enable-sniff &ndash;enable-fontset 如果能编译出Python的so库……
+</div>
+<p class=readmore><a href=/post/190209/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190121/ title=SQLite分析>SQLite分析</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年1月21日
+</date>
+<div class=post-content>
+SQLite指针是个很大的结构，包含vfs和Db结构。允许attach特性，可以同时有多个数据库，因此DB成员是数组，每个DB的最关键结构是……
+</div>
+<p class=readmore><a href=/post/190121/>阅读全文</a></p>
+</article>
 <article class=post>
 <header>
 <h1 class=post-title>
@@ -85,14 +141,14 @@ RTSP支持RTP/AVP, RTP/AVP/TCP两种传输模式的，前者也可以写作RTP/A
 <article class=post>
 <header>
 <h1 class=post-title>
-<a href=/post/190103/ title=网段与路由>网段与路由</a>
+<a href=/post/190103/ title=网络层的交换与路由>网络层的交换与路由</a>
 </h1>
 </header>
 <date class="post-meta meta-date">
 2019年1月3日
 </date>
 <div class=post-content>
-对于私网地址的规范，在RFC 1918 - Address Allocation for Private Internets里有完整的规范定义。其中A类，B类，C类网段各取了一部分： 10.0.0.0/8 (255.0.0.0) 172.16.0.0/12 (255.240.0.0) 192.168.0.0/16 (255.255.0.0) 192的私有……
+网段定义 对于私网地址的规范，在RFC 1918 - Address Allocation for Private Internets里有完整的规范定义。其中A类，B类，C类网段各取了一部分： 10.0.0.0/8 (255.0.0.0) 172.16.0.0/12 (255.240.0.0) 192.168.0.0/16 (255.255.0.0) 19……
 </div>
 <p class=readmore><a href=/post/190103/>阅读全文</a></p>
 </article>
@@ -123,62 +179,6 @@ RTSP支持RTP/AVP, RTP/AVP/TCP两种传输模式的，前者也可以写作RTP/A
 PaaS/IaaS八大服务群 容器 云存储 云数据库/数仓 挖掘/图数据库 图像识别，智能分析 视频/接入 中间件 运维 中间件，视频，运维必须，其它都是选配……
 </div>
 <p class=readmore><a href=/post/181121/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/181120/ title=音视频解码器的特性>音视频解码器的特性</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年11月20日
-</date>
-<div class=post-content>
-音频解码有指标 比特率范围 输入通道 比特率范围，典型如MP3是8k到320k，FLAC会有1到2^31全覆盖。 通道数大抵越低端，用于通信的越少，……
-</div>
-<p class=readmore><a href=/post/181120/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/181117/ title=FLTK编译历程>FLTK编译历程</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年11月17日
-</date>
-<div class=post-content>
-为了跨平台，Windows用了GDI，Mac用Quartz，Unix用X11。Fl::scheme可以简单地设置风格，效果一般。 要想编译后的……
-</div>
-<p class=readmore><a href=/post/181117/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/181116/ title=C语言的HTTP请求>C语言的HTTP请求</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年11月16日
-</date>
-<div class=post-content>
-在windows上写HTTP请求，遇到问题很多。 头文件要用winsock2.h，且必须调用WSAStartup，另外还要链接ws2_32库。……
-</div>
-<p class=readmore><a href=/post/181116/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/181110/ title=论为什么CSS难学>论为什么CSS难学</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2018年11月10日
-</date>
-<div class=post-content>
-很多人以为CSS是给DOM元素设置属性（attribute），其实CSS规定的并不是属性，而是行为（behavior），DOM里的每个元素都……
-</div>
-<p class=readmore><a href=/post/181110/>阅读全文</a></p>
 </article>
 <ol class=page-navigator>
 <li class=prev>
@@ -248,6 +248,18 @@ PaaS/IaaS八大服务群 容器 云存储 云数据库/数仓 挖掘/图数据�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -264,18 +276,6 @@ PaaS/IaaS八大服务群 容器 云存储 云数据库/数仓 挖掘/图数据�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

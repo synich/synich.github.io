@@ -57,7 +57,7 @@
 <ul>
 <li>terminal，简称tty，DEV号5,0。包裹着shell提供输入输出，可以有多个，类似电视的遥控器。有个系统函数<code>char* ttyname(int fd)</code>，会返回句柄所绑定的tty，实测0, 1, 2这几个标准句柄对应的tty是相同的（不确定是否有方式修改）。</li>
 <li>console，DEV号5,1。最早的主机在启动完成前不能接入terminal，在启动和关闭阶段的日志会在console上显示，可以是一些灯或磁碟机，至多一个，类似电视的面板按钮</li>
-<li>pty，虚拟终端，ssh就是网络化的pty，网络化后原来串口的波特率概念还保留，比如我测试结果输入输出的波特率都是38400。pty映射到软件上的实体是pts，这是2.1.93版内核正式增加的特性，对应devpts文件系统，一般挂在/dev/pts下。这是个主从结构，主是/dev/ptmx只有1个，DEV号5,2。从是/dev/pts，每增加一个虚拟终端就增加一个。</li>
+<li>pty，虚拟终端，ssh就是网络化的pty。之所以会有这个概念，是因为terminal会在设备驱动和系统读写函数间，有一个内部的转换层，但网络化缺少了这层。为了保持一致性，将网络源也抽象为终端，像串口的波特率概念还保留，比如我测试结果输入输出的波特率都是38400。pty映射到软件上的实体是pts，unix特性，linux内核的2.1.93版正式支持该特性。对应devpts文件系统，一般挂在/dev/pts下。是个主从结构，主只有1个，名字固定为/dev/ptmx，DEV号5,2。从的名字从主获取，<code>df=open("/dev/ptmx") or getpt();ptsname(df);</code>。从的名字格式是/dev/pts/xx，每增加一个虚拟终端就增加一个。</li>
 </ul>
 <p>hangup的原意是挂断电传打字tty，引申后就是pts即ssh，所以用exit只是退出shell，并没有关闭外覆的sshd，不触发HUP信号的原因就在于此。</p>
 <p>在安卓6上遇到ssh登陆后提示<code>PTY allocation request failed on channel 0</code>错误，可能是关闭了ptmx所致。这就会出现ssh连接成功后，只有bash内置命令(pwd)能显示出来，其它即便执行也看不到结果。</p>
@@ -101,6 +101,18 @@
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -117,18 +129,6 @@
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

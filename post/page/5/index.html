@@ -41,6 +41,62 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/200125/ title=tags的说明和比较>tags的说明和比较</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年1月25日
+</date>
+<div class=post-content>
+通用编辑软件用于代码有两个点，看时方便跳转和写时方便补全，跳转靠的就是tags。 tags有两种主流实现ctags和etags。ctags诞生……
+</div>
+<p class=readmore><a href=/post/200125/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/200122/ title=putty的配置>putty的配置</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年1月22日
+</date>
+<div class=post-content>
+putty是个免费且方便的终端工具，其它像xshell等在按下Alt时会触发菜单栏，导致使用emacs时不好用，但是putty默认的配置不如……
+</div>
+<p class=readmore><a href=/post/200122/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/200108/ title=shell的模式与选项>shell的模式与选项</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年1月8日
+</date>
+<div class=post-content>
+起因是看到有人写脚本，用/bin/cp方式复制文件，说是因为cp在复制时如果文件名相同会提示是否覆盖，导致脚本会停住。这个行为是因为操作系统……
+</div>
+<p class=readmore><a href=/post/200108/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/200105/ title=硬盘分区和文件系统散记>硬盘分区和文件系统散记</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年1月5日
+</date>
+<div class=post-content>
+file命令的-s选项可以查看块设备的特性，比如file -s /dev/sda能看到这块盘是GRUB启动程序，接着又是若干个分区。而直接file……
+</div>
+<p class=readmore><a href=/post/200105/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/200102/ title=命令行工具用法探索>命令行工具用法探索</a>
 </h1>
 </header>
@@ -122,62 +178,6 @@ body内容的类型是从邮件标准抄的，形式上用/划分大小类别。
 </div>
 <p class=readmore><a href=/post/191020/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190926/ title=SSL和SSH比较>SSL和SSH比较</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年9月26日
-</date>
-<div class=post-content>
-两者都是常见的安全术语，安全包含四层含义 数据加密，即抓包不可读，看上去是乱码，这个最好理解，也最直观 数据完整性，这是第二个层次，即数据虽然被……
-</div>
-<p class=readmore><a href=/post/190926/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190921/ title=JS的单线程和运行时>JS的单线程和运行时</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年9月21日
-</date>
-<div class=post-content>
-JS的单线程特性(eventloop)不仅体现在浏览器上，node同样，二者的运行逻辑可能有区别。所以别的语言常见的sleep函数，都必须要……
-</div>
-<p class=readmore><a href=/post/190921/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190918/ title=进程线程和协程的切换开销>进程线程和协程的切换开销</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年9月18日
-</date>
-<div class=post-content>
-测试Context Switch time(进程上下文切换时间) ，创建两个进程(实时进程)并在它们之间传送一个令牌，如此往返传送一定的次数。其中一个进程在……
-</div>
-<p class=readmore><a href=/post/190918/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190913/ title=PostgreSQL备忘>PostgreSQL备忘</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年9月13日
-</date>
-<div class=post-content>
-其前身是由Stonebraker创造的ingres（1974）和postgres（1986），Postgres和ingres在90年代之前都……
-</div>
-<p class=readmore><a href=/post/190913/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/page/4/>上一页</a>
@@ -246,6 +246,18 @@ JS的单线程特性(eventloop)不仅体现在浏览器上，node同样，二者
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -262,18 +274,6 @@ JS的单线程特性(eventloop)不仅体现在浏览器上，node同样，二者
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

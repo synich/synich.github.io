@@ -41,6 +41,62 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/170405/ title=HTTP2特性学习>HTTP2特性学习</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年4月5日
+</date>
+<div class=post-content>
+HTTP2在制定时要保证不破坏语义且要尽可能地兼容，为了平滑地从HTTP/1.1升级到HTTP/2，会用到Upgrade协议头，但这样就会消……
+</div>
+<p class=readmore><a href=/post/170405/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170403/ title=php-fpm记录>php-fpm记录</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年4月3日
+</date>
+<div class=post-content>
+PHP的组成，从内到外大致分3层 解析器核心，在形态上表现成php.dll方式，实质是zend引擎，做语法解析和字节码执行。对应配置php.i……
+</div>
+<p class=readmore><a href=/post/170403/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170329/ title=协议为什么要分包>协议为什么要分包</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年3月29日
+</date>
+<div class=post-content>
+TCP是流式传输协议，每次在传输就要告知对端一个这次数据的长度，否则在流上无从断句。像HTTP就有Content-Length字段用于标识包……
+</div>
+<p class=readmore><a href=/post/170329/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170325/ title=辛弃疾的青玉案赏析>辛弃疾的青玉案赏析</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年3月25日
+</date>
+<div class=post-content>
+这首词最为人熟知的是最后一句，但整首词其实非常有讲究。从后往前解读，最后一句不消多说，为了衬托寻找的那个她，先来个铺垫，于是有蛾儿雪柳黄金缕……
+</div>
+<p class=readmore><a href=/post/170325/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/170324/ title=VPN概念解释>VPN概念解释</a>
 </h1>
 </header>
@@ -48,7 +104,7 @@
 2017年3月24日
 </date>
 <div class=post-content>
-VPN的本章是把来自不同子网的设备放在同一个子网内，构建虚拟网络。既然要并网，肯定要做身份认证，而PPP点对点协议天生就带认证属性，这也是家……
+VPN的本意是把来自不同子网的设备放在同一个子网内，构建虚拟网络。既然要并网，肯定要做身份认证，而PPP点对点协议天生就带认证属性，这也是家……
 </div>
 <p class=readmore><a href=/post/170324/>阅读全文</a></p>
 </article>
@@ -122,62 +178,6 @@ TCP是可靠传输协议，但并不是惟一的，甚至在无线环境下都�
 </div>
 <p class=readmore><a href=/post/170309/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/170308/ title=C与和ua的交互问题记录>C与和ua的交互问题记录</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2017年3月8日
-</date>
-<div class=post-content>
-环境变量 用Lua写一个库，在单元测试和正常业务上需要导出不同的符号，但是require机制不支持，偶然想到通过环境变量的方式传递，可是lua……
-</div>
-<p class=readmore><a href=/post/170308/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/170305/ title=系统性能分析的理解>系统性能分析的理解</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2017年3月5日
-</date>
-<div class=post-content>
-曾经以为性能分析一定要用看起来很高深的工具，实际上重点还是在于对系统各个方面的理解。对《性能之巅》观测指标做个分类，分为软件和硬件，软件类包……
-</div>
-<p class=readmore><a href=/post/170305/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/170304/ title=并发和并行>并发和并行</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2017年3月4日
-</date>
-<div class=post-content>
-先比较两者的定义： 并发是concurrent，指多线程编程存在对同一资源的竞态情况，往往需要加锁操作，Perl6提供了OO::Monitor……
-</div>
-<p class=readmore><a href=/post/170304/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/170301/ title=LuaUnit记录>LuaUnit记录</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2017年3月1日
-</date>
-<div class=post-content>
-单元测试的条件如果是函数，则首4字母为test，如果是表，则表名和函数名前4字母都为test，均忽略大小写。判断代码 if string.sub(s,1,4):lower() == &lsquo;test&rsquo; then 可以这样来执行……
-</div>
-<p class=readmore><a href=/post/170301/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/page/20/>上一页</a>
@@ -246,6 +246,18 @@ TCP是可靠传输协议，但并不是惟一的，甚至在无线环境下都�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -262,18 +274,6 @@ TCP是可靠传输协议，但并不是惟一的，甚至在无线环境下都�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

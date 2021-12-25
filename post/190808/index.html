@@ -47,12 +47,22 @@
 2019年8月8日
 </date>
 <div class=post-content>
+<h2 id=历史脉络>历史脉络</h2>
+<p>首先说一下这帮人当时都在IBM，大概因为大规模的数据应用主要的受众是商业公司，刚好和IBM主业匹配。Codd在1970年发表了关系代数论文，引发IBM在1973年立项System R来研究可行性，然后Donald Chamberlin和Raymond Boyce于1974年发表了SEQUEL语言，但因命名重复所以改名为SQL，Boyce在发表论文后不久死于动脉瘤，后来的荣誉都给了Chamberlin。在这期间Jim Gray确立了事务机制、粒度锁系统和隔离级别。差不多时间，Berkeley的Stonebraker开发的Ingres系统用的是QUEL语言，直到后来他的学生开发Postgres后才换成SQL语言。以上这些人中，除了SQL论文的成色稍次，其他3人都获得了图灵奖。在之后的1975年，台湾的Peter陈品山，发表了虽然不是基于关系模型，但对业界影响很大的ER模型论文。</p>
 <h2 id=理论依据>理论依据</h2>
-<p>SQL的背后是集合论和一阶谓词逻辑（Codd的原始论文曾设想二阶谓词，因太复杂放弃了）。操作的结果是封闭的，即输入和输出都是关系，这也是查询的结果可以作为插入动作的输入的原因。在时间的发展上，关系是在层次模型和网络模型之后提出的，它的目标就是避免出现地址概念，达到彻底的逻辑和物理分离。因此SQL语言没有变量（地址）的概念，AS只能表达不可变引用。</p>
-<p>SQL的计算是基于三值逻辑，所以会存在NULL（严格地说是NULL有未知和不适用两种含义，最原始的也是四值逻辑，但后来被合并，所以仍是三值）。NULL并不是值，只是一个用于填充的标记，所以对它做比较是无意义的，只能IS NULL判断。NULL在计算时会引发propagate，甚至NULL/0也是NULL。AND和OR等短路运算时，NULL的优先级介于TRUE和FALSE中间，即TRUE OR NULL = TRUE；FALSE AND NULL = FALSE。</p>
+<p>SQL背后的理论支撑是集合论、关系代数和一阶谓词逻辑（Codd的原始论文曾设想二阶谓词，因太复杂放弃了）。操作的结果是封闭的，即输入和输出都是关系，这也是查询的结果可以作为插入动作的输入的原因。在时间的发展上，关系是在层次模型和网络模型之后提出的，它的目标就是避免出现地址概念，达到彻底的逻辑和物理分离。因此SQL语言没有变量（地址）的概念，AS只能表达不可变引用。</p>
+<p>由于关系代数是三值逻辑，SQL继承三值逻辑后，计算中就必然会存在NULL（严格地说是NULL有未知和不适用两种含义，最原始的也是四值逻辑，但后来被合并，所以仍是三值）。NULL并不是值，只是一个用于填充的标记，所以对它做比较是无意义的，只能IS NULL判断。NULL在计算时会引发propagate，甚至NULL/0也是NULL。AND和OR等短路运算时，NULL的优先级介于TRUE和FALSE中间，即TRUE OR NULL = TRUE；FALSE AND NULL = FALSE。</p>
 <p>虽然很多时候都提倡用NOT NULL，但由于NULL的概念根植于SQL的底层，在外连接或CUBE/ROLLUP的GROUP BY时，还是会不经意间引入NULL。</p>
-<p>SQL基于关系代数，严格的说是Relation Bag Algebra，并不是Codd最原始的Set定义，差异在于Bag允许关系数据重复，而Set的数据必须唯一，所以有DISTINCT和ALL这类关键词来指定结果要set或bag。</p>
+<p>SQL基于的关系代数，严格的说是Relation Bag Algebra，并不是Codd最原始的Set定义，差异在于Bag允许关系数据重复，而Set的数据必须唯一，所以有DISTINCT和ALL这类关键词来指定结果要set或bag。但是SQL和关系代数有几个很不一致的地方，比如SQL的SELECT对应的关系代数是PROJECT，SQL的WHERE和HAVING才对应关系代数的SELECT。</p>
 <p>关系代数的核心操作只有5种，分别是并、差、积、选择、投影，操作的都是元组。所有的SQL语句最后都能用这5种操作组合完成。比如一个嵌套子查询可以等价转换成一个连接（join）操作。UPDATE操作看起来是对字段(Attribute)的修改，但严格来说，是用一条记录替换掉原来的记录，本质还是行级。</p>
+<h2 id=功能分类>功能分类</h2>
+<p>SQL规范定义了几种不同领域的操作，使用的指令不同。虽然最常见的是增删改查，但从完整的BNF方法列表来看，其它几种分类占的比重更大。</p>
+<ul>
+<li>DDL - 数据定义语言(CREATE，ALTER，DROP，DECLARE)</li>
+<li>DML - 数据操纵语言(SELECT，DELETE，UPDATE，INSERT)</li>
+<li>DCL - 数据控制语言(GRANT，REVOKE，COMMIT，ROLLBACK)</li>
+</ul>
+<p>对语法有疑问时，查BNF定义是最好的，比如查询语句后面如果是子查询必须有别名，但如果是关联就不需要别名，似乎也没什么理由，就是文法这么规定的。</p>
 <h2 id=表达式类型>表达式类型</h2>
 <ul>
 <li>表表达式：对表的操作，FROM、WHERE、GROUP BY、HAVING</li>
@@ -61,15 +71,8 @@
 </ul>
 <h2 id=值语法和类型>值语法和类型</h2>
 <p>所有的值都是用圆括号<code>()</code>包起，可以出现在很多位置，比如VALUES后的字面量，或是FROM后的子查询，甚至在SELECT、WHERE等出现变量名的位置。值有两种类型，标量和集合。</p>
-<h2 id=功能分类>功能分类</h2>
-<p>SQL有几种不同领域的操作，使用的指令不同，虽然最常见的是增删改查，但也不能忽视了其它几种分类。</p>
-<ul>
-<li>DDL - 数据定义语言(CREATE，ALTER，DROP，DECLARE)</li>
-<li>DML - 数据操纵语言(SELECT，DELETE，UPDATE，INSERT)</li>
-<li>DCL - 数据控制语言(GRANT，REVOKE，COMMIT，ROLLBACK)</li>
-</ul>
 <h2 id=查询的顺序>查询的顺序</h2>
-<p>SELECT语句成分最多，其执行顺序并不是从前到后，正确的顺序如下</p>
+<p>SELECT查询涉及众多关键字，最核心的有3个：JOIN、WHERE、GROUP BY。执行顺序并不是从前到后，正确的顺序如下</p>
 <ul>
 <li>7 SELECT 8 DISTINCT 10 TOP NUMBER</li>
 <li>1 FROM 3 JOIN</li>
@@ -77,7 +80,7 @@
 <li>5 GROUP BY 6 HAVING</li>
 <li>9 ORDER BY</li>
 </ul>
-<p>在不影响结果的前提下，优化器对顺序会做微调，比如 FROM a LEFT JOIN b WHERE a.name=swan ，就会先执行WHERE再做JOIN，术语叫Predicate Pushdown Filter。查询如此多的关键字，最核心的有3个：JOIN、WHERE、GROUP BY。</p>
+<p>在不影响结果的前提下，优化器对顺序会做微调，比如 FROM a LEFT JOIN b ON a.x=b.x WHERE a.name=x and b.age=x，WHERE的a语句会先执行，再做JOIN，最后再做WHERE的b语句，术语叫Predicate Pushdown Filter。因为对LEFT JOIN来说，将右表的过滤放到JOIN前，不会影响JOIN的条数，这就和WHERE原始的后置语义不同，因此不会被优化；如果想优化也很简单，将WHERE中对右表的过滤，放到ON条件来做。</p>
 <h2 id=横向与纵向操作>横向与纵向操作</h2>
 <p>SQL是对关系的操作，这种操作有两个方向，横向的代表是JOIN，而纵向的代表是GROUP BY。</p>
 <h2 id=join关联和where谓词>JOIN关联和WHERE谓词</h2>
@@ -156,6 +159,18 @@
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -172,18 +187,6 @@
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

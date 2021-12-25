@@ -41,14 +41,56 @@
 <article class=post>
 <header>
 <h1 class=post-title>
-<a href=/post/161204/ title=FastCGI协议及PHP中的相关部分>FastCGI协议及PHP中的相关部分</a>
+<a href=/post/161219/ title=PHP模板引擎学习>PHP模板引擎学习</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年12月19日
+</date>
+<div class=post-content>
+用了3种模板引擎，从Smarty入手，但是这个库很大，文件又多。另外找了两个模板库， TinyButStrong(简称TBS)和RainTPL……
+</div>
+<p class=readmore><a href=/post/161219/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/161217/ title=PHP的SESSION机制>PHP的SESSION机制</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年12月17日
+</date>
+<div class=post-content>
+HTTP/HTML起初是为展示文件而设计的，天然就是短连接没有状态。 像登陆业务却需要长连接，加之PHP又不具备daemon化特征，因此解决这……
+</div>
+<p class=readmore><a href=/post/161217/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/161213/ title=BW博客系统简探>BW博客系统简探</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2016年12月13日
+</date>
+<div class=post-content>
+从index.php开始看，先用include_once手动导入system.php，这里有个逻辑很有意思： 检查conf这个目录下有没有in……
+</div>
+<p class=readmore><a href=/post/161213/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/161204/ title=CGI规范的理解>CGI规范的理解</a>
 </h1>
 </header>
 <date class="post-meta meta-date">
 2016年12月4日
 </date>
 <div class=post-content>
-FastCGI作为解决CGI协议的后继者，已深得人心，在Nginx和PHP中都默认支持。 比如php-cgi虽然名字是cgi，但是-b模式开启……
+最早的Web交互协议规范，由于足够简单甚至连busybox都能支持，只要做到以下两点就可以 在网站根目录下创建cgi-bin目录（必须是这个名……
 </div>
 <p class=readmore><a href=/post/161204/>阅读全文</a></p>
 </article>
@@ -136,48 +178,6 @@ PHP语言相较于其它语言一个很大的不同，从一开始就定位在�
 </div>
 <p class=readmore><a href=/post/161104/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/161102/ title=设计方案的不动点和弱化点>设计方案的不动点和弱化点</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年11月2日
-</date>
-<div class=post-content>
-软件开发领域里有句教训：手里拿了锤子，看什么都是钉子。这句话也可以反过来看，并不是所有的需求都是钉子，面对不是钉子的需求，也就不应该用锤子的……
-</div>
-<p class=readmore><a href=/post/161102/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/161031/ title=变倍与聚焦>变倍与聚焦</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年10月31日
-</date>
-<div class=post-content>
-监控行业的相机有枪式和球式两种，还有种半球但实质上和枪式一样，只是安装方式不同。 两种相机因为外形和机械结构的不同，使用场景也有很大差异。 比如……
-</div>
-<p class=readmore><a href=/post/161031/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/161023/ title=一次安卓刷机失败的修复过程>一次安卓刷机失败的修复过程</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年10月23日
-</date>
-<div class=post-content>
-手头有个华为手机，自带的EMUI实在太难用，偶然在华为论坛找到一个flyme的链接，大喜过望马上准备刷机。那篇帖子提供了两个链接，并且告诫说……
-</div>
-<p class=readmore><a href=/post/161023/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/page/23/>上一页</a>
@@ -246,6 +246,18 @@ PHP语言相较于其它语言一个很大的不同，从一开始就定位在�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -262,18 +274,6 @@ PHP语言相较于其它语言一个很大的不同，从一开始就定位在�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

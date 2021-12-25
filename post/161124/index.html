@@ -57,24 +57,31 @@
 <p>上面列的字段都是X509的V1版本，V3在签名前面还会多出许多内容，从结构和原理上差不多就是这些。V3多出了扩展(颁发机构，CRL，使用者密钥标识)，关键扩展(密钥用法)，属性(指纹和指纹算法)。</p>
 <p>一份数字证书，最核心的内容就是这几件事：</p>
 <ol>
-<li>谁给你颁发的(Issuer)</li>
+<li>谁给你签发的(Issuer)</li>
 <li>证书有效期</li>
 <li>你的身份是谁(Subject)</li>
-<li>你的公钥</li>
-<li>颁发者对以上信息做个签名，防伪造</li>
+<li>你的公钥，用于通信时交换密钥</li>
+<li>使用签发者公钥对以上信息hash做的签名，防伪造</li>
 </ol>
 <p>X509覆盖的范围比较多，从头文件看，除用于认证的X509，还有CRL(证书吊销)、REQ(证书申请)、NAME(证书持有者信息名字)、ATTRIBUTE、EXTENSION五种扩展功能。</p>
-<p>再来说说证书的签发，PKI体系的证书存在链式依赖，下游证书由上游证书签发，最顶级的根证书没有签发者，只能是自己给自己签发。</p>
-<p>所以生成证书就分为两种：自签发和上游证书签发。自签发比较简单，通常都是学习者自己玩的，或者偶尔企业内网也可以使用，12306的根证书就是自签发的，使用证书给别人签发证书，就是上游签发。</p>
-<p>在学习如何签发之前，可以这样思考。首先证书必然要有公私钥对，其次证书包含了授予者的信息，因此简单说就是生成公私钥加上对信息做数字签名。
-先做第一步，生成RSA私钥用<code>openssl genrsa</code>命令，或者用ECDSA方式<code>openssl ecparam -name secp521r1 -genkey -param_enc explicit</code>。带上<code>param_enc</code>的私钥会把参数都嵌入，体积大一点，否则只有曲线名称，但遇到版本不匹配时，可能无法构造曲线。另外如果担心私钥泄密，还可以在生成私钥的时候用AES-CBC或其它算法对私钥进行保护。</p>
-<p>得到的私钥文件已经包含了公钥信息。虽然有了私钥，可是没有任何表明身份的信息啊，接着第二步，生成证书申请，使用<code>openssl req</code>，这步要注意的是需要输入上一步生成的私钥。如果没有私钥，你的申请信息就可以被随意篡改，这显然不是证书的本意。申请文件一般用.csr作为后缀。最后一步就是生成证书，用<code>openssl x509 -req -signkey</code>命令，signkey是自签名的关键，生成的就是根证书了。还有另一种生成自签名证书方式，把申请和证书两步合二为一，命令<code>openssl req -new -x509 -days 365 -key keyca.pem -out pubca.pem</code>。</p>
+<h2 id=证书签发流程与自签证书>证书签发流程与自签证书</h2>
+<p>PKI体系的证书存在链式依赖，下游证书由上游证书签发，最顶级的根证书没有签发者，只能是自己给自己签发，但因为各种浏览器都集成了这些签发者的公钥，所以仍被认为有效，反之如果签发证书使用的顶级公钥没有被集成进浏览器，就会提示用户有风险。12306的根证书就是没有被广泛集成进浏览器的自签发证书。使用证书给别人签发证书，就是上游签发。</p>
+<p>从上一节数字证书包含的内容来看，包含两个不同的公钥。当我们在学习做自签发证书的时候，为简单起见，这两个公钥会用同一个。下面来看步骤：</p>
+<ol>
+<li>第一步生成私钥，RSA用<code>openssl genrsa</code>命令，ECDSA用<code>openssl ecparam -name secp521r1 -genkey -param_enc explicit</code>。带上<code>param_enc</code>的私钥会把参数都嵌入，体积大一点，否则只有曲线名称，但遇到版本不匹配时，可能无法构造曲线。另外如果担心私钥泄密，还可以在生成私钥的时候用AES-CBC或其它算法对私钥进行保护。得到的私钥文件已经包含了公钥信息。虽然有了私钥，可是没有任何表明身份的信息啊。</li>
+<li>第二步生成证书申请，使用<code>openssl req</code>，这步要输入上一步生成的私钥。如果没有私钥，你的申请信息就可以被随意篡改，这显然不是证书的本意。申请文件一般用.csr作为后缀。</li>
+<li>最后一步签发证书，用<code>openssl x509 -req -signkey</code>命令，signkey是自签名的关键，生成的就是根证书了。还有另一种生成自签名证书方式，把申请和签发证书两步合二为一，命令<code>openssl req -new -x509 -days 365 -key keyca.pem -out pubca.pem</code>。</li>
+</ol>
 <p>有了自签发的根证书，服务器证书类似，第一步先生成私钥，第二步也是生成申请，其中带上服务器的信息，第三步将申请和服务器的公钥交给根机构，由根机构用根私钥对服务器申请加密，输出的文件就是服务器证书了，这时用的命令是<code>openssl x509 -req -CA -CAkey</code>。和自签名的差异是参数从signkey换成了CA和CAkey。从这个流程看，证书显然包含了信息和公钥。</p>
 <p>还有另一种签发方式<code>openssl ca -keyfile keyca.pem -cert pubca.pem -in svr.csr -out pubsvr.pem -days 99</code>，这种方式有几个限制</p>
 <ol>
 <li>必须在当前目录下创建demoCA目录，这个目录内还要有newcerts目录，空的index.txt文件、内容为01的serial文件。</li>
 <li>根证书（自签名证书）和申请者的Province和Unit必须一致，否则无法签发。</li>
 </ol>
+<p>最后看一张图了解客户端对证书的认证过程</p>
+<p>
+<img class=mx-auto alt=x509-verify src=/img/x509-verify.png>
+</p>
 <h2 id=使用gpg来验证文件>使用GPG来验证文件</h2>
 <p>常见的方式有MD5验证，但是问题在于你怎么确信看到的MD5就是真实的呢？使用更高级别的GnuPG吧，它是符合OpenPGP标准的加密软件，可以加解密，还能签名或验证。最早由德国人开发了PGP软件并大受欢迎，但由于是个商业软件，就出现了OpenPGP标准，而gpg则是最广泛使用的实现，全名GNU Privacy Guard，名字如此相似，不知是故意还是巧合。</p>
 <p>先从最常用的验证说起吧。签名文件一般是.asc或.sig结尾，命令行很简单</p>
@@ -125,6 +132,18 @@
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -141,18 +160,6 @@
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

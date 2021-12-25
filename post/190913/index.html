@@ -50,8 +50,8 @@
 <p>其前身是由Stonebraker创造的ingres（1974）和postgres（1986），Postgres和ingres在90年代之前都不支持SQL，而是用的自己的QUEL语言。他的几个学生在1996年改写了postgres来支持SQL，和他没有直接关系。Stonebraker因为前两个系统对于数据库的贡献得了图灵奖。</p>
 <p>PostgreSQL功能完备但速度稍慢，国内一直不流行。1997年发布6.0版，之后大约每5年更新大版本，到2017年的版本10开始每年更新一次大版本。</p>
 <h2 id=启动和命令工具>启动和命令工具</h2>
-<p>后台命令是<code>pg_ctl</code>，是postgre或postmaster(采用多进程模型，主进程叫master，不过现在合一后，都叫postgre了)的封装，postgre用-C并指定选项名可以查看配置。启动停止状态监控都是它。创建数据库用环境变量指定PGDATA或者参数指定，比如~/pgdata且必须是空目录，接着用<code>pg_ctl init</code>或initdb初始化这个目录。会创建若干子目录和默认的postgresql.conf，模板和结构定义，有39M（版本不同稍有差异）。默认会创建名为postgres的数据库。</p>
-<p>使用<code>pg_ctl start</code>会启动监听TCP和Unix Domain两种方式，如果不想用PGDATA环境变量，就用-D指定数据库位置。默认只能在同一台主机上用psql访问 ，要想跨主机访问，要修改postgresql.conf的listen_address改为<code>'*'</code>和pg_hba.conf的IPv4地址改为'0.0.0.0/0'。</p>
+<p>后台命令是<code>pg_ctl</code>，是postgre或postmaster(采用多进程模型，主进程叫master，不过现在合一后，都叫postgre了)的封装，postgre用-C并指定选项名可以查看配置。启动停止状态监控都是它。创建数据库用环境变量指定PGDATA或者参数指定，比如~/pgdata且必须是空目录，接着用<code>pg_ctl init</code>或initdb初始化这个目录。会创建若干子目录和默认配置文件，模板和结构定义，有39M（版本不同稍有差异），默认创建名为postgres的数据库。</p>
+<p>使用<code>pg_ctl start</code>会启动监听TCP和Unix Domain两种方式，如果不想用PGDATA环境变量，就用-D指定数据库位置。默认只能在同一台主机上用psql访问 ，要想跨主机访问，要修改postgresql.conf的listen_address改为<code>'*'</code>和pg_hba.conf的IPv4地址改为'0.0.0.0/0'。初看这种启动时指定目录的方式有点不习惯，但细想可以在一台机器上启动多个完全不干扰的库，非常灵活。</p>
 <p>客户端连接用 psql -d postgres，如果不指定数据库，会使用登陆用户名作数据库名。</p>
 <h2 id=概念和特色>概念和特色</h2>
 <p>库-模式(schema)-对象3级结构组织。对象包括表、视图、序列、函数等。由于连接数据库时，会有默认名为public的schema，不注意的话会误以为库下面是表。</p>
@@ -99,6 +99,18 @@
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -115,18 +127,6 @@
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

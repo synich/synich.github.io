@@ -41,14 +41,70 @@
 <article class=post>
 <header>
 <h1 class=post-title>
-<a href=/post/190912/ title=Kerberos与SASL的理解>Kerberos与SASL的理解</a>
+<a href=/post/190926/ title=SSL和SSH比较>SSL和SSH比较</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年9月26日
+</date>
+<div class=post-content>
+两者都是常见的安全术语，安全包含四层含义 数据加密，即抓包不可读，看上去是乱码，这个最好理解，也最直观 数据完整性，这是第二个层次，即数据虽然被……
+</div>
+<p class=readmore><a href=/post/190926/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190921/ title=JS的单线程和运行时>JS的单线程和运行时</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年9月21日
+</date>
+<div class=post-content>
+JS的单线程特性(eventloop)不仅体现在浏览器上，node同样，二者的运行逻辑可能有区别。所以别的语言常见的sleep函数，都必须要……
+</div>
+<p class=readmore><a href=/post/190921/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190918/ title=进程线程和协程的切换开销>进程线程和协程的切换开销</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年9月18日
+</date>
+<div class=post-content>
+测试Context Switch time(进程上下文切换时间) ，创建两个进程(实时进程)并在它们之间传送一个令牌，如此往返传送一定的次数。其中一个进程在……
+</div>
+<p class=readmore><a href=/post/190918/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190913/ title=PostgreSQL备忘>PostgreSQL备忘</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2019年9月13日
+</date>
+<div class=post-content>
+其前身是由Stonebraker创造的ingres（1974）和postgres（1986），Postgres和ingres在90年代之前都……
+</div>
+<p class=readmore><a href=/post/190913/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/190912/ title=SASL、GSSAPI和Kerberos的理解>SASL、GSSAPI和Kerberos的理解</a>
 </h1>
 </header>
 <date class="post-meta meta-date">
 2019年9月12日
 </date>
 <div class=post-content>
-实现用得最多MIT的版本（Heimdal有，微软有个非兼容版本SSPI，而AD则是KDC和LDAP的结合体），协议在RFC定义。理念和用途与……
+SASL 网络协议和认证虽然是不同的领域，二者往往会结合使用。在SASL出现前，两者的组合是乘积关系，SASL使两者解耦，组合的数量变为和的关系。由……
 </div>
 <p class=readmore><a href=/post/190912/>阅读全文</a></p>
 </article>
@@ -122,62 +178,6 @@ null最好是提升到类型级别，而不是作为特殊值，编译器会推�
 </div>
 <p class=readmore><a href=/post/190817/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190815/ title=公安数仓总结>公安数仓总结</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年8月15日
-</date>
-<div class=post-content>
-和阿里建设大数据为了提高转化率留存率不同，公安并没有明确的提高指标，而是建立尽可能完备的数仓，在遇到案件时能尽量多地挖掘出可能有用的信息。 数……
-</div>
-<p class=readmore><a href=/post/190815/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190808/ title=SQL语言梳理>SQL语言梳理</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年8月8日
-</date>
-<div class=post-content>
-理论依据 SQL的背后是集合论和一阶谓词逻辑（Codd的原始论文曾设想二阶谓词，因太复杂放弃了）。操作的结果是封闭的，即输入和输出都是关系，这……
-</div>
-<p class=readmore><a href=/post/190808/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190801/ title=数据库和数仓的历史>数据库和数仓的历史</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年8月1日
-</date>
-<div class=post-content>
-数据库是计算机最早的应用系统，阿波罗计划时就有了数据库原型，这便是1968年的IBM ICS系统，69年改名为IMS/360（层次型数据库）。……
-</div>
-<p class=readmore><a href=/post/190801/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/190722/ title=学Scheme经历的误区>学Scheme经历的误区</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2019年7月22日
-</date>
-<div class=post-content>
-从SICP上手的人往往觉得一个list类型包打天下，以致于看到R5RS中特别定义vector都很惊讶。其实就像其它成熟语言一样，容器有很多分……
-</div>
-<p class=readmore><a href=/post/190722/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/page/5/>上一页</a>
@@ -246,6 +246,18 @@ null最好是提升到类型级别，而不是作为特殊值，编译器会推�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -262,18 +274,6 @@ null最好是提升到类型级别，而不是作为特殊值，编译器会推�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

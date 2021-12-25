@@ -41,6 +41,62 @@
 <article class=post>
 <header>
 <h1 class=post-title>
+<a href=/post/200427/ title=Linux内核与PAM模块简记>Linux内核与PAM模块简记</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年4月27日
+</date>
+<div class=post-content>
+前因是容器中启动nfsd需要依赖内核加载ko模块，分读写记一下。 lsmod命令，或查看/proc/modules看到内核当前加载的ko模块。……
+</div>
+<p class=readmore><a href=/post/200427/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/200411/ title=不可打印字符与转义序列>不可打印字符与转义序列</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年4月11日
+</date>
+<div class=post-content>
+plan9的老人们建过一个网站cat-v.org，影射cat命令加上-v选项是邪恶的。这个选项的作用是把不可打印的控制字符显示出来，低128……
+</div>
+<p class=readmore><a href=/post/200411/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/200402/ title=嵌套加载的目录查找方式比较>嵌套加载的目录查找方式比较</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年4月2日
+</date>
+<div class=post-content>
+动态语言的加载通常会有一个路径列表，加载时按列表顺序寻找。这个列表里大部分是绝对路径，但也会有当前相对路径，当嵌套加载时，相对路径如何定位就……
+</div>
+<p class=readmore><a href=/post/200402/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/200327/ title=数据库计算理论笔记>数据库计算理论笔记</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2020年3月27日
+</date>
+<div class=post-content>
+分布式 CAP三者只能选其二，也可以只求一个达到最大化，没有见过实际例子。 取CA，又名强一致性 ACID，但是分布式系统必然要求P，所以可以把A……
+</div>
+<p class=readmore><a href=/post/200327/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
 <a href=/post/200321/ title=数据库SQL优化原理>数据库SQL优化原理</a>
 </h1>
 </header>
@@ -122,62 +178,6 @@ GNU screen 修改默认的引导键C-a时，命令行启动时使用screen -e^tt
 </div>
 <p class=readmore><a href=/post/200126/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/200125/ title=tags的说明和比较>tags的说明和比较</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年1月25日
-</date>
-<div class=post-content>
-通用编辑软件用于代码有两个点，看时方便跳转和写时方便补全，跳转靠的就是tags。 tags有两种主流实现ctags和etags。ctags诞生……
-</div>
-<p class=readmore><a href=/post/200125/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/200122/ title=putty的配置>putty的配置</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年1月22日
-</date>
-<div class=post-content>
-putty是个免费且方便的终端工具，其它像xshell等在按下Alt时会触发菜单栏，导致使用emacs时不好用，但是putty默认的配置不如……
-</div>
-<p class=readmore><a href=/post/200122/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/200108/ title=shell的模式与选项>shell的模式与选项</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年1月8日
-</date>
-<div class=post-content>
-起因是看到有人写脚本，用/bin/cp方式复制文件，说是因为cp在复制时如果文件名相同会提示是否覆盖，导致脚本会停住。这个行为是因为操作系统……
-</div>
-<p class=readmore><a href=/post/200108/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/200105/ title=硬盘分区和文件系统散记>硬盘分区和文件系统散记</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2020年1月5日
-</date>
-<div class=post-content>
-file命令的-s选项可以查看块设备的特性，比如file -s /dev/sda能看到这块盘是GRUB启动程序，接着又是若干个分区。而直接file……
-</div>
-<p class=readmore><a href=/post/200105/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/post/page/3/>上一页</a>
@@ -246,6 +246,18 @@ file命令的-s选项可以查看块设备的特性，比如file -s /dev/sda能�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -262,18 +274,6 @@ file命令的-s选项可以查看块设备的特性，比如file -s /dev/sda能�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

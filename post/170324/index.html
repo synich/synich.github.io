@@ -47,7 +47,7 @@
 2017年3月24日
 </date>
 <div class=post-content>
-<p>VPN的本章是把来自不同子网的设备放在同一个子网内，构建虚拟网络。既然要并网，肯定要做身份认证，而PPP点对点协议天生就带认证属性，这也是家庭网络都是PPPoE方式接入。</p>
+<p>VPN的本意是把来自不同子网的设备放在同一个子网内，构建虚拟网络。既然要并网，肯定要做身份认证，而PPP点对点协议天生就带认证属性，这也是家庭网络都是PPPoE方式接入。</p>
 <p>实现VPN的协议很多，举我所知的几种</p>
 <ol>
 <li>PPTP 微软出的规范，RFC2637。必须基于IP或TCP协议(至少要3层网络)，加密密钥最高支持到128bit，强度比较弱，甚至在iOS10的时代直接被苹果给抛弃了，但是因为是微软自家的东西，又出了SSTP后继，好像没什么人在用</li>
@@ -72,6 +72,10 @@
 <p>XAuth似乎只支持预共享密钥和公钥加密，对应了XAuth和PSK/RSA选项，EAP不再依赖PSK。</p>
 <h3 id=strongswan>StrongSwan</h3>
 <p>基于IPSec最早的项目名叫FreeS/WAN，所以现在都沿用了swan这个名字，是Secure Wide-Area Networking首字母的缩写。这个项目停止维护后，衍生出OpenSwan、LibreSwan、StrongSwan。StrongSwan的主程序名就叫ipsec。</p>
+<h2 id=openvpn>OpenVPN</h2>
+<p>通过四层的TCP/UDP建立连接，然后客户端会从服务端得到私有网络的配置信息，进而客户端会在其主机上创建TUN网卡，该网卡的地址和服务器在同一个网段，从而构成私有网络。</p>
+<p>TUN/TAP网卡是linux2.4版本出现的最早的虚拟网络，TUN网卡工作在三层，主要和应用程序直接打交道，为了模拟一张完整的网卡，再配套一张工作在二层的TAP网卡，整个网络栈就齐备了。</p>
+<p>使用iproute2的ip命令来创建TUN网卡，需要root权限。此外TUN还用于做IP隧道，IP4和IP6组合起来共有4种类型。</p>
 </div>
 <div class="post-meta meta-tags">
 没有标签
@@ -112,6 +116,18 @@
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -128,18 +144,6 @@
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

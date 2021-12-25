@@ -1,6 +1,6 @@
 <!doctype html><html lang=zh-ch>
 <head>
-<meta name=generator content="Hugo 0.88.1">
+<meta name=generator content="Hugo 0.91.2">
 <meta charset=utf-8>
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -40,6 +40,62 @@
 <div class=col-group>
 <div class=col-8 id=main>
 <div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年12月18日
+</date>
+<div class=post-content>
+内存使用表现 进程能使用的内存肯定是有上限的，如果慢慢增长，VSZ会持续增长，RSS会到一定量开始波动，但最终还是会因超限被内核kill掉。如……
+</div>
+<p class=readmore><a href=/post/211218/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年11月15日
+</date>
+<div class=post-content>
+有个很有名的发行版Linux From Scratch，非常地繁琐，我们可以从一个近似的形态去一窥究竟，也从中了解很多和二进制执行相关的内容。 看过to……
+</div>
+<p class=readmore><a href=/post/211115/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年11月2日
+</date>
+<div class=post-content>
+Python和Lua 算是比较经典的中心化包管理和分发机制，官方或半官方地提供中央仓库，本地开发需要包时从中央仓库下载到本地的某个公共目录，然……
+</div>
+<p class=readmore><a href=/post/211102/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2021年10月16日
+</date>
+<div class=post-content>
+对网络来说，第一层物理层的种类相对较少，就我所知无非是光纤、双绞线、单芯线，受限于物理介质不会有太多花样。但在这些介质上传输信号，就必然要定……
+</div>
+<p class=readmore><a href=/post/211016/>阅读全文</a></p>
+</article>
 <article class=post>
 <header>
 <h1 class=post-title>
@@ -92,7 +148,7 @@ git虽然是个分布式版本管理工具，但在我看来网络协议的支�
 2021年6月14日
 </date>
 <div class=post-content>
-包的划分 cent拆得比较细，运行时放在最核心的erts包，其它lib目录下的库，像compiler,debugger,edoc,kernel……
+程序组成和功能 cent发行版拆得比较细，最核心的erts运行时单独成包，其它lib目录下的库，像compiler,debugger,edoc……
 </div>
 <p class=readmore><a href=/post/210614/>阅读全文</a></p>
 </article>
@@ -123,62 +179,6 @@ git虽然是个分布式版本管理工具，但在我看来网络协议的支�
 写sh时想把一段文本的json变量传给程序，但因为带了换行符，总是失败。大概是因为sh面向终端操作，而换行符又是命令发起的标志，哪怕这个换行……
 </div>
 <p class=readmore><a href=/post/210611/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2021年4月21日
-</date>
-<div class=post-content>
-理念的区别 扩展的最终目的，是把操作映射为脚本化的描述，说到这点不得不和EMACS做个对比。 EMACS更强于函数描述，函数和变量在EMACS中……
-</div>
-<p class=readmore><a href=/post/210421/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2021年4月4日
-</date>
-<div class=post-content>
-现代数据库都基于成本做CBO优化，CBO的难点在评估不同规则组合的期望时间，这里就会有组合爆炸的问题，为此就有了两种模型：Volcano模型……
-</div>
-<p class=readmore><a href=/post/210404/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2021年3月22日
-</date>
-<div class=post-content>
-Snowflake的数仓产品在架构上分为三级，从下到上的功能分别是（以Amazon为例，这块有论文相对详细，MG两家没什么资料） DataSt……
-</div>
-<p class=readmore><a href=/post/210322/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2021年2月16日
-</date>
-<div class=post-content>
-从上向下分了若干层 DataNode: 同时还执行NodeManager进程 ResourceManager: 通称yarn，管理service和node两个维度。yarn rmadmin -getAllSer……
-</div>
-<p class=readmore><a href=/post/210216/>阅读全文</a></p>
 </article>
 <ol class=page-navigator>
 <li class=current>
@@ -233,6 +233,18 @@ Snowflake的数仓产品在架构上分为三级，从下到上的功能分别�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -249,18 +261,6 @@ Snowflake的数仓产品在架构上分为三级，从下到上的功能分别�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

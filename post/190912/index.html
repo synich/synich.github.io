@@ -3,13 +3,13 @@
 <meta charset=utf-8>
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>Kerberos与SASL的理解 | 蛙二的思考</title>
-<meta property="og:title" content="Kerberos与SASL的理解 - 蛙二的思考">
+<title>SASL、GSSAPI和Kerberos的理解 | 蛙二的思考</title>
+<meta property="og:title" content="SASL、GSSAPI和Kerberos的理解 - 蛙二的思考">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2019-09-12T12:00:00+08:00">
 <meta property="article:modified_time" content="2019-09-12T12:00:00+08:00">
 <meta name=Keywords content>
-<meta name=description content="Kerberos与SASL的理解">
+<meta name=description content="SASL、GSSAPI和Kerberos的理解">
 <meta name=author content>
 <meta property="og:url" content="/post/190912/">
 <link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
@@ -41,12 +41,19 @@
 <div class=res-cons>
 <article class=post>
 <header>
-<h1 class=post-title>Kerberos与SASL的理解</h1>
+<h1 class=post-title>SASL、GSSAPI和Kerberos的理解</h1>
 </header>
 <date class="post-meta meta-date">
 2019年9月12日
 </date>
 <div class=post-content>
+<h2 id=sasl>SASL</h2>
+<p>网络协议和认证虽然是不同的领域，二者往往会结合使用。在SASL出现前，两者的组合是乘积关系，SASL使两者解耦，组合的数量变为和的关系。由于SASL的目的是解耦，所以并不包含网络功能，并不承担数据传输功能，只有得到数据后才开始进行处理。同时它又不负责具体的认证，所以种种认证实现都是是SASL插件的方式存在。</p>
+<p>使用最广的SASL实现是Cyrus版本（翻译过来是古波斯的居鲁士大帝），从库分布也能看出，主体框架是libsasl2.so，而各种具体实现libcrammd5.so、libdigestmd5.so放在插件目录下。</p>
+<p>支持的验证机制包括但不限于：getpwent、kerberos、pam、rimap、shadow、ldap</p>
+<h2 id=gssapi>GSSAPI</h2>
+<p>作用和SASL接近，适用场景有些不同。对LDAP来说，两者都适合，但对HTTP认证来说，SASL的流程有些啰嗦，使用和GSSAPI一脉的SPNEGO就更合适。由于GSSAPI产生得比较早，因此和Kerberos结合地更密切（甚至可以说是唯一的实现机制），其中GSSAPI定义开发语言的API，而Kerberos负责具体网络通信和加密过程。</p>
+<h2 id=kerberos>Kerberos</h2>
 <p>实现用得最多MIT的版本（Heimdal有，微软有个非兼容版本SSPI，而AD则是KDC和LDAP的结合体），协议在RFC定义。理念和用途与TLS不一样，krb用于多点间协同，全部使用对称加密算法，依赖参与者依赖中心点KDC，而TLS依赖非对称加密和数字证书，解决两点间通信问题。</p>
 <p>微软的NTLM据说是对标，用在域控管理密码和认证。但没有c和s间的互动。</p>
 <p>由于kerberos的实现有多种，接口不统一，GSSAPI的C语言接口定义有RFC背书，且<code>libgssapi_krb5.so</code>，即对kerberos的封装，也是我所见仅有的实现绑定，所以两者可以认为是一样的。而适配到SASL会稍麻烦。</p>
@@ -86,9 +93,6 @@ KDC用自己的密码解开信封A（因为AS和TGS在一起），获得Alice-KD
 <h2 id=身份标识>身份标识</h2>
 <p>principal标识惟一身份，格式是 <code>&lt;username>/&lt;group>@&lt;REALM></code>，比如root/Admins@HOME.COM。username也叫primary，是必填项，可以是linux下的用户名；group也叫instance，用户可以不填，服务必须有；realm可以不填，会从krb5.conf查找默认的域，如果有多个域就必须要写上。每个 realm 可以有私有配置，包括 KDC 的地址和加密的算法，都可以独立存在。有些大型公司会创建一个独立的 realm 来分发管理员的权限。</p>
 <p>Keytab 是一个包含了（若干）principals 和一个加密了的 principal key的文件。一个 Keytab 文件每个 host 都是唯一的，因为 principal 的定义了包含了 hostname 。这个文件可以用来认证，而不需要传递公开的密码，只要有这个 Keytab 就可以代表这个 principal 来操作。</p>
-<h2 id=sasl>SASL</h2>
-<p>网络协议和认证虽然是不同的领域，二者往往会结合使用。在SASL出现前，两者的组合是乘积关系，SASL使两者解耦，组合的数量变为和的关系。由于SASL的目的是解耦，所以并不包含网络功能，并不承担数据传输功能，只有得到数据后才开始进行处理。同时它又不负责具体的认证，所以种种认证实现都是是SASL插件的方式存在。</p>
-<p>使用最广的SASL实现是Cyrus版本（翻译过来是古波斯的居鲁士大帝），从库分布也能看出，主体框架是libsasl2.so，而各种具体实现libcrammd5.so、libdigestmd5.so放在插件目录下。</p>
 </div>
 <div class="post-meta meta-tags">
 没有标签
@@ -129,6 +133,18 @@ KDC用自己的密码解开信封A（因为AS和TGS在一起），获得Alice-KD
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -145,18 +161,6 @@ KDC用自己的密码解开信封A（因为AS和TGS在一起），获得Alice-KD
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

@@ -53,6 +53,9 @@
 <p>除了FTP模式，用scp传输文件更通用，出现过winscp用FTP和SFTP始终无法连接上，但用scp模式成功的情况。scp本身不常驻后台，监听的还是sshd，但是当外部连接到来后，sshd会调用scp完成文件传输，所以当SFTP不可用但ssh可以连上时，不妨用scp来传文件。</p>
 <p>scp和ssh同属一个包，但scp是基于rcp程序改写的，因此选项风格很不一样。比如指定远程端口，ssh是-p而scp是-P(大小写是反的)。指定远程用户，ssh用-l，而scp却是username@hostname:fileposition这种格式。另外scp不仅要求本机有scp，对端也必须有scp才能完成传输，否则在验证结束后，会报<code>sh: scp: not found</code>错误，之后连接就断开了(lost connection)。如果没有装scp，winscp可以浏览文件夹但不能复制，说明scp没有浏览命令，必须和ssh配合使用，而sftp有独立的浏览命令，是完整的方案。</p>
 <p>如果连scp也没有，rsync -e &ldquo;ssh -l user"能达到相同效果(未验证)。</p>
+<p>rsync使用说明</p>
+<p>作为远程同步工具，支持ssh和rsync两种协议，如果是rsync协议，客户端使用<code>rsync -av ip::archive/img/ img</code>，值得一说的是<code>::archive</code>这段，::表示使用rsync协议，archive则指代服务端的一个module，可以用rsync ip::modulename的方式查看远端文件列表，如果module下有文件夹，也可以查看。服务端先配置好/etc/rsyncd.conf后，再rsync &ndash;daemon会监听873端口。配置rsyncd.conf的module时，除了path外，如果遇到无权限问题，再加上uid=0和gid=0就可以解决。</p>
+<p>如果对端机器不是默认22端口的话，同步时候要加上 -e &ldquo;ssh -p port&rdquo;，rsync -avzP -s &ldquo;ssh -p 22&rdquo; /tmp/ itv@ip:/home/itv/</p>
 </div>
 <div class="post-meta meta-tags">
 没有标签
@@ -93,6 +96,18 @@
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -109,18 +124,6 @@
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>

@@ -1,6 +1,6 @@
 <!doctype html><html lang=zh-ch>
 <head>
-<meta name=generator content="Hugo 0.88.1">
+<meta name=generator content="Hugo 0.91.2">
 <meta charset=utf-8>
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -40,6 +40,62 @@
 <div class=col-group>
 <div class=col-8 id=main>
 <div class=res-cons>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170203/ title=CSS的一些理解>CSS的一些理解</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月3日
+</date>
+<div class=post-content>
+写在前面的话 HTML是SGML/XML的一种特殊应用或者说DSL， 标准的网页写法是，与之对照的DocBook的首行写法是，而SVG图像的写法……
+</div>
+<p class=readmore><a href=/post/170203/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170202/ title=procfs记录>procfs记录</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年2月2日
+</date>
+<div class=post-content>
+procfs诞生于1984年的Unix第8版，愿望是对ptrace的一种改良。起初是每个进程对应一个文件，经过Plan9改造成伪文件系统，且……
+</div>
+<p class=readmore><a href=/post/170202/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170125/ title=Lua中udata设置元表机制和回调>Lua中udata设置元表机制和回调</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年1月25日
+</date>
+<div class=post-content>
+在Lua语言中可以给表设置metatable，用C语言写Lua扩展库时，返回的句柄 可以是table(比如luaiconv库)，也可以是use……
+</div>
+<p class=readmore><a href=/post/170125/>阅读全文</a></p>
+</article>
+<article class=post>
+<header>
+<h1 class=post-title>
+<a href=/post/170121/ title=Json中的null和undefined>Json中的null和undefined</a>
+</h1>
+</header>
+<date class="post-meta meta-date">
+2017年1月21日
+</date>
+<div class=post-content>
+由于Json是来自于JavaScript，因此讨论Json中的字段必须要回归到JS中。 null在JS语言定义里是一个字面量，且是基本类型。如……
+</div>
+<p class=readmore><a href=/post/170121/>阅读全文</a></p>
+</article>
 <article class=post>
 <header>
 <h1 class=post-title>
@@ -124,62 +180,6 @@ Lua5.2文档对编译基本单元chunk是这么说的： Lua把每个chunk看成
 </div>
 <p class=readmore><a href=/post/161225/>阅读全文</a></p>
 </article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/161219/ title=PHP模板引擎学习>PHP模板引擎学习</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年12月19日
-</date>
-<div class=post-content>
-用了3种模板引擎，从Smarty入手，但是这个库很大，文件又多。另外找了两个模板库， TinyButStrong(简称TBS)和RainTPL……
-</div>
-<p class=readmore><a href=/post/161219/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/161217/ title=PHP的SESSION机制>PHP的SESSION机制</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年12月17日
-</date>
-<div class=post-content>
-HTTP/HTML起初是为展示文件而设计的，天然就是短连接没有状态。 像登陆业务却需要长连接，加之PHP又不具备daemon化特征，因此解决这……
-</div>
-<p class=readmore><a href=/post/161217/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/161216/ title="CGI规范中`PATH_INFO`的理解">CGI规范中`PATH_INFO`的理解</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年12月16日
-</date>
-<div class=post-content>
-看一段PHP代码时，发现URL映射很不寻常，用了/index.php/article/?s=a这种格式。印象里.php这个SCRIPT_NA……
-</div>
-<p class=readmore><a href=/post/161216/>阅读全文</a></p>
-</article>
-<article class=post>
-<header>
-<h1 class=post-title>
-<a href=/post/161213/ title=BW博客系统简探>BW博客系统简探</a>
-</h1>
-</header>
-<date class="post-meta meta-date">
-2016年12月13日
-</date>
-<div class=post-content>
-从index.php开始看，先用include_once手动导入system.php，这里有个逻辑很有意思： 检查conf这个目录下有没有in……
-</div>
-<p class=readmore><a href=/post/161213/>阅读全文</a></p>
-</article>
 <ol class=page-navigator>
 <li class=prev>
 <a href=/page/22/>上一页</a>
@@ -248,6 +248,18 @@ HTTP/HTML起初是为展示文件而设计的，天然就是短连接没有状�
 <h3 class=widget-title>最近文章</h3>
 <ul class=widget-list>
 <li>
+<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
+</li>
+<li>
+<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
+</li>
+<li>
+<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
+</li>
+<li>
+<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
+</li>
+<li>
 <a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
 </li>
 <li>
@@ -264,18 +276,6 @@ HTTP/HTML起初是为展示文件而设计的，天然就是短连接没有状�
 </li>
 <li>
 <a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-<li>
-<a href=/post/210421/ title=vim的自定义扩展>vim的自定义扩展</a>
-</li>
-<li>
-<a href=/post/210404/ title=数据库的执行优化>数据库的执行优化</a>
-</li>
-<li>
-<a href=/post/210322/ title=对公有云上数仓的调研>对公有云上数仓的调研</a>
-</li>
-<li>
-<a href=/post/210216/ title=hadoop体系理解>hadoop体系理解</a>
 </li>
 </ul>
 </section>
