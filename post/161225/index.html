@@ -1,175 +1,21 @@
-<!doctype html><html lang=zh-ch>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>对Lua中Enviroment的理解 | 蛙二的思考</title>
-<meta property="og:title" content="对Lua中Enviroment的理解 - 蛙二的思考">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2016-12-25T12:00:00+08:00">
-<meta property="article:modified_time" content="2016-12-25T12:00:00+08:00">
-<meta name=Keywords content>
-<meta name=description content="对Lua中Enviroment的理解">
-<meta name=author content>
-<meta property="og:url" content="/post/161225/">
-<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
-<link rel=stylesheet href=/css/normalize.css>
-<link rel=stylesheet href=/css/style.css>
-<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
-</head>
-<body>
-<header id=header class=clearfix>
-<div class=container>
-<div class=col-group>
-<div class=site-name>
-<a id=logo href>
-蛙二的思考
-</a>
-</div>
-<div>
-<nav id=nav-menu class=clearfix>
-<a class=current href>首页</a>
-</nav>
-</div>
-</div>
-</div>
-</header>
-<div id=body>
-<div class=container>
-<div class=col-group>
-<div class=col-8 id=main>
-<div class=res-cons>
-<article class=post>
-<header>
-<h1 class=post-title>对Lua中Enviroment的理解</h1>
-</header>
-<date class="post-meta meta-date">
-2016年12月25日
-</date>
-<div class=post-content>
-<p>Lua5.2文档对编译基本单元chunk是这么说的：</p>
-<blockquote>
-<p>Lua把每个chunk看成一个带有可变数量参数的匿名函数体。而这个chunk在编译时，
-又外接一个local的变量<code>_ENV</code>。因此每个chunk(或者函数体)总是有<code>_ENV</code>。</p>
-</blockquote>
-<p>顺便说句，require的返回并不强制要求table，也可以是function，
+<!doctype html><html lang=zh-ch><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>对Lua中Enviroment的理解 | 蛙二的思考</title><meta property="og:title" content="对Lua中Enviroment的理解 - 蛙二的思考"><meta property="og:type" content="article"><meta property="article:published_time" content="2016-12-25T12:00:00+08:00"><meta property="article:modified_time" content="2016-12-25T12:00:00+08:00"><meta name=Keywords content><meta name=description content="对Lua中Enviroment的理解"><meta name=author content><meta property="og:url" content="/post/161225/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href>蛙二的思考</a></div><div><nav id=nav-menu class=clearfix><a class=current href>首页</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>对Lua中Enviroment的理解</h1></header><date class="post-meta meta-date">2016年12月25日</date><div class=post-content><p>Lua5.2文档对编译基本单元chunk是这么说的：</p><blockquote><p>Lua把每个chunk看成一个带有可变数量参数的匿名函数体。而这个chunk在编译时，
+又外接一个local的变量<code>_ENV</code>。因此每个chunk(或者函数体)总是有<code>_ENV</code>。</p></blockquote><p>顺便说句，require的返回并不强制要求table，也可以是function，
 比如markdown这个扩展返回的就是函数，保存require的值后，可以直接运行。
 在写扩展代码时，一定要注意定义函数会否污染全局环境，如果不加local的话，
-这些定义是一定会带到主程序的，避免的办法有两个</p>
-<ol>
-<li>不希望导入全局的函数加local前缀，这了非常直观</li>
-<li>使用<code>_ENV</code>或setfenv来隔离。比如这样写</li>
-</ol>
-<p>先把<code>_G</code>保存在一张本地表，对全局变量的引用变在本地变量中了。当然更重要的还是保护写，
+这些定义是一定会带到主程序的，避免的办法有两个</p><ol><li>不希望导入全局的函数加local前缀，这了非常直观</li><li>使用<code>_ENV</code>或setfenv来隔离。比如这样写</li></ol><p>先把<code>_G</code>保存在一张本地表，对全局变量的引用变在本地变量中了。当然更重要的还是保护写，
 Lua5.1以前是用setfenv这个函数，1是require的那个环境，如果0就表示_G，这样会毁了全局变量。
-而Lua5.2引入的<code>_ENV</code>这个有点像SELF的变量，就不再需要setfenv函数。</p>
-<p>看完lua层面不同版本对环境的兼容，再看C接口的兼容。
-luasys库的方式是：<code>#define lua_setfenv lua_setuservalue</code>。当然还是有差别，5.1版本，设置的值一定是table，而被设置的则是function/thread/userdata三种之一，5.2版本后，任何类型都可以设置，但是被设置值必须是full userdata。版本间的交集是table绑定到userdata上，luasys就按着这个限定去用。</p>
-<p>吐槽一句，文档偏要说<code>_ENV</code>完全只是一个普通的名字，In particular，
+而Lua5.2引入的<code>_ENV</code>这个有点像SELF的变量，就不再需要setfenv函数。</p><p>看完lua层面不同版本对环境的兼容，再看C接口的兼容。
+luasys库的方式是：<code>#define lua_setfenv lua_setuservalue</code>。当然还是有差别，5.1版本，设置的值一定是table，而被设置的则是function/thread/userdata三种之一，5.2版本后，任何类型都可以设置，但是被设置值必须是full userdata。版本间的交集是table绑定到userdata上，luasys就按着这个限定去用。</p><p>吐槽一句，文档偏要说<code>_ENV</code>完全只是一个普通的名字，In particular，
 可以用local <code>_ENV</code>定义一个新的变量来掩盖常规意义上的<code>_ENV</code>，对这种人，我只想送他四个字<strong>走好不送</strong>。
 这种时候应该写： <code>We strongly recommend do not override _ENV</code>。
 而不是含糊不清的In particular。
 还有个原因是<code>_ENV</code>名字可以在luaconf.h中使用宏<code>LUA_ENV</code>重新定义，为了在社区能正常的交流，
-劝你别这么干。<code>_ENV</code>定义在LexState里的一个TString类型变量里，在lparser.c中会用到。</p>
-<p>流程是这样的</p>
-<ol>
-<li>luaX_init，起因是lua_newstate时需要一系列初始化，就包括了词法初始化。
-这里被创建的名字是全局的，永远不会被GC。</li>
-<li>luaX_setinput。这句是在luaY_parser中调用，和刚才那句不同，
+劝你别这么干。<code>_ENV</code>定义在LexState里的一个TString类型变量里，在lparser.c中会用到。</p><p>流程是这样的</p><ol><li>luaX_init，起因是lua_newstate时需要一系列初始化，就包括了词法初始化。
+这里被创建的名字是全局的，永远不会被GC。</li><li>luaX_setinput。这句是在luaY_parser中调用，和刚才那句不同，
 这里创建的变量就要归属某个LexState，这个LexState是在luaY_parser的一个栈上变量。
 从注释来看，luaY_parser是专用于主文件的，luaX_setinput之后的mainfunc会close这个栈上变量，
-风险是没有的。</li>
-</ol>
-</div>
-<div class="post-meta meta-tags">
-没有标签
-</div>
-</article>
-</div>
-<footer id=footer>
-<div>
-&copy; 2021 <a href>蛙二的思考 By </a>
-</div>
-<br>
-<div>
-<div class=github-badge>
-<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-</div>
-<div class=github-badge>
-<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-</div>
-<div class=github-badge>
-<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-</div>
-</div>
-</footer>
-<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+风险是没有的。</li></ol></div><div class="post-meta meta-tags">没有标签</div></article></div><footer id=footer><div>&copy; 2022 <a href>蛙二的思考 By</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <a id=rocket href=#top></a>
-<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
-</div>
-<div id=secondary>
-<section class=widget>
-<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
-<input type=text name=q maxlength=20 placeholder=Search>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script></div><div id=secondary><section class=widget><form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch>
-<button type=submit class="submit icon-search"></button>
-</form>
-</section>
-<section class=widget>
-<h3 class=widget-title>最近文章</h3>
-<ul class=widget-list>
-<li>
-<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
-</li>
-<li>
-<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
-</li>
-<li>
-<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
-</li>
-<li>
-<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
-</li>
-<li>
-<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
-</li>
-<li>
-<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
-</li>
-<li>
-<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
-</li>
-<li>
-<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
-</li>
-<li>
-<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
-</li>
-<li>
-<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/categories/>分类</a></h3>
-<ul class=widget-list>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/tags/>标签</a></h3>
-<div class=tagcloud>
-</div>
-</section>
-<section class=widget>
-<h3 class=widget-title>其它</h3>
-<ul class=widget-list>
-<li><a href=index.xml>文章 RSS</a></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/220421/ title=数据引擎和算子对比>数据引擎和算子对比</a></li><li><a href=/post/220405/ title=Kubernetes初学笔记>Kubernetes初学笔记</a></li><li><a href=/post/220312/ title=分布式计算在Spark上的实现>分布式计算在Spark上的实现</a></li><li><a href=/post/220204/ title=分布式哈希技术摘录>分布式哈希技术摘录</a></li><li><a href=/post/220201/ title=压缩技术浅谈>压缩技术浅谈</a></li><li><a href=/post/220115/ title=Python的数据科学相关库介绍>Python的数据科学相关库介绍</a></li><li><a href=/post/211226/ title=SU的执行过程与用户登陆机制>SU的执行过程与用户登陆机制</a></li><li><a href=/post/211222/ title=SQL的JOIN种类与选择>SQL的JOIN种类与选择</a></li><li><a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a></li><li><a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>

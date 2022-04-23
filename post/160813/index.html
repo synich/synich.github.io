@@ -1,180 +1,25 @@
-<!doctype html><html lang=zh-ch>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>RAII、智能指针和GC | 蛙二的思考</title>
-<meta property="og:title" content="RAII、智能指针和GC - 蛙二的思考">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2016-08-13T12:00:00+08:00">
-<meta property="article:modified_time" content="2016-08-13T12:00:00+08:00">
-<meta name=Keywords content>
-<meta name=description content="RAII、智能指针和GC">
-<meta name=author content>
-<meta property="og:url" content="/post/160813/">
-<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
-<link rel=stylesheet href=/css/normalize.css>
-<link rel=stylesheet href=/css/style.css>
-<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
-</head>
-<body>
-<header id=header class=clearfix>
-<div class=container>
-<div class=col-group>
-<div class=site-name>
-<a id=logo href>
-蛙二的思考
-</a>
-</div>
-<div>
-<nav id=nav-menu class=clearfix>
-<a class=current href>首页</a>
-</nav>
-</div>
-</div>
-</div>
-</header>
-<div id=body>
-<div class=container>
-<div class=col-group>
-<div class=col-8 id=main>
-<div class=res-cons>
-<article class=post>
-<header>
-<h1 class=post-title>RAII、智能指针和GC</h1>
-</header>
-<date class="post-meta meta-date">
-2016年8月13日
-</date>
-<div class=post-content>
-<p>C++作为接近底层控制的语言，天然地要负责资源管理。资源并不单指内存，
+<!doctype html><html lang=zh-ch><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>RAII、智能指针和GC | 蛙二的思考</title><meta property="og:title" content="RAII、智能指针和GC - 蛙二的思考"><meta property="og:type" content="article"><meta property="article:published_time" content="2016-08-13T12:00:00+08:00"><meta property="article:modified_time" content="2016-08-13T12:00:00+08:00"><meta name=Keywords content><meta name=description content="RAII、智能指针和GC"><meta name=author content><meta property="og:url" content="/post/160813/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href>蛙二的思考</a></div><div><nav id=nav-menu class=clearfix><a class=current href>首页</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>RAII、智能指针和GC</h1></header><date class="post-meta meta-date">2016年8月13日</date><div class=post-content><p>C++作为接近底层控制的语言，天然地要负责资源管理。资源并不单指内存，
 还包括了文件句柄。从这个角度看，动态语言所带的垃圾回收只管理内存，
 却不能正确地回收文件句柄。<code>C++</code>在长期发展的历程中，实践总结出了RAII这个特性，
-也是这门语言区别于其它语言的最大特征。</p>
-<p>在解释RAII之前，先来看<code>C++</code>的一个特性：栈上变量的自动析构。
+也是这门语言区别于其它语言的最大特征。</p><p>在解释RAII之前，先来看<code>C++</code>的一个特性：栈上变量的自动析构。
 <code>C++</code>是打着A Class With C的名号发展起来的，类是最初区别于C的地方，
 通过定义类，然后使用类来创建/销毁对象就是最基本的动作。
 加之变量可以在栈上分配，一个在栈上分配的对象，在函数结束后由于内存已经被回收，
-必须要在内存回收前执行析构，所幸这个动作由编译器替我们做了。</p>
-<p>就是这么个看似很普通的特性，却在实践中发展成了资源管理的最佳方式。
+必须要在内存回收前执行析构，所幸这个动作由编译器替我们做了。</p><p>就是这么个看似很普通的特性，却在实践中发展成了资源管理的最佳方式。
 试想如果在函数执行过程中，会涉及很多资源(包括内存和句柄)。在执行过程中如果发生错误，
 需要结束函数并释放资源，如果每次都写if/else，并写上很多重复代码，代码一定很难看。
 这时就可以把这些需要的资源，封装成一个类，在开始执行前，通过构造对象的方式，
 在对象的构造函数中获取这些资源，接下来执行逻辑，一旦发生了错误，直接退出函数即可。
 因为编译器会自动执行对象的析构函数，只要我们写好析构函数，不管在函数的哪个地方出错，
-相当于编译器都会自动地替我们回收这些资源。</p>
-<p>这里的构造函数中获取资源，就是RAII：Resource Acquisition Is Initialization。
-两句话表述的方向不同，但强调的意思是一样的：把构造和获取资源等同起来。</p>
-<p>刚才给的例子使用栈上变量，那么堆上变量怎么办？办法就是把堆上变量封装成栈上变量。
+相当于编译器都会自动地替我们回收这些资源。</p><p>这里的构造函数中获取资源，就是RAII：Resource Acquisition Is Initialization。
+两句话表述的方向不同，但强调的意思是一样的：把构造和获取资源等同起来。</p><p>刚才给的例子使用栈上变量，那么堆上变量怎么办？办法就是把堆上变量封装成栈上变量。
 把new的操作结果，作为一个栈上对象的构造参数传递，
 从而在栈上对象析构时把new的结果delete。而承担了这种任务的对象，就是智能指针。
-随着使用场景的不同，智能指针又细化出了多种类型</p>
-<ul>
-<li>资源共享型：shared_ptr以及为了解决环形计数而引入的weak_ptr</li>
-<li>所有权控制型：auto_ptr、unique_ptr</li>
-</ul>
-<p>这些指针的实现方式和差异，各种文章介绍的很多，这里就不细说了。</p>
-<p>写这篇文章的缘由，是在公司内网看到有人发帖提问，通过一个构造函数的出参返回一个指针好不好？
+随着使用场景的不同，智能指针又细化出了多种类型</p><ul><li>资源共享型：shared_ptr以及为了解决环形计数而引入的weak_ptr</li><li>所有权控制型：auto_ptr、unique_ptr</li></ul><p>这些指针的实现方式和差异，各种文章介绍的很多，这里就不细说了。</p><p>写这篇文章的缘由，是在公司内网看到有人发帖提问，通过一个构造函数的出参返回一个指针好不好？
 虽然这个问题相当的愚蠢，但我想也许正是因为<code>C++</code>的复杂和灵活，才会让这样的蠢问题出现。
 结合上面的介绍，指针往往代表了一个资源(否则要指针干嘛？)，如果把资源放出来，
-一定会带来资源的手动管理问题，显然也违背了RAII的最佳实现实践方针。</p>
-<h2 id=raii的感知和函数动态创建>RAII的感知和函数动态创建</h2>
-<p>RAII无非就是让使用者在退出栈之前，得到一个感知的机会，本质还是汇编层面才能做，所以C语言在这里一点办法都没有。脚本语言的栈是在C层面控制的，因此可以记录和追踪生命周期，但在C语言自身，除非扩展语法，在函数退出前能注入一段行为，才能解决这个问题。</p>
-<p>延续也类似，在语言层面把运行的流程暴露出来，让人可以介入并控制。C语言的函数不仅不能嵌套定义，也不能在运行过程中定义。所有的函数都被编译到text段，整个生命周期永远存在，这使它比堆上数据就多了一份持久，但也少了运行期动态变化的能力。</p>
-<h2 id=lua的gc>Lua的GC</h2>
-<p>使用三色标记法，对象分为白灰黑三种颜色。白表示死对象，可以用白事来简单记忆。经过标记为灰，灰再到黑。剩下的白对象就被收集了。先把所有的对象放在白链上，然后扫描这条链，把能reach到的对象放在灰链，再遍历灰链，把所有对象都mark成黑后，在灰链为空时把白链的对象清空，从而达到垃圾收集的目的。</p>
-<p>Lua对表的GC做了特别的优化。5.1的时代只要表具备weak属性，全放在g对象的weak链处理。到了5.2时代作了细化，weak链被拆成三条链，只有weak value的表记录在g对象的weak，weak key的表记录在g对象的ephemeron，key和value都是weak则记录在allweak。</p>
-<p>每次扫描时会用sweeplist遍历，最多遍历count次，如果是白对象，则释放它。</p>
-</div>
-<div class="post-meta meta-tags">
-没有标签
-</div>
-</article>
-</div>
-<footer id=footer>
-<div>
-&copy; 2021 <a href>蛙二的思考 By </a>
-</div>
-<br>
-<div>
-<div class=github-badge>
-<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-</div>
-<div class=github-badge>
-<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-</div>
-<div class=github-badge>
-<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-</div>
-</div>
-</footer>
-<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+一定会带来资源的手动管理问题，显然也违背了RAII的最佳实现实践方针。</p><h2 id=raii的感知和函数动态创建>RAII的感知和函数动态创建</h2><p>RAII无非就是让使用者在退出栈之前，得到一个感知的机会，本质还是汇编层面才能做，所以C语言在这里一点办法都没有。脚本语言的栈是在C层面控制的，因此可以记录和追踪生命周期，但在C语言自身，除非扩展语法，在函数退出前能注入一段行为，才能解决这个问题。</p><p>延续也类似，在语言层面把运行的流程暴露出来，让人可以介入并控制。C语言的函数不仅不能嵌套定义，也不能在运行过程中定义。所有的函数都被编译到text段，整个生命周期永远存在，这使它比堆上数据就多了一份持久，但也少了运行期动态变化的能力。</p><h2 id=lua的gc>Lua的GC</h2><p>使用三色标记法，对象分为白灰黑三种颜色。白表示死对象，可以用白事来简单记忆。经过标记为灰，灰再到黑。剩下的白对象就被收集了。先把所有的对象放在白链上，然后扫描这条链，把能reach到的对象放在灰链，再遍历灰链，把所有对象都mark成黑后，在灰链为空时把白链的对象清空，从而达到垃圾收集的目的。</p><p>Lua对表的GC做了特别的优化。5.1的时代只要表具备weak属性，全放在g对象的weak链处理。到了5.2时代作了细化，weak链被拆成三条链，只有weak value的表记录在g对象的weak，weak key的表记录在g对象的ephemeron，key和value都是weak则记录在allweak。</p><p>每次扫描时会用sweeplist遍历，最多遍历count次，如果是白对象，则释放它。</p></div><div class="post-meta meta-tags">没有标签</div></article></div><footer id=footer><div>&copy; 2022 <a href>蛙二的思考 By</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <a id=rocket href=#top></a>
-<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
-</div>
-<div id=secondary>
-<section class=widget>
-<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
-<input type=text name=q maxlength=20 placeholder=Search>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script></div><div id=secondary><section class=widget><form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch>
-<button type=submit class="submit icon-search"></button>
-</form>
-</section>
-<section class=widget>
-<h3 class=widget-title>最近文章</h3>
-<ul class=widget-list>
-<li>
-<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
-</li>
-<li>
-<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
-</li>
-<li>
-<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
-</li>
-<li>
-<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
-</li>
-<li>
-<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
-</li>
-<li>
-<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
-</li>
-<li>
-<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
-</li>
-<li>
-<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
-</li>
-<li>
-<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
-</li>
-<li>
-<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/categories/>分类</a></h3>
-<ul class=widget-list>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/tags/>标签</a></h3>
-<div class=tagcloud>
-</div>
-</section>
-<section class=widget>
-<h3 class=widget-title>其它</h3>
-<ul class=widget-list>
-<li><a href=index.xml>文章 RSS</a></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/220421/ title=数据引擎和算子对比>数据引擎和算子对比</a></li><li><a href=/post/220405/ title=Kubernetes初学笔记>Kubernetes初学笔记</a></li><li><a href=/post/220312/ title=分布式计算在Spark上的实现>分布式计算在Spark上的实现</a></li><li><a href=/post/220204/ title=分布式哈希技术摘录>分布式哈希技术摘录</a></li><li><a href=/post/220201/ title=压缩技术浅谈>压缩技术浅谈</a></li><li><a href=/post/220115/ title=Python的数据科学相关库介绍>Python的数据科学相关库介绍</a></li><li><a href=/post/211226/ title=SU的执行过程与用户登陆机制>SU的执行过程与用户登陆机制</a></li><li><a href=/post/211222/ title=SQL的JOIN种类与选择>SQL的JOIN种类与选择</a></li><li><a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a></li><li><a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>

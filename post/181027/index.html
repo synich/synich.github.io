@@ -1,70 +1,6 @@
-<!doctype html><html lang=zh-ch>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>跨域和同源策略 | 蛙二的思考</title>
-<meta property="og:title" content="跨域和同源策略 - 蛙二的思考">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2018-10-27T12:00:00+08:00">
-<meta property="article:modified_time" content="2018-10-27T12:00:00+08:00">
-<meta name=Keywords content>
-<meta name=description content="跨域和同源策略">
-<meta name=author content>
-<meta property="og:url" content="/post/181027/">
-<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
-<link rel=stylesheet href=/css/normalize.css>
-<link rel=stylesheet href=/css/style.css>
-<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
-</head>
-<body>
-<header id=header class=clearfix>
-<div class=container>
-<div class=col-group>
-<div class=site-name>
-<a id=logo href>
-蛙二的思考
-</a>
-</div>
-<div>
-<nav id=nav-menu class=clearfix>
-<a class=current href>首页</a>
-</nav>
-</div>
-</div>
-</div>
-</header>
-<div id=body>
-<div class=container>
-<div class=col-group>
-<div class=col-8 id=main>
-<div class=res-cons>
-<article class=post>
-<header>
-<h1 class=post-title>跨域和同源策略</h1>
-</header>
-<date class="post-meta meta-date">
-2018年10月27日
-</date>
-<div class=post-content>
-<p>浏览器的三大线程</p>
-<ol>
-<li>javascript引擎线程(GUI渲染也在这个线程)</li>
-<li>浏览器事件触发线程</li>
-<li>HTTP请求线程</li>
-</ol>
-<p>问题是这样：在localhost页面用XHR发起请求，始终回调error函数。</p>
-<p>原因：首先这是个跨域的请求，而规范定义XHR不允许跨域请求。出于安全考虑，所有的JS请求都不能跨域，但为了使用CDN的多个源加载机制，对script或img标签的src属性开了个口子，允许跨域，但为了防止被滥用，只支持GET方式，对于CDN分发来说已经足够了。所以就有人基于此开发了JSONP机制。</p>
-<p>我需要POST，所以JSONP不通。为求简单用了同步方式，同步请求规定withCredentials属性必须false，跨域却必须是true。因此要想跨域，只能用异步方式。</p>
-<pre tabindex=0><code>xhr.withCredentials = true;
+<!doctype html><html lang=zh-ch><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>跨域和同源策略 | 蛙二的思考</title><meta property="og:title" content="跨域和同源策略 - 蛙二的思考"><meta property="og:type" content="article"><meta property="article:published_time" content="2018-10-27T12:00:00+08:00"><meta property="article:modified_time" content="2018-10-27T12:00:00+08:00"><meta name=Keywords content><meta name=description content="跨域和同源策略"><meta name=author content><meta property="og:url" content="/post/181027/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href>蛙二的思考</a></div><div><nav id=nav-menu class=clearfix><a class=current href>首页</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>跨域和同源策略</h1></header><date class="post-meta meta-date">2018年10月27日</date><div class=post-content><p>浏览器的三大线程</p><ol><li>javascript引擎线程(GUI渲染也在这个线程)</li><li>浏览器事件触发线程</li><li>HTTP请求线程</li></ol><p>问题是这样：在localhost页面用XHR发起请求，始终回调error函数。</p><p>原因：首先这是个跨域的请求，而规范定义XHR不允许跨域请求。出于安全考虑，所有的JS请求都不能跨域，但为了使用CDN的多个源加载机制，对script或img标签的src属性开了个口子，允许跨域，但为了防止被滥用，只支持GET方式，对于CDN分发来说已经足够了。所以就有人基于此开发了JSONP机制。</p><p>我需要POST，所以JSONP不通。为求简单用了同步方式，同步请求规定withCredentials属性必须false，跨域却必须是true。因此要想跨域，只能用异步方式。</p><pre tabindex=0><code>xhr.withCredentials = true;
 xhr.open(method, dst, true);
-</code></pre><p>JS不能跨域展开一下，浏览器并不会拦截跨域请求(不严谨，如果content-type有值还是会会改动，下述)，抓包能看到浏览器发出了数据，但是在收数据后，会对数据做校验，不符合规范就不把收到的数据给JS。</p>
-<p>网上很多说通过响应header增加<code>Access-Control-Allow-Origin: *</code>来解决，但都没有细说是在哪个server端增加。来分析一下跨域定义：访问A页面，这其中有一段JS脚本向B页面请求数据，虽然跨域，浏览器还是会向B请求数据，请求的头中会加上来自A站的标识<code>Origin: http://localhost</code> 。直到发现有刚才那段申明，才把数据给JS，否则就不给JS。从字面意思也好理解，对B来说，Origin指的是A。只有B允许A（或<code>*</code>所有人）来请求数据，浏览器看到既然B都特地声明数据开放给A了，才会把给JS。如果B没有说这句话，默认是不给JS的。</p>
-<p>再说说跨域的高级变化，又称为preflight机制。只有简单请求能够直接发出去，而复杂请求浏览器会修改XHR发出的请求。简单请求包括HEAD/GET/POST，且不允许设置Content-Type等若干头部。一旦发现违反，就会把方法改成Options向服务器探探路，只有应答带了<code>Access-Control-Allow-Origin: *</code>等若干字段，才允许重发真正的请求，且即使这样，仍有些头是不允许带的。</p>
-<p>如果HTTP的请求头中有特殊字段，同样会触发浏览的preflight机制，必须在响应端增加<code>Access-Control-Allow-Headers: *</code>，否则浏览器也会不予显示。</p>
-<p>而表单不受同源限制，因为表单一旦发出，整个页面就切换了，原页面拿不到新页面的内容。所以说同源策略的本质是，一个域名的 JS ，在未经允许的情况下，不得读取另一个域名的内容。但浏览器并不阻止你向另一个域名发送请求。</p>
-<p>用异步就一定会涉及回调，看看MDN上关于回调的写法</p>
-<pre tabindex=0><code>var xhr = XMLHttpRequest();
+</code></pre><p>JS不能跨域展开一下，浏览器并不会拦截跨域请求(不严谨，如果content-type有值还是会会改动，下述)，抓包能看到浏览器发出了数据，但是在收数据后，会对数据做校验，不符合规范就不把收到的数据给JS。</p><p>网上很多说通过响应header增加<code>Access-Control-Allow-Origin: *</code>来解决，但都没有细说是在哪个server端增加。来分析一下跨域定义：访问A页面，这其中有一段JS脚本向B页面请求数据，虽然跨域，浏览器还是会向B请求数据，请求的头中会加上来自A站的标识<code>Origin: http://localhost</code> 。直到发现有刚才那段申明，才把数据给JS，否则就不给JS。从字面意思也好理解，对B来说，Origin指的是A。只有B允许A（或<code>*</code>所有人）来请求数据，浏览器看到既然B都特地声明数据开放给A了，才会把给JS。如果B没有说这句话，默认是不给JS的。</p><p>再说说跨域的高级变化，又称为preflight机制。只有简单请求能够直接发出去，而复杂请求浏览器会修改XHR发出的请求。简单请求包括HEAD/GET/POST，且不允许设置Content-Type等若干头部。一旦发现违反，就会把方法改成Options向服务器探探路，只有应答带了<code>Access-Control-Allow-Origin: *</code>等若干字段，才允许重发真正的请求，且即使这样，仍有些头是不允许带的。</p><p>如果HTTP的请求头中有特殊字段，同样会触发浏览的preflight机制，必须在响应端增加<code>Access-Control-Allow-Headers: *</code>，否则浏览器也会不予显示。</p><p>而表单不受同源限制，因为表单一旦发出，整个页面就切换了，原页面拿不到新页面的内容。所以说同源策略的本质是，一个域名的 JS ，在未经允许的情况下，不得读取另一个域名的内容。但浏览器并不阻止你向另一个域名发送请求。</p><p>用异步就一定会涉及回调，看看MDN上关于回调的写法</p><pre tabindex=0><code>var xhr = XMLHttpRequest();
 xhr.onreadystatechange = function () {
     switch(xhr.readyState){
       case 1://OPENED
@@ -77,106 +13,15 @@ xhr.onreadystatechange = function () {
         xhr.response; //do something
         break;
     }}
-</code></pre><p>我最疑惑的就是function中的xhr表示谁？函数无参也无定义，xhr只能链式地向上查找，回调这个函数的主体是xhr，所以向上找的时候，一定能找到xhr变量。但我觉得更好的写法还是<code>switch(this.readyState)</code>，引入一个同名变量太容易引起混淆。</p>
-<p>上述写法是早期xhr的推荐做法，现在新的浏览器还可以用onload和onerror方法，看起来更简洁</p>
-<pre tabindex=0><code>return new Promise(function (resolve, reject) {
+</code></pre><p>我最疑惑的就是function中的xhr表示谁？函数无参也无定义，xhr只能链式地向上查找，回调这个函数的主体是xhr，所以向上找的时候，一定能找到xhr变量。但我觉得更好的写法还是<code>switch(this.readyState)</code>，引入一个同名变量太容易引起混淆。</p><p>上述写法是早期xhr的推荐做法，现在新的浏览器还可以用onload和onerror方法，看起来更简洁</p><pre tabindex=0><code>return new Promise(function (resolve, reject) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.onload = resolve;
     xhr.onerror = reject;
     xhr.send(...)  // POST has string body
 }
-</code></pre><p>这两个方法回调时的惟一参数是ProgressEvent类型，target.response就是对端返回的内容。target是其父事件Event的属性，ProgressEvent继承得到target属性，表示这个事件被分派的对象，此处代表XHR对象。</p>
-</div>
-<div class="post-meta meta-tags">
-没有标签
-</div>
-</article>
-</div>
-<footer id=footer>
-<div>
-&copy; 2021 <a href>蛙二的思考 By </a>
-</div>
-<br>
-<div>
-<div class=github-badge>
-<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-</div>
-<div class=github-badge>
-<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-</div>
-<div class=github-badge>
-<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-</div>
-</div>
-</footer>
-<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+</code></pre><p>这两个方法回调时的惟一参数是ProgressEvent类型，target.response就是对端返回的内容。target是其父事件Event的属性，ProgressEvent继承得到target属性，表示这个事件被分派的对象，此处代表XHR对象。</p></div><div class="post-meta meta-tags">没有标签</div></article></div><footer id=footer><div>&copy; 2022 <a href>蛙二的思考 By</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <a id=rocket href=#top></a>
-<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
-</div>
-<div id=secondary>
-<section class=widget>
-<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
-<input type=text name=q maxlength=20 placeholder=Search>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script></div><div id=secondary><section class=widget><form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch>
-<button type=submit class="submit icon-search"></button>
-</form>
-</section>
-<section class=widget>
-<h3 class=widget-title>最近文章</h3>
-<ul class=widget-list>
-<li>
-<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
-</li>
-<li>
-<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
-</li>
-<li>
-<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
-</li>
-<li>
-<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
-</li>
-<li>
-<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
-</li>
-<li>
-<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
-</li>
-<li>
-<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
-</li>
-<li>
-<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
-</li>
-<li>
-<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
-</li>
-<li>
-<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/categories/>分类</a></h3>
-<ul class=widget-list>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/tags/>标签</a></h3>
-<div class=tagcloud>
-</div>
-</section>
-<section class=widget>
-<h3 class=widget-title>其它</h3>
-<ul class=widget-list>
-<li><a href=index.xml>文章 RSS</a></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/220421/ title=数据引擎和算子对比>数据引擎和算子对比</a></li><li><a href=/post/220405/ title=Kubernetes初学笔记>Kubernetes初学笔记</a></li><li><a href=/post/220312/ title=分布式计算在Spark上的实现>分布式计算在Spark上的实现</a></li><li><a href=/post/220204/ title=分布式哈希技术摘录>分布式哈希技术摘录</a></li><li><a href=/post/220201/ title=压缩技术浅谈>压缩技术浅谈</a></li><li><a href=/post/220115/ title=Python的数据科学相关库介绍>Python的数据科学相关库介绍</a></li><li><a href=/post/211226/ title=SU的执行过程与用户登陆机制>SU的执行过程与用户登陆机制</a></li><li><a href=/post/211222/ title=SQL的JOIN种类与选择>SQL的JOIN种类与选择</a></li><li><a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a></li><li><a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>

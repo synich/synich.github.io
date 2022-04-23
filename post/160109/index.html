@@ -1,63 +1,6 @@
-<!doctype html><html lang=zh-ch>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>GCC编译4阶段的一些理解 | 蛙二的思考</title>
-<meta property="og:title" content="GCC编译4阶段的一些理解 - 蛙二的思考">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2016-01-09T12:00:00+08:00">
-<meta property="article:modified_time" content="2016-01-09T12:00:00+08:00">
-<meta name=Keywords content>
-<meta name=description content="GCC编译4阶段的一些理解">
-<meta name=author content>
-<meta property="og:url" content="/post/160109/">
-<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
-<link rel=stylesheet href=/css/normalize.css>
-<link rel=stylesheet href=/css/style.css>
-<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
-</head>
-<body>
-<header id=header class=clearfix>
-<div class=container>
-<div class=col-group>
-<div class=site-name>
-<a id=logo href>
-蛙二的思考
-</a>
-</div>
-<div>
-<nav id=nav-menu class=clearfix>
-<a class=current href>首页</a>
-</nav>
-</div>
-</div>
-</div>
-</header>
-<div id=body>
-<div class=container>
-<div class=col-group>
-<div class=col-8 id=main>
-<div class=res-cons>
-<article class=post>
-<header>
-<h1 class=post-title>GCC编译4阶段的一些理解</h1>
-</header>
-<date class="post-meta meta-date">
-2016年1月9日
-</date>
-<div class=post-content>
-<p>起因是这样的，安装了GCC4.7和4.8两个版本，
-但是4.8不知什么原因输出临时目录总是出错，原因及修改方法见这里，
-所以只能用4.8配合-pipe选项先生成.o文件，再用4.7链接成可执行程序。
-于是想了解下这么做为什么是可行的。</p>
-<p>C语言的编译分4个步骤，第一步cpp预编译，后缀名.i，这一步因为宏的机制几乎没有新特性，
-且功能也不多，不会有太大的变化。这个不详细研究了。第二步cc1编译成汇编语言，
-这是整个编译最复杂的地方，涉及语言特性支持和优化，一般说的版本就是指cc1，
-C++则是cc1plus。由这步生成后缀.s的汇编文件。
-第三步as(又名gas)将汇编语言转机器码并生成对应平台的目标文件，
-如ELF或COFF文件，最后由ld将多个目标文件生成可执行程序或库，文件格式为ELF或PE。</p>
-<p>其中的第三、四步用的as和ld，其实并不在gcc的范畴内，其版本号是属于binutils这个项目下，
+<!doctype html><html lang=zh-ch><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>GCC编译4阶段的一些理解 | 蛙二的思考</title><meta property="og:title" content="GCC编译4阶段的一些理解 - 蛙二的思考"><meta property="og:type" content="article"><meta property="article:published_time" content="2016-01-09T12:00:00+08:00"><meta property="article:modified_time" content="2016-01-09T12:00:00+08:00"><meta name=Keywords content><meta name=description content="GCC编译4阶段的一些理解"><meta name=author content><meta property="og:url" content="/post/160109/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href>蛙二的思考</a></div><div><nav id=nav-menu class=clearfix><a class=current href>首页</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>GCC编译4阶段的一些理解</h1></header><date class="post-meta meta-date">2016年1月9日</date><div class=post-content><p>起因是这样的，安装了GCC4.7和4.8两个版本，但是4.8不知什么原因输出临时目录总是出错，原因及修改方法见这里，
+所以只能用4.8配合-pipe选项先生成.o文件，再用4.7链接成可执行程序。于是想了解下这么做为什么是可行的。</p><p>C语言的编译分4个步骤，第一步cpp预编译，后缀名.i，这一步因为宏的机制几乎没有新特性，且功能也不多，不会有太大的变化。这个不详细研究了。第二步cc1编译成汇编语言，这是整个编译最复杂的地方，涉及语言特性支持和优化，一般说的版本就是指cc1，C++则是cc1plus。
+由这步生成后缀.s的汇编文件。第三步as(又名gas)将汇编语言转机器码并生成对应平台的目标文件，如ELF或COFF文件，最后由ld将多个目标文件生成可执行程序或库，文件格式为ELF或PE。</p><p>其中的第三、四步用的as和ld，其实并不在gcc的范畴内，其版本号是属于binutils这个项目下，
 因为as的工作在于把汇编语言转机器码，并生成对应平台的目标文件，
 生成机器码这步没什么好说的，不同指令集有各自的代码，相对比较直观。
 但要生成各种平台对应的目标文件，这就涉及到一个抽象层，而一般用得最多的，
@@ -65,102 +8,13 @@ C++则是cc1plus。由这步生成后缀.s的汇编文件。
 而ld只是个软链接，真正的文件可能是ld.bfd，也可能是ld.gold。
 看名字就知道ld.bfd表示使用BFD库来生成平台相关文件，而ld.gold则是google研发的链接版本，
 据说速度很快，但我的机器上没有安装，也不清楚依赖的gold库到底是个什么库，
-只知道gold版只支持ELF，所以GNU必然不变采用作为默认实现，其功能应该和BFD是类似。</p>
-<p>由于是两个软件包，怎么配套并没有一个非常严格的要求，因此用gcc4.8编译，
-最后用4.7链接也问题不大。只是默认会链接到4.7的库目录。如果想用4.8的目录，
-则可用用&ndash;sysroot选项来指定。综上来看，编译的几个阶段，重心是不一样。
-而每两个阶段间都需要有一个规范。cc1和as之间采用的是AT&T规范，
-as和ld之间则是平台相关的目标格式。正是因为有了这些规范，4步编译才能看起来仿佛一步似地完成。</p>
-</div>
-<div class="post-meta meta-tags">
-没有标签
-</div>
-</article>
-</div>
-<footer id=footer>
-<div>
-&copy; 2021 <a href>蛙二的思考 By </a>
-</div>
-<br>
-<div>
-<div class=github-badge>
-<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-</div>
-<div class=github-badge>
-<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-</div>
-<div class=github-badge>
-<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-</div>
-</div>
-</footer>
-<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+只知道gold版只支持ELF，所以GNU必然不变采用作为默认实现，其功能应该和BFD是类似。</p><p>由于是两个软件包，怎么配套并没有一个非常严格的要求，因此用gcc4.8编译，最后用4.7链接也问题不大。只是默认会链接到4.7的库目录。如果想用4.8的目录，则可用用&ndash;sysroot选项来指定。
+综上来看，编译的几个阶段，重心是不一样。而每两个阶段间都需要有一个规范。cc1和as之间采用的是AT&T规范，as和ld之间则是平台相关的目标格式。正是因为有了这些规范，4步编译才能看起来仿佛一步似地完成。</p><h2 id=一些有用的编译指令>一些有用的编译指令</h2><p><code>gcc -print-file-name=libc.so</code>获得libc.so的位置</p><p><code>libstdc++</code>是<code>g++</code>的专属库，gcc命令不能自动和C++程序使用的库联接，使用<code>gcc -lstdc++</code>就可以。</p><p>静态编译带运行时，<code>g++ -static-libgcc -static-libstdc++</code></p><p>编译时设置rpath和dynamic linker（绝对路径）：gcc -Wl,-rpath=&rsquo;/my/lib&rsquo;,-dynamic-linker=&rsquo;/my/lib/ld-linux.so.2'</p><p>rpath，全名run-time search path，是elf文件中一个字段，它指定了可执行文件执行时搜索so文件的第一优先位置，一般编译器默认将该字段设为空。elf文件中还有一个类似的字段runpath，其作用与rpath类似，但搜索优先级稍低。搜索优先级:</p><p><code>rpath > LD_LIBRARY_PATH > runpath > ldconfig缓存 > 默认的/lib,/usr/lib等</code></p><p>如果需要使用相对路径指定lib文件夹，可以使用ORIGIN变量，ld会将ORIGIN理解成可执行文件所在的路径。<code>gcc -Wl,-rpath='$ORIGIN/../lib'</code></p><p>无法编译程序时，可以通过patchelf修改rpath和interpreter。</p><pre tabindex=0><code>patchelf --set-rpath /my/lib your_program
+patchelf --set-interpreter /my/lib/ld-linux.so.2 your_program
+</code></pre><p>除了绝对路径，还可以使用pwd获取当前路径，使用相对路径指向本地lib。</p><pre tabindex=0><code>patchelf --set-rpath `pwd`/../lib your_program
+patchelf --set-interpreter `pwd`/../lib/ld-linux-x86-64.so.2 ./your_program
+</code></pre></div><div class="post-meta meta-tags">没有标签</div></article></div><footer id=footer><div>&copy; 2022 <a href>蛙二的思考 By</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <a id=rocket href=#top></a>
-<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
-</div>
-<div id=secondary>
-<section class=widget>
-<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
-<input type=text name=q maxlength=20 placeholder=Search>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script></div><div id=secondary><section class=widget><form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch>
-<button type=submit class="submit icon-search"></button>
-</form>
-</section>
-<section class=widget>
-<h3 class=widget-title>最近文章</h3>
-<ul class=widget-list>
-<li>
-<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
-</li>
-<li>
-<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
-</li>
-<li>
-<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
-</li>
-<li>
-<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
-</li>
-<li>
-<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
-</li>
-<li>
-<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
-</li>
-<li>
-<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
-</li>
-<li>
-<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
-</li>
-<li>
-<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
-</li>
-<li>
-<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/categories/>分类</a></h3>
-<ul class=widget-list>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/tags/>标签</a></h3>
-<div class=tagcloud>
-</div>
-</section>
-<section class=widget>
-<h3 class=widget-title>其它</h3>
-<ul class=widget-list>
-<li><a href=index.xml>文章 RSS</a></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/220421/ title=数据引擎和算子对比>数据引擎和算子对比</a></li><li><a href=/post/220405/ title=Kubernetes初学笔记>Kubernetes初学笔记</a></li><li><a href=/post/220312/ title=分布式计算在Spark上的实现>分布式计算在Spark上的实现</a></li><li><a href=/post/220204/ title=分布式哈希技术摘录>分布式哈希技术摘录</a></li><li><a href=/post/220201/ title=压缩技术浅谈>压缩技术浅谈</a></li><li><a href=/post/220115/ title=Python的数据科学相关库介绍>Python的数据科学相关库介绍</a></li><li><a href=/post/211226/ title=SU的执行过程与用户登陆机制>SU的执行过程与用户登陆机制</a></li><li><a href=/post/211222/ title=SQL的JOIN种类与选择>SQL的JOIN种类与选择</a></li><li><a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a></li><li><a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>

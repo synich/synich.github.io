@@ -1,161 +1,39 @@
-<!doctype html><html lang=zh-ch>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>Shell编程说明 | 蛙二的思考</title>
-<meta property="og:title" content="Shell编程说明 - 蛙二的思考">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2018-07-06T12:00:00+08:00">
-<meta property="article:modified_time" content="2018-07-06T12:00:00+08:00">
-<meta name=Keywords content>
-<meta name=description content="Shell编程说明">
-<meta name=author content>
-<meta property="og:url" content="/post/180706/">
-<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
-<link rel=stylesheet href=/css/normalize.css>
-<link rel=stylesheet href=/css/style.css>
-<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
-</head>
-<body>
-<header id=header class=clearfix>
-<div class=container>
-<div class=col-group>
-<div class=site-name>
-<a id=logo href>
-蛙二的思考
-</a>
-</div>
-<div>
-<nav id=nav-menu class=clearfix>
-<a class=current href>首页</a>
-</nav>
-</div>
-</div>
-</div>
-</header>
-<div id=body>
-<div class=container>
-<div class=col-group>
-<div class=col-8 id=main>
-<div class=res-cons>
-<article class=post>
-<header>
-<h1 class=post-title>Shell编程说明</h1>
-</header>
-<date class="post-meta meta-date">
-2018年7月6日
-</date>
-<div class=post-content>
-<h2 id=解析顺序与转义>解析顺序与转义</h2>
-<p>和函数调用类似，一条命令行的多个部分会在不同阶段解析。先判断整行是简单命令还是复合命令，每条简单命令的参数会先解析，像glob、变量替换、重定向都是参数解析阶段的重头戏，然后作为主命令参数执行。</p>
-<p>单双引号可以防止转义，双引号保留$和\n等扩展语义，单引号完全不做转义。但是$&lsquo;&lsquo;语法又支持有限转义。比如$'\u4f60&rsquo;会转义成汉字&rsquo;你&rsquo;，如果没有$，则原样输出。</p>
-<h2 id=类型>类型</h2>
-<p>解析时默认都是字符串类型，所以不需要特意标记双引号或单引号，有两种情况要特意加引号：1-空串，2-*之类会被扩展的特殊字符。</p>
-<p>在值的比较上，颇有些强类型的感觉，字符串的比较和整形的比较要用不同的操作符。</p>
-<h2 id=变量与赋值>变量与赋值</h2>
-<p>赋值的<code>=</code>两端一定不能有空格。因为在sh的体系里，空格并不是可有可无的，在语法解析时扮演重要的角色，因此一定要注意。用set或readonly可以看到当前已设置的变量。</p>
-<p>环境变量是带有特殊属性的变量，export把变量提升到环境级别，但这个变量依然是变量，可以用unset删除，之后在环境中就没有这个变量了。用env看到的变量比set会少一些，除了前面提到的提升的变量外，set还能看到函数的定义。</p>
-<p>位置变量是对函数调用特有的，有个很少人知道的特性，<code>set -- a b c</code>可以实现把位置参数替换成a b c这3个值（把&ndash;后面的值，赋给隐式的$@，如果&ndash;后面无参数，则$@被清空），如果想实现追加在前或后的效果，用<code>set -- $@ a b c</code>实现追加到尾部。再配合shift命令，看起来不能修改的位置参数，也能随意操控。</p>
-<p>除了=还有:=表示未设置才赋值，:-未设置就替换。像这样<code>PS1=$'${ local e=$?\n((e)) && REPLY+="$e|"\nreturn $e\n}${PWD:30} '</code>表示先计算上一条命令的返回值，如果有错误就赋值给REPLY，并把当前路径重新计算一次，丢弃前30个符号。重点是return，如果没有的话，显示的路径就不会变化。这句话在非bash环境，以迂回方式实现了显示当前路径。</p>
-<p>等号<code>=</code>和圆括号<code>()</code>与<code>$</code>三者间构成3种不同含义的功能</p>
-<ul>
-<li>=($xx) 把带空格的字符串赋值给左侧</li>
-<li>=$(ls) 把圆括号内的内容作为命令执行，执行结果赋值给左侧</li>
-<li>=$((1+2)) 把双圆括号内的内容作为数学计算，计算结果赋值给左侧</li>
-</ul>
-<h2 id=值的截取和替换>值的截取和替换</h2>
-<ul>
-<li>
-<p>${#var} 取变量的长度</p>
-</li>
-<li>
-<p>${var:=word} 如果变量 var 已被删除(unset)或为空，那么返回 word，并将 var 的值设置为 word。</p>
-</li>
-<li>
-<p>${var:-word} 和=类似，区别是但不改变 var 的值，理解为-是一半的=，所以效果也只有一半。</p>
-</li>
-<li>
-<p>${var:+word} 和-相反，如果变量 var 被定义，那么返回 word，但不改变 var 的值。</p>
-</li>
-<li>
-<p>${var:?message} 如果变量 var 为空或已被删除(unset)，那么将消息 message 送到标准错误输出，并停止脚本的执行。用来检测 var 是否被赋值。</p>
-</li>
-</ul>
-<p>以上4种替换法，可以想像成{}内的三元表达式，比如${var:=word}可以理解为<code>isnull(var)?word:var</code>。以上几种替换法，都可以省略:，区别在于isnull的判断逻辑，变量声明为空串，有:时，空串的isnull为真，无:时，空串的isnull为假。比如<code>A=;${A=abc}</code>，因为A已经定义了，值是空串，判断为真，输出前半部分，即仍是空串。</p>
-<ul>
-<li>${var#expr} 从变量头开始，按匹配expr的表达式删除，支持glob。比如${var#?}表示删除第一个字符，和${var:1}是一样的。如果两个#则启用贪婪匹配</li>
-<li>${var%expr} 从变量尾开始，按匹配expr的表达式删除，类似的%%启用贪婪。记忆窍门：删除方向取决于在$的哪侧，#在$左侧，而%在$右侧。</li>
-<li>${var/obj/rep} 把变量中obj替换成rep，obj支持glob。只替换一次，如果要想替换多次，写作${var//obj/rep}</li>
-</ul>
-<p>$变量的展开和命令解析有一定的顺序，比如要执行<code>foo 1>/dev/null</code>命令，但遇到问题时，希望把输出到控制台，如果用<code>DF=1\>/dev/null</code>来控制，用<code>foo $DF</code>会报错，大意是<code>1>/dev/null</code>参数无法识别。猜测是因为$DF触发了替换后，就直接被当成参数来用了，而1>/dev/null重定向需要一次特殊的解析，但被$替换后，就错过了这种解析。办法是eval &ldquo;foo $DF"才能既展开变量，又能触发重定向。</p>
-<h2 id=函数>函数</h2>
-<p>函数定义有<code>function name{}</code>和<code>name() {}</code>两种风格，function是bash扩展的，带上后可以不写括号（function或括号都是告诉shell，现在开始定义函数了），如果是busybox的ash，只能用不带function的格式。函数内声明变量最好用declare(字符串类型)或者<code>-i</code>(整型)，相当于是内部变量，否则就会在全局空间创建这个变量，typeset是declare的同义词。也可以用declare来看已定义的变量和函数。</p>
-<p>函数可以返回unsigned char，但是不能直接把返回值赋值给变量，直接在<code>=</code>后带函数名，函数名会退化成字符串。必须先执行，再用$?赋值。</p>
-<p>函数调用不需要括号或逗号，用foo $a &ldquo;var"方式将函数和参数以空格平铺开就算执行了。</p>
-<p><code>$*</code>和<code>$#</code>都表示所有参数，区别是<code>$*</code>是字符串形式，<code>$#</code>是数组形式。在传参给执行程序时没区别，遍历用<code>$#</code>会方便很多，如下</p>
-<h2 id=数组和遍历仅bash支持>数组和遍历(仅bash支持)</h2>
-<p>用圆括号和空格定义，arr=(1 2 3 4 5)，定义后可以用arr+=(6 7)向末尾追加元素。</p>
-<p>也可以这样</p>
-<pre tabindex=0><code>declare -a array
-array[0]=&quot;a&quot;
-array[1]=&quot;b&quot;
-array[2]=&quot;c&quot;
-</code></pre><p>遍历（For循环法）：</p>
-<pre tabindex=0><code>for var in ${arr[@]};
+<!doctype html><html lang=zh-ch><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>Shell编程说明 | 蛙二的思考</title><meta property="og:title" content="Shell编程说明 - 蛙二的思考"><meta property="og:type" content="article"><meta property="article:published_time" content="2018-07-06T12:00:00+08:00"><meta property="article:modified_time" content="2018-07-06T12:00:00+08:00"><meta name=Keywords content><meta name=description content="Shell编程说明"><meta name=author content><meta property="og:url" content="/post/180706/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href>蛙二的思考</a></div><div><nav id=nav-menu class=clearfix><a class=current href>首页</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>Shell编程说明</h1></header><date class="post-meta meta-date">2018年7月6日</date><div class=post-content><h2 id=解析顺序与转义>解析顺序与转义</h2><p>和函数调用类似，一条命令行的多个部分会在不同阶段解析。先判断整行是简单命令还是复合命令，每条简单命令的参数会先解析，像glob、变量替换、重定向都是参数解析阶段的重头戏，然后作为主命令参数执行。</p><p>单双引号可以防止转义，双引号保留$和\n等扩展语义，单引号完全不做转义。但是$&lsquo;&lsquo;语法又支持有限转义。比如$&rsquo;\u4f60&rsquo;会转义成汉字&rsquo;你&rsquo;，如果没有$，则原样输出。</p><h2 id=类型>类型</h2><p>解析时默认都是字符串类型，所以不需要特意标记双引号或单引号，有两种情况要特意加引号：1-空串，2-*之类会被扩展的特殊字符。</p><p>在值的比较上，颇有些强类型的感觉，字符串的比较和整形的比较要用不同的操作符。</p><h2 id=变量与赋值>变量与赋值</h2><p>赋值的<code>=</code>两端一定不能有空格。因为在sh的体系里，空格并不是可有可无的，在语法解析时扮演重要的角色，因此一定要注意。用set或readonly可以看到当前已设置的变量。</p><p>环境变量是带有特殊属性的变量，export把变量提升到环境级别，但这个变量依然是变量，可以用unset删除，之后在环境中就没有这个变量了。用env看到的变量比set会少一些，除了前面提到的提升的变量外，set还能看到函数的定义。</p><p>位置变量是对函数调用特有的，有个很少人知道的特性，<code>set -- a b c</code>可以实现把位置参数替换成a b c这3个值（把&ndash;后面的值，赋给隐式的$@，如果&ndash;后面无参数，则$@被清空），如果想实现追加在前或后的效果，用<code>set -- $@ a b c</code>实现追加到尾部。再配合shift命令，看起来不能修改的位置参数，也能随意操控。</p><p>除了=还有:=表示未设置才赋值，:-未设置就替换。像这样<code>PS1=$'${ local e=$?\n((e)) && REPLY+="$e|"\nreturn $e\n}${PWD:30} '</code>表示先计算上一条命令的返回值，如果有错误就赋值给REPLY，并把当前路径重新计算一次，丢弃前30个符号。重点是return，如果没有的话，显示的路径就不会变化。这句话在非bash环境，以迂回方式实现了显示当前路径。</p><p>等号<code>=</code>和圆括号<code>()</code>与<code>$</code>三者间构成3种不同含义的功能</p><ul><li>=($xx) 把带空格的字符串赋值给左侧</li><li>=$(ls) 把圆括号内的内容作为命令执行，执行结果赋值给左侧</li><li>=$((1+2)) 把双圆括号内的内容作为数学计算，计算结果赋值给左侧</li></ul><h2 id=值的截取和替换>值的截取和替换</h2><ul><li><p>${#var} 取变量的长度</p></li><li><p>${var:=word} 如果变量 var 已被删除(unset)或为空，那么返回 word，并将 var 的值设置为 word。</p></li><li><p>${var:-word} 和=类似，区别是但不改变 var 的值，理解为-是一半的=，所以效果也只有一半。</p></li><li><p>${var:+word} 和-相反，如果变量 var 被定义，那么返回 word，但不改变 var 的值。</p></li><li><p>${var:?message} 如果变量 var 为空或已被删除(unset)，那么将消息 message 送到标准错误输出，并停止脚本的执行。用来检测 var 是否被赋值。</p></li></ul><p>以上4种替换法，可以想像成{}内的三元表达式，比如${var:=word}可以理解为<code>isnull(var)?word:var</code>。以上几种替换法，都可以省略:，区别在于isnull的判断逻辑，变量声明为空串，有:时，空串的isnull为真，无:时，空串的isnull为假。比如<code>A=;${A=abc}</code>，因为A已经定义了，值是空串，判断为真，输出前半部分，即仍是空串。</p><ul><li>${var#expr} 从变量头开始，按匹配expr的表达式删除，支持glob。比如${var#?}表示删除第一个字符，和${var:1}是一样的。如果两个#则启用贪婪匹配</li><li>${var%expr} 从变量尾开始，按匹配expr的表达式删除，类似的%%启用贪婪。记忆窍门：删除方向取决于在$的哪侧，#在$左侧，而%在$右侧。</li><li>${var/obj/rep} 把变量中obj替换成rep，obj支持glob。只替换一次，如果要想替换多次，写作${var//obj/rep}</li></ul><p>$变量的展开和命令解析有一定的顺序，比如要执行<code>foo 1>/dev/null</code>命令，但遇到问题时，希望把输出到控制台，如果用<code>DF=1\>/dev/null</code>来控制，用<code>foo $DF</code>会报错，大意是<code>1>/dev/null</code>参数无法识别。猜测是因为$DF触发了替换后，就直接被当成参数来用了，而1>/dev/null重定向需要一次特殊的解析，但被$替换后，就错过了这种解析。办法是eval &ldquo;foo $DF"才能既展开变量，又能触发重定向。</p><h2 id=函数>函数</h2><p>函数定义有<code>function name{}</code>和<code>name() {}</code>两种风格，function是bash扩展的，带上后可以不写括号（function或括号都是告诉shell，现在开始定义函数了），如果是busybox的ash，只能用不带function的格式。函数内声明变量最好用declare(字符串类型)或者<code>-i</code>(整型)，相当于是内部变量，否则就会在全局空间创建这个变量，typeset是declare的同义词。也可以用declare来看已定义的变量和函数。</p><p>函数可以返回unsigned char，但是不能直接把返回值赋值给变量，直接在<code>=</code>后带函数名，函数名会退化成字符串。必须先执行，再用$?赋值。</p><p>函数调用不需要括号或逗号，用foo $a &ldquo;var"方式将函数和参数以空格平铺开就算执行了。</p><p><code>$*</code>和<code>$#</code>都表示所有参数，区别是<code>$*</code>是字符串形式，<code>$#</code>是数组形式。在传参给执行程序时没区别，遍历用<code>$#</code>会方便很多，如下</p><h2 id=数组和遍历仅bash支持>数组和遍历(仅bash支持)</h2><p>用圆括号和空格定义，arr=(1 2 3 4 5)，定义后可以用arr+=(6 7)向末尾追加元素。</p><p>也可以这样</p><pre tabindex=0><code>declare -a array
+array[0]=&#34;a&#34;
+array[1]=&#34;b&#34;
+array[2]=&#34;c&#34;
+</code></pre><p>遍历（For循环法）：</p><pre tabindex=0><code>for var in ${arr[@]};
 do
   echo $var
 done
-</code></pre><p>遍历（带数组下标）：</p>
-<pre tabindex=0><code>for i in &quot;${!arr[@]}&quot;
+</code></pre><p>遍历（带数组下标）：</p><pre tabindex=0><code>for i in &#34;${!arr[@]}&#34;
 do 
-  printf &quot;%s\t%s\n&quot; &quot;$i&quot; &quot;${arr[$i]}&quot;
+  printf &#34;%s\t%s\n&#34; &#34;$i&#34; &#34;${arr[$i]}&#34;
 done
-</code></pre><p>遍历（While循环法）：</p>
-<pre tabindex=0><code>i=0
+</code></pre><p>遍历（While循环法）：</p><pre tabindex=0><code>i=0
 while [ $i -lt ${#array[@]} ]
 do
   echo ${array[$i]}
   let i++
 done
-</code></pre><p>获取数组的length（数组中有几个元素） ${#array[@]} 。解释一下 @ 是数组展开，#取长度，$把值取出来。对函数内的参数而言，简化成$#就是数组长度。</p>
-<h2 id=向函数传递数组>向函数传递数组</h2>
-<p>由于Shell对数组的支持并不好，所以这是一个比较麻烦的问题。除了全局变量外，无完美解法。提供一个变通的思路，在调用函数前，将数组转化为字符串。在函数中，读取字符串，并且分为数组，达到目的。</p>
-<pre tabindex=0><code>fun() {
-local _arr=(`echo $1 | cut -d &quot; &quot; --output-delimiter=&quot; &quot; -f 1-`)
+</code></pre><p>获取数组的length（数组中有几个元素） ${#array[@]} 。解释一下 @ 是数组展开，#取长度，$把值取出来。对函数内的参数而言，简化成$#就是数组长度。</p><h2 id=向函数传递数组>向函数传递数组</h2><p>由于Shell对数组的支持并不好，所以这是一个比较麻烦的问题。除了全局变量外，无完美解法。提供一个变通的思路，在调用函数前，将数组转化为字符串。在函数中，读取字符串，并且分为数组，达到目的。</p><pre tabindex=0><code>fun() {
+local _arr=(`echo $1 | cut -d &#34; &#34; --output-delimiter=&#34; &#34; -f 1-`)
 local _n_arr=${#_arr[@]}
 for((i=0;i&lt;$_n_arr;i++));
 do 
   elem=${_arr[$i]}
-  echo &quot;$i : $elem&quot;
+  echo &#34;$i : $elem&#34;
 done; 
 }
 
 array=(a b c)
-fun &quot;$(echo ${array[@]})&quot;
-</code></pre><h2 id=条件判断>条件判断</h2>
-<ul>
-<li>if语句</li>
-</ul>
-<pre tabindex=0><code>if [ &quot;$0&quot; -eq/= &quot;$1&quot; ]; then
+fun &#34;$(echo ${array[@]})&#34;
+</code></pre><h2 id=条件判断>条件判断</h2><ul><li>if语句</li></ul><pre tabindex=0><code>if [ &#34;$0&#34; -eq/= &#34;$1&#34; ]; then
   statement1
 else
   statement2
 fi
-</code></pre><p>本质上讲，if 检测的是命令的退出状态，所以then前面必须有;，用;让if做完求值。</p>
-<p><strong>在 test 中使用变量用双引号包围起来</strong>。想判断当前文件夹为空，捕获ls的输出后，一定要用[ -n &ldquo;$out&rdquo; ]才正确。如果没双引号判断不准，这个过程将变量 $str1 替换的细节如下：</p>
-<ul>
-<li>
-<p>如果 $str1 是一个正常的字符串，比如 abc123，那么替换后的效果就是test -z abc123，执行形式相当于main("-z abc123&rdquo;)。test 命令后面附带的所有选项和参数会被看成一个整体，并作为实参传递进函数，正常执行。</p>
-</li>
-<li>
-<p>如果 $str1 是一个空字符串，那么替换后的效果就是test -z，执行形式相当于main("-z &ldquo;)，这就比较奇怪了，因为-z选项没有和参数成对出现，执行时就会出现意想不到的情况(对于-n和-z的执行结果都是错误，导致if的评估结果一样)。如果给 $str1 变量加上双引号，当 $str1 是空字符串时，test -z &ldquo;$str1"就会被替换为test -z &ldquo;"，调用形式就是main("-z """)，显然这样 main() 在分析时就不会出错了。正因为此，经常会看到x = x$var的写法，也是为解决空串问题。</p>
-</li>
-<li>
-<p>switch格式</p>
-</li>
-</ul>
-<pre tabindex=0><code>case &quot;$1&quot; in
+</code></pre><p>本质上讲，if 检测的是命令的退出状态，所以then前面必须有;，用;让if做完求值。</p><p><strong>在 test 中使用变量用双引号包围起来</strong>。想判断当前文件夹为空，捕获ls的输出后，一定要用[ -n &ldquo;$out&rdquo; ]才正确。如果没双引号判断不准，这个过程将变量 $str1 替换的细节如下：</p><ul><li><p>如果 $str1 是一个正常的字符串，比如 abc123，那么替换后的效果就是test -z abc123，执行形式相当于main("-z abc123&rdquo;)。test 命令后面附带的所有选项和参数会被看成一个整体，并作为实参传递进函数，正常执行。</p></li><li><p>如果 $str1 是一个空字符串，那么替换后的效果就是test -z，执行形式相当于main("-z &ldquo;)，这就比较奇怪了，因为-z选项没有和参数成对出现，执行时就会出现意想不到的情况(对于-n和-z的执行结果都是错误，导致if的评估结果一样)。如果给 $str1 变量加上双引号，当 $str1 是空字符串时，test -z &ldquo;$str1"就会被替换为test -z &ldquo;"，调用形式就是main("-z """)，显然这样 main() 在分析时就不会出错了。正因为此，经常会看到x = x$var的写法，也是为解决空串问题。</p></li><li><p>switch格式</p></li></ul><pre tabindex=0><code>case &#34;$1&#34; in
   start)
 command1
 ;;
@@ -166,106 +44,8 @@ command2
 command
 ;;
 esac
-</code></pre><p>前面提到过，默认的类型是变量，在条件间断时有一些有趣的现象，比如[ &ldquo;x&rdquo; = x$empty ]的结果是true($empty是空串)。case后的条件建议加双引号，原因同前，分支语句有没有双引号都没关系，反而想同时捕获error或errors时，必须用不加引号的error*才行，加上引号会适得其反。</p>
-<h2 id=执行子命令>执行子命令</h2>
-<p>$()与 <code> </code>(反引号)效果是一样的，优劣如下</p>
-<ul>
-<li>$() bash扩展命令，可以嵌套，似乎busybox也能支持，由于带了$，可以放在=的右侧，命令的运行结果可以赋值到=左边</li>
-<li>`` posix命令，嵌套时内部的反引号要加转义</li>
-</ul>
-<p>另外$(())是用于整数计算，同样可以放在=右侧，不要和$()搞混了。</p>
-<h2 id=字面值还是文件名>字面值还是文件名</h2>
-<p>严格来说，这并不是shell的特性，而是各个程序的特点，比如echo的参数当作字面量，而cat或ls的值则作为文件名来解析。有一个操作符<code>&lt;()</code>，会把执行的结果作为文件内容，&lt;()作为一个文件的占位符，等效于匿名文件，有点类似lambda的感觉。</p>
-</div>
-<div class="post-meta meta-tags">
-没有标签
-</div>
-</article>
-</div>
-<footer id=footer>
-<div>
-&copy; 2021 <a href>蛙二的思考 By </a>
-</div>
-<br>
-<div>
-<div class=github-badge>
-<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-</div>
-<div class=github-badge>
-<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-</div>
-<div class=github-badge>
-<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-</div>
-</div>
-</footer>
-<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+</code></pre><p>前面提到过，默认的类型是变量，在条件间断时有一些有趣的现象，比如[ &ldquo;x&rdquo; = x$empty ]的结果是true($empty是空串)。case后的条件建议加双引号，原因同前，分支语句有没有双引号都没关系，反而想同时捕获error或errors时，必须用不加引号的error*才行，加上引号会适得其反。</p><h2 id=执行子命令>执行子命令</h2><p>$()与 <code></code>(反引号)效果是一样的，优劣如下</p><ul><li>$() bash扩展命令，可以嵌套，似乎busybox也能支持，由于带了$，可以放在=的右侧，命令的运行结果可以赋值到=左边</li><li>`` posix命令，嵌套时内部的反引号要加转义</li></ul><p>另外$(())是用于整数计算，同样可以放在=右侧，不要和$()搞混了。</p><h2 id=字面值还是文件名>字面值还是文件名</h2><p>严格来说，这并不是shell的特性，而是各个程序的特点，比如echo的参数当作字面量，而cat或ls的值则作为文件名来解析。有一个操作符<code>&lt;()</code>，会把执行的结果作为文件内容，&lt;()作为一个文件的占位符，等效于匿名文件，有点类似lambda的感觉。</p></div><div class="post-meta meta-tags">没有标签</div></article></div><footer id=footer><div>&copy; 2022 <a href>蛙二的思考 By</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <a id=rocket href=#top></a>
-<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
-</div>
-<div id=secondary>
-<section class=widget>
-<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
-<input type=text name=q maxlength=20 placeholder=Search>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script></div><div id=secondary><section class=widget><form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch>
-<button type=submit class="submit icon-search"></button>
-</form>
-</section>
-<section class=widget>
-<h3 class=widget-title>最近文章</h3>
-<ul class=widget-list>
-<li>
-<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
-</li>
-<li>
-<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
-</li>
-<li>
-<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
-</li>
-<li>
-<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
-</li>
-<li>
-<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
-</li>
-<li>
-<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
-</li>
-<li>
-<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
-</li>
-<li>
-<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
-</li>
-<li>
-<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
-</li>
-<li>
-<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/categories/>分类</a></h3>
-<ul class=widget-list>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/tags/>标签</a></h3>
-<div class=tagcloud>
-</div>
-</section>
-<section class=widget>
-<h3 class=widget-title>其它</h3>
-<ul class=widget-list>
-<li><a href=index.xml>文章 RSS</a></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/220421/ title=数据引擎和算子对比>数据引擎和算子对比</a></li><li><a href=/post/220405/ title=Kubernetes初学笔记>Kubernetes初学笔记</a></li><li><a href=/post/220312/ title=分布式计算在Spark上的实现>分布式计算在Spark上的实现</a></li><li><a href=/post/220204/ title=分布式哈希技术摘录>分布式哈希技术摘录</a></li><li><a href=/post/220201/ title=压缩技术浅谈>压缩技术浅谈</a></li><li><a href=/post/220115/ title=Python的数据科学相关库介绍>Python的数据科学相关库介绍</a></li><li><a href=/post/211226/ title=SU的执行过程与用户登陆机制>SU的执行过程与用户登陆机制</a></li><li><a href=/post/211222/ title=SQL的JOIN种类与选择>SQL的JOIN种类与选择</a></li><li><a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a></li><li><a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>

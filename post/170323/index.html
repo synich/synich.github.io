@@ -1,105 +1,4 @@
-<!doctype html><html lang=zh-ch>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>python自学手册 | 蛙二的思考</title>
-<meta property="og:title" content="python自学手册 - 蛙二的思考">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2017-03-23T12:00:00+08:00">
-<meta property="article:modified_time" content="2017-03-23T12:00:00+08:00">
-<meta name=Keywords content>
-<meta name=description content="python自学手册">
-<meta name=author content>
-<meta property="og:url" content="/post/170323/">
-<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
-<link rel=stylesheet href=/css/normalize.css>
-<link rel=stylesheet href=/css/style.css>
-<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
-</head>
-<body>
-<header id=header class=clearfix>
-<div class=container>
-<div class=col-group>
-<div class=site-name>
-<a id=logo href>
-蛙二的思考
-</a>
-</div>
-<div>
-<nav id=nav-menu class=clearfix>
-<a class=current href>首页</a>
-</nav>
-</div>
-</div>
-</div>
-</header>
-<div id=body>
-<div class=container>
-<div class=col-group>
-<div class=col-8 id=main>
-<div class=res-cons>
-<article class=post>
-<header>
-<h1 class=post-title>python自学手册</h1>
-</header>
-<date class="post-meta meta-date">
-2017年3月23日
-</date>
-<div class=post-content>
-<p>整个执行包是目录不敏感的，比如编译时指定安装目录是/usr/py3/目录，安装后整体移动到/opt/py3/目录后，依然能正常运行。熟用dir/help函数帮助，不过help依赖pydoc，如果是精简环境会出异常。</p>
-<p>常用的sys和os，级别并不一样，sys是built-in模块，os只是个普通的py脚本文件。比如sys.path和os.path就很不一样：sys.path是普通数组，而os.path是个module，主要提供一系列操作函数。</p>
-<h2 id=类型>类型</h2>
-<p>从大的分类来说，有两种分类，类型（Type）和实例（Non-Type）。类型中有两个特殊的存在，type和object。所有的内置类型如tuple、list都继承自object（即<code>list.__bases__</code>是(object,)），同时它们的type就是type（即<code>list.__class__</code>是type）。</p>
-<p>所有的值，不管是简单的数字、字符串、None或复杂的容器类型，都有所属的class。不同的class具备的特性不同，比如sequence属性就是tuple/list/str还有range类型特有的(range不仅是一个函数，其生成对象的类型就是range，可以迭代)。</p>
-<h2 id=类和继承体系>类和继承体系</h2>
-<p>从py3开始，声明一个新的class默认继承自object，前面提过除了object外，还有个特殊的type，因为class关键字其实是对type的封装，class A:声明形式等价于A=type(&ldquo;A&rdquo;, (object,), dict=())，所有的类对象，都是type的派生（严格的说是type产生了metaclass，而由此再产生普通类）。</p>
-<h2 id=迭代>迭代</h2>
-<p>有两个容易混淆的概念，iterable和iterator。iterable只要支持<code>__iter__</code>，可以配合for使用，list、tuple等可迭代对象都是要迭代的。而iterator除了要支持<code>__iter__</code>外，还要支持<code>__next__</code>，但只能迭代一次，不能重复迭代，优势则是占用内存较少。最简单的构造iterator方式是通过iter()方法转换。</p>
-<h2 id=模块的查找finder与加载loader>模块的查找（finder）与加载（loader）</h2>
-<p>最小的代码单元称为module，主要有2种类型</p>
-<ol>
-<li>pure python module: 纯用py写的单元，最简单的情况下，单个py文件就是一个module</li>
-<li>extension module: 用C语言写的py扩展，so或dll文件</li>
-</ol>
-<p>多个module可以组成package，一般含有<code>__init__.py</code>的文件夹称为regular package，还有种namespace package。</p>
-<p>不管是module还是package，都可以用import xxx来导入，但深入去看还是有区别的。通过import导入的模块可以用del删除，但千万别把自带的给删了，那就再也找不回了。import语句本质是<code>__import__</code>函数的二次封装，还有一个importlib包，可以修改一些导入细节，实现特殊效果。</p>
-<p>import动作的背后，分为find、load、bind三个阶段动作：find失败会执行load，有些文章会把finder和loader合起来称为importer。find过程可以加hook，通过<code>sys.meta_path</code>或<code>sys.path_hooks</code>变量来调整行为。bind则是把sys.modules中这次被导入的变量加到globals()或locals()对应的字典，这样代码中才能直接引用。这里有个非常triky的地方，比如import mod，找到mod.py（或者<code>mod/__init__.py</code>）并执行到结尾，import语句会往sys.modules写mod变量，再将modules[&lsquo;mod&rsquo;]也绑定到globals()。但是如果mod.py自己向sys.modules写mod，import语句就会直接将这个变量导入globals()，这样就能使import的模块不再是module类型，而是任意指定类型。反观lua，require必须显示赋值给某个变量，把加载和绑定分开，非常清晰，而python最终引入as显然也是认识到import存在的问题。</p>
-<p>import可以导入包、模块、函数、变量，如果包和模块同名，会优先加载包。寻找的顺序：builtin包 &ndash;> sys.path（这里又按当前路径、py库目录、二进制库、site-package顺序查找）。加载前会先判断是否已经在sys.modules字典，已经加载过的变量不会再次加载，可以用importlib.reload来强制重新加载。import语句执行后，会绑定一个新的本地变量，变量名是left-most值。比如import a.b.c，执行后会隐式创建a变量，如果要重命名，就要用额外的as关键字，我觉得是不优雅的。sys空间下，共有4个和加载相关的变量</p>
-<ol>
-<li>sys.path: 查找路径列表</li>
-<li>sys.modules: 保存已加载模块的字典，启动后这里就会有很多预加载模块，但因为没有在全局命名空间bind到变量，不能直接引用，这时import只需要绑定变量即可，速度很快</li>
-<li>sys.path_importer_cache: 类似sys.path，但内容更多</li>
-<li>sys.meta_path: 查找器finder列表，一般用内置实现，也可以自定义（实现一个定义了<code>find_spec</code>类方法的类）</li>
-</ol>
-<p>导入变量额外说一句，据不完全观察，导入的变量是当前时刻的状态值，导入后，即使被导入模块的值定义发生改变，在引用方无法察觉到，这是件好事，本来也不应该以这种方式来共享一个全局变量。</p>
-<p>实际中一般会用from package import subpack/module方式，这个语法甚至可以从module加载函数，个人觉得有点过于灵活了。另外from import加载的时间，要慢于import整个加载。</p>
-<p><code>__import__</code>的细节要复杂得多，这就是python的看似简单其实概念繁杂，导致复杂逻辑一点都不少。如果参数是package，则fromlist必须是列表或元组。如果参数是模块，fromlist只要非空（比如True）即可。这个差异导致必须区分开包和模块，并不省心。</p>
-<p>import能导入3个层面的对象，造成这么复杂的原因，猜想可能是最初的import只能导入module，后来随着规模变大，又引入了package的概念，语法上增加了from，可能为了适用性，把from适用于module，导入函数。虽然简单，背后却不简洁。</p>
-<p>总结两者的差异如下</p>
-<ul>
-<li>package: 有特有属性<code>__path__</code>，而且可以在<code>__init__.py</code>通过<code>__all__</code>列表控制<code>import *</code>的导出。无法通过getattr获取module</li>
-<li>module: 只能整体内容导出，似乎不能控制。可以用getattr获取function或class</li>
-</ul>
-<h2 id=文件身份的识别>文件身份的识别</h2>
-<p>前面说过一个py文件就是一个module，其自带很多内置属性，加载的方式不同，会导致这些内置属性的值发生变化。</p>
-<ul>
-<li><code>__all__</code> ，控制导出的符号列表，但又只适用于部分导出场合</li>
-<li><code>__file__</code>，在磁盘上的绝对路径，.py结尾</li>
-<li><code>__name__</code>，如果在命令行被调用，则被赋予<code>__main__</code>这个特殊名，如果是被import，是不带py的相对文件名（取决于顶级调用路径）。</li>
-<li><code>__package__</code>属性，如果这个文件平级没有<code>__init__.py</code>文件，那么<code>__package__</code>的值是None，否则就是这个文件所属文件夹的名字。</li>
-<li><code>__doc__</code>，文件开头的整体声明，不得不说对文档的重视程度还是不错的</li>
-<li><code>__spec__</code>和<code>__loader__</code>，模块在加载器的对象描述，暂时不能完全理解</li>
-</ul>
-<p>引申出来的问题就是，虽然语法中没有类似package或namespace关键字，实际上会把每个文件中创建的函数、变量限定在一个范围内，猜测是<code>__name__</code>这个命名空间。</p>
-<h2 id=对代码格式统一的努力>对代码格式统一的努力</h2>
-<ol>
-<li>缩进曾被作为卖点之一，但现在似乎更倾向用外置format工具来做。用了缩进后，不能做压缩，也多出了特有的类似pass的占位语句。</li>
-<li>函数形参可以加<code>*</code>或<code>**</code>，表示这个变量是tuple或dict。只看效果是个很简单的语法糖，但用这种形式强制规定了元组在前，字典在后的形式，并引出了posional argument和keyword argument两个概念。</li>
-</ol>
-<h2 id=装饰器>装饰器</h2>
-<p>@方式在函数外部引入的装饰器，会导致实体函数的元属性被装饰器拦截，如果想保留实体函数的元属性，要额外地import functools import wraps</p>
-<pre tabindex=0><code>from functools import wraps # 引入functools模块的wrap装饰器方法
+<!doctype html><html lang=zh-ch><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>python自学手册 | 蛙二的思考</title><meta property="og:title" content="python自学手册 - 蛙二的思考"><meta property="og:type" content="article"><meta property="article:published_time" content="2017-03-23T12:00:00+08:00"><meta property="article:modified_time" content="2017-03-23T12:00:00+08:00"><meta name=Keywords content><meta name=description content="python自学手册"><meta name=author content><meta property="og:url" content="/post/170323/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href>蛙二的思考</a></div><div><nav id=nav-menu class=clearfix><a class=current href>首页</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>python自学手册</h1></header><date class="post-meta meta-date">2017年3月23日</date><div class=post-content><p>整个执行包是目录不敏感的，比如编译时指定安装目录是/usr/py3/目录，安装后整体移动到/opt/py3/目录后，依然能正常运行。熟用dir/help函数帮助，不过help依赖pydoc，如果是精简环境会出异常。</p><p>常用的sys和os，级别并不一样，sys是built-in模块，os只是个普通的py脚本文件。比如sys.path和os.path就很不一样：sys.path是普通数组，而os.path是个module，主要提供一系列操作函数。</p><h2 id=类型>类型</h2><p>从大的分类来说，有两种分类，类型（Type）和实例（Non-Type）。类型中有两个特殊的存在，type和object。所有的内置类型如tuple、list都继承自object（即<code>list.__bases__</code>是(object,)），同时它们的type就是type（即<code>list.__class__</code>是type）。</p><p>所有的值，不管是简单的数字、字符串、None或复杂的容器类型，都有所属的class。不同的class具备的特性不同，比如sequence属性就是tuple/list/str还有range类型特有的(range不仅是一个函数，其生成对象的类型就是range，可以迭代)。</p><h2 id=类和继承体系>类和继承体系</h2><p>从py3开始，声明一个新的class默认继承自object，前面提过除了object外，还有个特殊的type，因为class关键字其实是对type的封装，class A:声明形式等价于A=type(&ldquo;A&rdquo;, (object,), dict=())，所有的类对象，都是type的派生（严格的说是type产生了metaclass，而由此再产生普通类）。</p><h2 id=迭代>迭代</h2><p>有两个容易混淆的概念，iterable和iterator。iterable只要支持<code>__iter__</code>，可以配合for使用，list、tuple等可迭代对象都是要迭代的。而iterator除了要支持<code>__iter__</code>外，还要支持<code>__next__</code>，但只能迭代一次，不能重复迭代，优势则是占用内存较少。最简单的构造iterator方式是通过iter()方法转换。</p><h2 id=模块的查找finder与加载loader>模块的查找（finder）与加载（loader）</h2><p>最小的代码单元称为module，主要有2种类型</p><ol><li>pure python module: 纯用py写的单元，最简单的情况下，单个py文件就是一个module</li><li>extension module: 用C语言写的py扩展，so或dll文件</li></ol><p>多个module可以组成package，一般含有<code>__init__.py</code>的文件夹称为regular package，还有种namespace package。</p><p>不管是module还是package，都可以用import xxx来导入，但深入去看还是有区别的。通过import导入的模块可以用del删除，但千万别把自带的给删了，那就再也找不回了。import语句本质是<code>__import__</code>函数的二次封装，还有一个importlib包，可以修改一些导入细节，实现特殊效果。</p><p>import动作的背后，分为find、load、bind三个阶段动作：find失败会执行load，有些文章会把finder和loader合起来称为importer。find过程可以加hook，通过<code>sys.meta_path</code>或<code>sys.path_hooks</code>变量来调整行为。bind则是把sys.modules中这次被导入的变量加到globals()或locals()对应的字典，这样代码中才能直接引用。这里有个非常triky的地方，比如import mod，找到mod.py（或者<code>mod/__init__.py</code>）并执行到结尾，import语句会往sys.modules写mod变量，再将modules[&lsquo;mod&rsquo;]也绑定到globals()。但是如果mod.py自己向sys.modules写mod，import语句就会直接将这个变量导入globals()，这样就能使import的模块不再是module类型，而是任意指定类型。反观lua，require必须显示赋值给某个变量，把加载和绑定分开，非常清晰，而python最终引入as显然也是认识到import存在的问题。</p><p>import可以导入包、模块、函数、变量，如果包和模块同名，会优先加载包。寻找的顺序：builtin包 &ndash;> sys.path（这里又按当前路径、py库目录、二进制库、site-package顺序查找）。加载前会先判断是否已经在sys.modules字典，已经加载过的变量不会再次加载，可以用importlib.reload来强制重新加载。import语句执行后，会绑定一个新的本地变量，变量名是left-most值。比如import a.b.c，执行后会隐式创建a变量，如果要重命名，就要用额外的as关键字，我觉得是不优雅的。sys空间下，共有4个和加载相关的变量</p><ol><li>sys.path: 查找路径列表</li><li>sys.modules: 保存已加载模块的字典，启动后这里就会有很多预加载模块，但因为没有在全局命名空间bind到变量，不能直接引用，这时import只需要绑定变量即可，速度很快</li><li>sys.path_importer_cache: 类似sys.path，但内容更多</li><li>sys.meta_path: 查找器finder列表，一般用内置实现，也可以自定义（实现一个定义了<code>find_spec</code>类方法的类）</li></ol><p>导入变量额外说一句，据不完全观察，导入的变量是当前时刻的状态值，导入后，即使被导入模块的值定义发生改变，在引用方无法察觉到，这是件好事，本来也不应该以这种方式来共享一个全局变量。</p><p>实际中一般会用from package import subpack/module方式，这个语法甚至可以从module加载函数，个人觉得有点过于灵活了。另外from import加载的时间，要慢于import整个加载。</p><p><code>__import__</code>的细节要复杂得多，这就是python的看似简单其实概念繁杂，导致复杂逻辑一点都不少。如果参数是package，则fromlist必须是列表或元组。如果参数是模块，fromlist只要非空（比如True）即可。这个差异导致必须区分开包和模块，并不省心。</p><p>import能导入3个层面的对象，造成这么复杂的原因，猜想可能是最初的import只能导入module，后来随着规模变大，又引入了package的概念，语法上增加了from，可能为了适用性，把from适用于module，导入函数。虽然简单，背后却不简洁。</p><p>总结两者的差异如下</p><ul><li>package: 有特有属性<code>__path__</code>，而且可以在<code>__init__.py</code>通过<code>__all__</code>列表控制<code>import *</code>的导出。无法通过getattr获取module</li><li>module: 只能整体内容导出，似乎不能控制。可以用getattr获取function或class</li></ul><h2 id=文件身份的识别>文件身份的识别</h2><p>前面说过一个py文件就是一个module，其自带很多内置属性，加载的方式不同，会导致这些内置属性的值发生变化。</p><ul><li><code>__all__</code> ，控制导出的符号列表，但又只适用于部分导出场合</li><li><code>__file__</code>，在磁盘上的绝对路径，.py结尾</li><li><code>__name__</code>，如果在命令行被调用，则被赋予<code>__main__</code>这个特殊名，如果是被import，是不带py的相对文件名（取决于顶级调用路径）。</li><li><code>__package__</code>属性，如果这个文件平级没有<code>__init__.py</code>文件，那么<code>__package__</code>的值是None，否则就是这个文件所属文件夹的名字。</li><li><code>__doc__</code>，文件开头的整体声明，不得不说对文档的重视程度还是不错的</li><li><code>__spec__</code>和<code>__loader__</code>，模块在加载器的对象描述，暂时不能完全理解</li></ul><p>引申出来的问题就是，虽然语法中没有类似package或namespace关键字，实际上会把每个文件中创建的函数、变量限定在一个范围内，猜测是<code>__name__</code>这个命名空间。</p><h2 id=对代码格式统一的努力>对代码格式统一的努力</h2><ol><li>缩进曾被作为卖点之一，但现在似乎更倾向用外置format工具来做。用了缩进后，不能做压缩，也多出了特有的类似pass的占位语句。</li><li>函数形参可以加<code>*</code>或<code>**</code>，表示这个变量是tuple或dict。只看效果是个很简单的语法糖，但用这种形式强制规定了元组在前，字典在后的形式，并引出了posional argument和keyword argument两个概念。</li></ol><h2 id=装饰器>装饰器</h2><p>@方式在函数外部引入的装饰器，会导致实体函数的元属性被装饰器拦截，如果想保留实体函数的元属性，要额外地import functools import wraps</p><pre tabindex=0><code>from functools import wraps # 引入functools模块的wrap装饰器方法
 
 def repeat_twice(func):
     @wraps(func)
@@ -110,107 +9,16 @@ def repeat_twice(func):
 
 @repeat_twice
 def foo():
-    print 'hello world'
+    print &#39;hello world&#39;
 
 print foo.__name__      # Out: foo
-</code></pre><h2 id=搭建pypi仓库>搭建PyPI仓库</h2>
-<p>仓库本质上是个http服务，目录包含若干压缩包和这些包的索引，PEP定义过仓库的规范，通常仓库的目录结构类似下面这样：</p>
-<pre tabindex=0><code>/pypi
+</code></pre><h2 id=搭建pypi仓库>搭建PyPI仓库</h2><p>仓库本质上是个http服务，目录包含若干压缩包和这些包的索引，PEP定义过仓库的规范，通常仓库的目录结构类似下面这样：</p><pre tabindex=0><code>/pypi
 |__packages
     |__/51/36/32/cc660efa43e482b97d4c2c2bcfdfde03b4f88c82f261d128cf/pandas-1.0.1-cp38-cp38-linux_aarch64.whl
 |__simple
     |__pandas
-</code></pre><p>packages下放whl或tar包，包名必须带版本号，否则无法进行语义化比较，不能放其它类型的文件；simple是索引目录（通过dir2pi /pypi命令，递归遍历目录内容后自动生成），pip查找或安装时，先在索引目录定位到包。包有wheel和源码两种形式，wheel是编译好的格式，安装比较快，如果只有源码包，则会下载到本地并编译成wheel（默认在~/.cache/pip/wheels/），在下次安装时能加速。</p>
-</div>
-<div class="post-meta meta-tags">
-没有标签
-</div>
-</article>
-</div>
-<footer id=footer>
-<div>
-&copy; 2021 <a href>蛙二的思考 By </a>
-</div>
-<br>
-<div>
-<div class=github-badge>
-<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-</div>
-<div class=github-badge>
-<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-</div>
-<div class=github-badge>
-<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-</div>
-</div>
-</footer>
-<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+</code></pre><p>packages下放whl或tar包，包名必须带版本号，否则无法进行语义化比较，不能放其它类型的文件；simple是索引目录（通过dir2pi /pypi命令，递归遍历目录内容后自动生成），pip查找或安装时，先在索引目录定位到包。包有wheel和源码两种形式，wheel是编译好的格式，安装比较快，如果只有源码包，则会下载到本地并编译成wheel（默认在~/.cache/pip/wheels/），在下次安装时能加速。</p></div><div class="post-meta meta-tags">没有标签</div></article></div><footer id=footer><div>&copy; 2022 <a href>蛙二的思考 By</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <a id=rocket href=#top></a>
-<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
-</div>
-<div id=secondary>
-<section class=widget>
-<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
-<input type=text name=q maxlength=20 placeholder=Search>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script></div><div id=secondary><section class=widget><form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch>
-<button type=submit class="submit icon-search"></button>
-</form>
-</section>
-<section class=widget>
-<h3 class=widget-title>最近文章</h3>
-<ul class=widget-list>
-<li>
-<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
-</li>
-<li>
-<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
-</li>
-<li>
-<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
-</li>
-<li>
-<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
-</li>
-<li>
-<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
-</li>
-<li>
-<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
-</li>
-<li>
-<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
-</li>
-<li>
-<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
-</li>
-<li>
-<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
-</li>
-<li>
-<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/categories/>分类</a></h3>
-<ul class=widget-list>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/tags/>标签</a></h3>
-<div class=tagcloud>
-</div>
-</section>
-<section class=widget>
-<h3 class=widget-title>其它</h3>
-<ul class=widget-list>
-<li><a href=index.xml>文章 RSS</a></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/220421/ title=数据引擎和算子对比>数据引擎和算子对比</a></li><li><a href=/post/220405/ title=Kubernetes初学笔记>Kubernetes初学笔记</a></li><li><a href=/post/220312/ title=分布式计算在Spark上的实现>分布式计算在Spark上的实现</a></li><li><a href=/post/220204/ title=分布式哈希技术摘录>分布式哈希技术摘录</a></li><li><a href=/post/220201/ title=压缩技术浅谈>压缩技术浅谈</a></li><li><a href=/post/220115/ title=Python的数据科学相关库介绍>Python的数据科学相关库介绍</a></li><li><a href=/post/211226/ title=SU的执行过程与用户登陆机制>SU的执行过程与用户登陆机制</a></li><li><a href=/post/211222/ title=SQL的JOIN种类与选择>SQL的JOIN种类与选择</a></li><li><a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a></li><li><a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>

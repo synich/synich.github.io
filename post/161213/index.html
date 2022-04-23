@@ -1,161 +1,18 @@
-<!doctype html><html lang=zh-ch>
-<head>
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>BW博客系统简探 | 蛙二的思考</title>
-<meta property="og:title" content="BW博客系统简探 - 蛙二的思考">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2016-12-13T12:00:00+08:00">
-<meta property="article:modified_time" content="2016-12-13T12:00:00+08:00">
-<meta name=Keywords content>
-<meta name=description content="BW博客系统简探">
-<meta name=author content>
-<meta property="og:url" content="/post/161213/">
-<link rel="shortcut icon" href=/favicon.ico type=image/x-icon>
-<link rel=stylesheet href=/css/normalize.css>
-<link rel=stylesheet href=/css/style.css>
-<script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script>
-</head>
-<body>
-<header id=header class=clearfix>
-<div class=container>
-<div class=col-group>
-<div class=site-name>
-<a id=logo href>
-蛙二的思考
-</a>
-</div>
-<div>
-<nav id=nav-menu class=clearfix>
-<a class=current href>首页</a>
-</nav>
-</div>
-</div>
-</div>
-</header>
-<div id=body>
-<div class=container>
-<div class=col-group>
-<div class=col-8 id=main>
-<div class=res-cons>
-<article class=post>
-<header>
-<h1 class=post-title>BW博客系统简探</h1>
-</header>
-<date class="post-meta meta-date">
-2016年12月13日
-</date>
-<div class=post-content>
-<p>从index.php开始看，先用<code>include_once</code>手动导入system.php，这里有个逻辑很有意思：
+<!doctype html><html lang=zh-ch><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><title>BW博客系统简探 | 蛙二的思考</title><meta property="og:title" content="BW博客系统简探 - 蛙二的思考"><meta property="og:type" content="article"><meta property="article:published_time" content="2016-12-13T12:00:00+08:00"><meta property="article:modified_time" content="2016-12-13T12:00:00+08:00"><meta name=Keywords content><meta name=description content="BW博客系统简探"><meta name=author content><meta property="og:url" content="/post/161213/"><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=stylesheet href=/css/normalize.css><link rel=stylesheet href=/css/style.css><script type=text/javascript src=//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js></script></head><body><header id=header class=clearfix><div class=container><div class=col-group><div class=site-name><a id=logo href>蛙二的思考</a></div><div><nav id=nav-menu class=clearfix><a class=current href>首页</a></nav></div></div></div></header><div id=body><div class=container><div class=col-group><div class=col-8 id=main><div class=res-cons><article class=post><header><h1 class=post-title>BW博客系统简探</h1></header><date class="post-meta meta-date">2016年12月13日</date><div class=post-content><p>从index.php开始看，先用<code>include_once</code>手动导入system.php，这里有个逻辑很有意思：
 检查conf这个目录下有没有info.php文件，如果没有则使用header的Location重定向到install向导。
-然后定义了<code>spl_autoload_register</code>，把类文件的目录确认到inc目录。</p>
-<p>准备工作之后，index.php自动加载Canonicalization类，在构造Canonicalization时会读取一个全局的&rsquo;M&rsquo;变量，根据M的值会决定一个mode目录下的文件，这个M的值通过loader方法返回作为<code>include_once</code>的参数，触发了mode目录下对应的文件。</p>
-<p>首页没定义M，默认值是index，经switch的计算变成cate.mod.php。mode目录下都是php文件，且不是定义，都是执行流程。
+然后定义了<code>spl_autoload_register</code>，把类文件的目录确认到inc目录。</p><p>准备工作之后，index.php自动加载Canonicalization类，在构造Canonicalization时会读取一个全局的&rsquo;M&rsquo;变量，根据M的值会决定一个mode目录下的文件，这个M的值通过loader方法返回作为<code>include_once</code>的参数，触发了mode目录下对应的文件。</p><p>首页没定义M，默认值是index，经switch的计算变成cate.mod.php。mode目录下都是php文件，且不是定义，都是执行流程。
 先读取数据，创造View类，这是BW自己写的模板引擎，
 其思路是把页面拆成若干部分，每次在输出前选择需要的部分，
 选取后调用View->setWorkFlow保存，支持preg替换实现了load/loop/if三种语法结构。
-替换后的结果送给浏览器渲染。</p>
-<p>在代码层面，具体的mode代码只管调用View的finalize。会调用generateOutput，这里引入components.php并把一个$parts的变量赋值。
+替换后的结果送给浏览器渲染。</p><p>在代码层面，具体的mode代码只管调用View的finalize。会调用generateOutput，这里引入components.php并把一个$parts的变量赋值。
 设置theme成员变量。比如default，
-进而把theme/default设为文件的读入源。通过<code>ob_start</code>方式把文件载入，最终输出。</p>
-<p>路由用的是<code>$_SERVER['PHP_SELF']</code>。这个变量和<code>$_SERVER["REQUEST_URI"]</code>相比，
+进而把theme/default设为文件的读入源。通过<code>ob_start</code>方式把文件载入，最终输出。</p><p>路由用的是<code>$_SERVER['PHP_SELF']</code>。这个变量和<code>$_SERVER["REQUEST_URI"]</code>相比，
 少了<code>QUERY_STRING</code>部分，比<code>$_SERVER['SCRIPT_NAME']</code>会多一些脚本后的值。
 至于<code>__FILE__</code>和<code>$_SERVER['SCRIPT_FILENAME']</code>这两个是一样的，不过使用场景不一样，
-因为表示的是本地的路径(即Windows是D:\这种风格，当然这在nginx.conf还是有大用的)。</p>
-<p>bw甚至还有一套插件系统，会把注册的手册写入SQLite的extensions表，在启动时读入，
+因为表示的是本地的路径(即Windows是D:\这种风格，当然这在nginx.conf还是有大用的)。</p><p>bw甚至还有一套插件系统，会把注册的手册写入SQLite的extensions表，在启动时读入，
 然后去根目录的extension目录找同名文件夹，然后加上<code>ext_</code>前缀构造类，
-并调用类的init方法。网页的插件大约就是这个模样。</p>
-</div>
-<div class="post-meta meta-tags">
-没有标签
-</div>
-</article>
-</div>
-<footer id=footer>
-<div>
-&copy; 2021 <a href>蛙二的思考 By </a>
-</div>
-<br>
-<div>
-<div class=github-badge>
-<a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-</div>
-<div class=github-badge>
-<a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a>
-</div>
-<div class=github-badge>
-<a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-</div>
-</div>
-</footer>
-<script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[['$','$']],processEscapes:!0}}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+并调用类的init方法。网页的插件大约就是这个模样。</p></div><div class="post-meta meta-tags">没有标签</div></article></div><footer id=footer><div>&copy; 2022 <a href>蛙二的思考 By</a></div><br><div><div class=github-badge><a href=https://gohugo.io/ target=_black rel=nofollow><span class=badge-subject>Powered by</span><span class="badge-value bg-blue">Hugo</span></a></div><div class=github-badge><a href=https://www.flysnow.org/ target=_black><span class=badge-subject>Design by</span><span class="badge-value bg-brightgreen">蛙二</span></a></div><div class=github-badge><a href=https://github.com/flysnow-org/maupassant-hugo target=_black><span class=badge-subject>Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a></div></div></footer><script type=text/javascript>window.MathJax={tex2jax:{inlineMath:[["$","$"]],processEscapes:!0}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <a id=rocket href=#top></a>
-<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script>
-</div>
-<div id=secondary>
-<section class=widget>
-<form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1>
-<input type=text name=q maxlength=20 placeholder=Search>
+<script type=text/javascript src="/js/totop.js?v=0.0.0" async></script></div><div id=secondary><section class=widget><form id=search action=//www.google.com/search method=get accept-charset=utf-8 target=_blank _lpchecked=1><input type=text name=q maxlength=20 placeholder=Search>
 <input type=hidden name=sitesearch>
-<button type=submit class="submit icon-search"></button>
-</form>
-</section>
-<section class=widget>
-<h3 class=widget-title>最近文章</h3>
-<ul class=widget-list>
-<li>
-<a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a>
-</li>
-<li>
-<a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a>
-</li>
-<li>
-<a href=/post/211102/ title=几种语言的包加载和管理机制>几种语言的包加载和管理机制</a>
-</li>
-<li>
-<a href=/post/211016/ title=以太和IP网之外的一些网络>以太和IP网之外的一些网络</a>
-</li>
-<li>
-<a href=/post/210901/ title=对昼伏夜出和朝九晚五两个技战法的分析>对昼伏夜出和朝九晚五两个技战法的分析</a>
-</li>
-<li>
-<a href=/post/210729/ title=git的远程访问辨析>git的远程访问辨析</a>
-</li>
-<li>
-<a href=/post/210721/ title=PySpark分析>PySpark分析</a>
-</li>
-<li>
-<a href=/post/210614/ title=erlang和其上的扩展语言>erlang和其上的扩展语言</a>
-</li>
-<li>
-<a href=/post/210613/ title=lisp编程与结构化思想>lisp编程与结构化思想</a>
-</li>
-<li>
-<a href=/post/210611/ title=理解shell的换行和打印>理解shell的换行和打印</a>
-</li>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/categories/>分类</a></h3>
-<ul class=widget-list>
-</ul>
-</section>
-<section class=widget>
-<h3 class=widget-title><a href=/tags/>标签</a></h3>
-<div class=tagcloud>
-</div>
-</section>
-<section class=widget>
-<h3 class=widget-title>其它</h3>
-<ul class=widget-list>
-<li><a href=index.xml>文章 RSS</a></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<button type=submit class="submit icon-search"></button></form></section><section class=widget><h3 class=widget-title>最近文章</h3><ul class=widget-list><li><a href=/post/220421/ title=数据引擎和算子对比>数据引擎和算子对比</a></li><li><a href=/post/220405/ title=Kubernetes初学笔记>Kubernetes初学笔记</a></li><li><a href=/post/220312/ title=分布式计算在Spark上的实现>分布式计算在Spark上的实现</a></li><li><a href=/post/220204/ title=分布式哈希技术摘录>分布式哈希技术摘录</a></li><li><a href=/post/220201/ title=压缩技术浅谈>压缩技术浅谈</a></li><li><a href=/post/220115/ title=Python的数据科学相关库介绍>Python的数据科学相关库介绍</a></li><li><a href=/post/211226/ title=SU的执行过程与用户登陆机制>SU的执行过程与用户登陆机制</a></li><li><a href=/post/211222/ title=SQL的JOIN种类与选择>SQL的JOIN种类与选择</a></li><li><a href=/post/211218/ title=内存使用的观察和理解>内存使用的观察和理解</a></li><li><a href=/post/211115/ title=搭建最小化的Linux系统>搭建最小化的Linux系统</a></li></ul></section><section class=widget><h3 class=widget-title><a href=/categories/>分类</a></h3><ul class=widget-list></ul></section><section class=widget><h3 class=widget-title><a href=/tags/>标签</a></h3><div class=tagcloud></div></section><section class=widget><h3 class=widget-title>其它</h3><ul class=widget-list><li><a href=index.xml>文章 RSS</a></li></ul></section></div></div></div></div></body></html>
