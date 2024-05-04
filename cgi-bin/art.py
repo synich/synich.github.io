@@ -58,7 +58,7 @@ def bledit(prm):
 
 def blappd(prm):
     txt = _b64dec(prm["txt"])
-    fname = "../priv/b2/230430_think.md" # TODO
+    fname = "../pub/b2/230430_think.md" # TODO
     if len(txt) >= 4:
         with open(fname, "a") as f:
             f.write("\n"+txt.strip())
