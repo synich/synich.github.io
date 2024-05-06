@@ -223,8 +223,10 @@ def pbdbkwd(prm):
 
 def pbdbop(prm):
     import re
-    cmd = _b64dec(prm["cmd"])
-    txt = _b64dec(prm["txt"])
+    op = _b64dec(prm["op"])
+    pos = op.find(",")
+    cmd = op[:pos]
+    txt = op[pos+1:]
     p = re.match("([a-z]+)\s*(\d*)\s*([a-z]*)", cmd)
     _wtxt(txt)
     act, rowid, tbl = p.group(1),p.group(2),p.group(3)
@@ -232,7 +234,7 @@ def pbdbop(prm):
         _pdo(f"{pb_cmd} mod_m {act[0]} {rowid}")
     else:
         _pdo(f"{pb_cmd} mod_bt {tbl} {act[0]} {rowid}")
-    print(_pdo(pb_hint))
+    print(_rtxt("flk_hint.txt"))
 
 
 ################# anki ####################
