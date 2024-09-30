@@ -4,24 +4,43 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <title>蛙二的记忆</title>
-<style>
+  <style>
 body{color:#111;background-color:#f4f4f4;}
 header{font-size:2em;background-color:#202020;color:#e7e7e7;margin:0;padding-top:0.5em;padding-left:0.5em;font-weight:bold;}
 h1{font-size:2em;background-color:#202020;color:#e7e7e7;margin:0;padding-top:0.5em;padding-left:0.5em;}
 h2{font-size:1.7em;color:#037;padding-top:0.2em;margin:0.2em;}
-h3{color:#409eff;}p{font-family:Montserrat, sans-serif;font-size:1.2em;}
+h3{color:#409eff;}
+p{margin:0px;font-size:1.2em;}
+pre{white-space:pre-wrap;}
 article{background-color:#ececec;max-width:80rem;margin:0 auto;padding:0 1rem;}
 .footer{margin: 0 auto;text-align: center}
 @media screen and (max-width: 400px) { #kwd{width: 100px;} }
-</style>
+
+textarea{width:100%;height:60vh;font-size:1.1em}
+button {width:22%;height:4vh;margin:0.1em;}
+select {width:20%;}
+  </style>
+
+  <script src="/alg/buss.js?v=3" type="text/javascript"></script>
 </head>
 <body>
   <article>
 	<p>笔记是我们的第二大脑</p>
 	<p>不积跬步，无以至千里；不积小流，无以成江海</p>
-	<h2><a href="/tm9.html">思考与沉淀</a></h2>
+	<h2><a href="/tm1.html">思考与沉淀</a></h2>
 	<hr>
-	<h2><a href="/alg/memo.html">随手记</a></h2>
+  <textarea id="txt"></textarea>
+  <select id="sel" name="i">
+	<option value="1">sci</option>
+	<option value="2">lit</option>
+	<option value="3">misc</option>
+	<option value="4">inbox</option>
+	<option value="user">user</option>
+  </select>
+<button onclick='W.hxdom("get", "/cgi-bin/memo.cgi", "sel", "#hnt")'>pull</button>
+<button onclick="push_art()">push</button>
+<br><pre id="hnt"></pre>
+	<h2><a href="/data/tm9.html">不成熟的想法</a></h2>
   </article>
   <footer class="footer">© 2014 - 2024</footer>
 </body>
