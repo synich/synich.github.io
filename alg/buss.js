@@ -37,9 +37,9 @@ function showpanel(id){
   //sync textarea to span and expand height
 W.ko("#u_aht").sync = (v,m)=>{m.s(v)}
 var act = W.ko("u_act")
-act.show = (v,m)=>{if (v=="m") {m.m.disp("inline");m.b.disp("none");m.t.disp("none")}
-  else if (v=="b"){m.m.disp("none");m.b.disp("inline");m.t.disp("none")}
-  else if (v=="t"){m.m.disp("none");m.b.disp("none");m.t.disp("inline")}
+act.show = (v,m)=>{if (v=="blog") {m.b.disp("inline");m.m.disp("none");m.t.disp("none")}
+  else {m.m.disp("inline");m.b.disp("none");m.t.disp("none")}
+  // else if (v=="t"){m.m.disp("none");m.b.disp("none");m.t.disp("inline")}
 }
   }
 }

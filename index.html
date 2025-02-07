@@ -1,76 +1,158 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <title>蛙二的记忆</title>
   <style>
-body{color:#111;background-color:#f4f4f4;}
-header{font-size:2em;background-color:#202020;color:#e7e7e7;margin:0;padding-top:0.5em;padding-left:0.5em;font-weight:bold;}
-h1{font-size:2em;background-color:#202020;color:#e7e7e7;margin:0;padding-top:0.5em;padding-left:0.5em;}
-h2{font-size:1.7em;color:#037;padding-top:0.2em;margin:0.2em;}
-h3{color:#409eff;}
-p{margin:0px;font-size:1.2em;}
-pre{white-space:pre-wrap;}
-article{background-color:#ececec;max-width:80rem;margin:0 auto;padding:0 1rem;}
-.footer{margin: 0 auto;text-align: center}
-@media screen and (max-width: 400px) { #kwd{width: 100px;} }
+    body {
+      color: #111;
+      background-color: #f4f4f4;
+    }
 
-textarea{width:100%;font-size:1.1em}
-div.auto_high{position: relative;min-height: 5vh;}
-p.auto_high{font-size:1em;white-space: pre-wrap;word-wrap: break-word;visibility: hidden;}
-textarea.auto_high{font-size:1em;position: absolute;top: 0;height: 100%;padding:0px 4px;box-sizing: border-box;}
-button {width:22%;height:4vh;margin:0.1em;}
-select {width:20%;}
+    header {
+      font-size: 2em;
+      background-color: #202020;
+      color: #e7e7e7;
+      margin: 0;
+      padding-top: 0.5em;
+      padding-left: 0.5em;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 2em;
+      background-color: #202020;
+      color: #e7e7e7;
+      margin: 0;
+      padding-top: 0.5em;
+      padding-left: 0.5em;
+    }
+
+    h2 {
+      font-size: 1.7em;
+      color: #037;
+      padding-top: 0.2em;
+      margin: 0.2em;
+    }
+
+    h3 {
+      color: #409eff;
+    }
+
+    p {
+      margin: 0px;
+      font-size: 1.2em;
+    }
+
+    pre {
+      white-space: pre-wrap;
+    }
+
+    article {
+      background-color: #ececec;
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .footer {
+      margin: 0 auto;
+      text-align: center
+    }
+
+    @media screen and (max-width: 400px) {
+      #kwd {
+        width: 100px;
+      }
+    }
+
+    textarea {
+      width: 100%;
+      font-size: 1.1em
+    }
+
+    div.auto_high {
+      position: relative;
+      min-height: 5vh;
+    }
+
+    p.auto_high {
+      font-size: 1em;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      visibility: hidden;
+    }
+
+    textarea.auto_high {
+      font-size: 1em;
+      position: absolute;
+      top: 0;
+      height: 100%;
+      padding: 0px 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 22%;
+      height: 4vh;
+      margin: 0.1em;
+    }
+
+    select {
+      width: 20%;
+    }
   </style>
 
   <script src="alg/buss.js?v=13"></script>
 </head>
+
 <body onload="showpanel('selfhost')">
   <article>
-	<p>笔记是我们的第二大脑</p>
-	<p>不积跬步，无以至千里；不积小流，无以成江海</p>
-	<h2><a href="/tm1.html">思考与沉淀</a></h2>
-	<hr>
+    <p>笔记是我们的第二大脑</p>
+    <p>不积跬步，无以至千里；不积小流，无以成江海</p>
+    <h2><a href="/tm1.html">思考与沉淀</a></h2>
+    <hr>
 
-  <div id="selfhost" style="display: none;">
-  <div class="auto_high" id="u_aht"><p class="auto_high" db="el:s"></p><textarea id="txt" class="auto_high" db="el:t,fn:sync"></textarea></div>
-<div id="u_act">
-<select db="el:act,fn:show">
-  <option value="m" selected>memo</option>
-  <option value="b">blog</option>
-  <option value="t">tmrec</option>
-</select>
- <div db="el:m" style="display:inline">
-  <select id="sel" name="i">
-	<option value="1">sci</option>
-	<option value="3">lit</option>
-	<option value="4">inbox</option>
-	<option value="2">url</option>
-  </select>
-  <button onclick='W.hxdom("get", "/cgi-bin/memo.cgi", "sel", "#hnt")'>pull</button>
-  <button onclick="push_art()">push</button>
- </div>
- <div db="el:b" style="display:none">
-  act<input id="tid" name="tid">
-  <button onclick='do_blog("tid", "txt")'>blog</button>
- </div>
- <div db="el:t" style="display:none">
-  <button onclick='do_tmrec("tid", "txt")'>tmrec</button>
- </div>
-<button onclick='clear_txt("txt")'>cls</button>
-</div>
-  <pre id="hnt"></pre>
-  <h2><a href="/data/tm9.html">不成熟的想法</a></h2>
-</div>
+    <div id="selfhost" style="display: none;">
+      <div class="auto_high" id="u_aht">
+        <p class="auto_high" db="el:s"></p><textarea id="txt" class="auto_high" db="el:t,fn:sync"></textarea>
+      </div>
+      <div id="u_act">
+        <select db="el:act,fn:show" id="sel" name="i">
+          <option value="1" selected>sci</option>
+          <option value="3">lit</option>
+          <option value="2">url</option>
+          <option value="4">acct</option>
+          <option value="blog">blog</option>
+        </select>
 
-  <details>
-	<summary>关于我</summary>
-    <p>2019~ 从事数据仓库和数据分析产品的研发</p>
-    <p>2013~2018 从事设备协议维护，建立AppWiki内部网</p>
-    <p>毕业于浙江大学电机系，在日本电装（名古屋）工作3年</p>
-	</details>
+        <div db="el:m" style="display:inline">
+          <button onclick='W.hxdom("get", "/cgi-bin/memo.cgi", "sel", "#hnt")'>pull</button>
+          <button onclick="push_art()">push</button>
+        </div>
+        <div db="el:b" style="display:none">
+          act<input id="tid" name="tid">
+          <button onclick='do_blog("tid", "txt")'>blog</button>
+        </div>
+        <div db="el:t" style="display:none">
+          <button onclick='do_tmrec("tid", "txt")'>tmrec</button>
+        </div>
+        <button onclick='clear_txt("txt")'>cls</button>
+      </div>
+      <pre id="hnt"></pre>
+      <h2><a href="/data/tm9.html">不成熟的想法</a></h2>
+    </div>
+
+    <details>
+      <summary>关于我</summary>
+      <p>2019~ 从事数据仓库和数据分析产品的研发</p>
+      <p>2013~2018 从事设备协议维护，建立AppWiki内部网</p>
+      <p>毕业于浙江大学电机系，在日本电装（名古屋）工作3年</p>
+    </details>
   </article>
   <footer class="footer">© 2014 - 2025</footer>
 </body>
+
 </html>

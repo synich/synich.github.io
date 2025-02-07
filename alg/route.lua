@@ -14,10 +14,13 @@ end
 
 local function cgi_user()
   if "GET"==method() then
-    --init_user()
-    --print(UsernameCookie(), Username(), CookieTimeout("shuw"), CookieSecret(), PasswordAlgo())
-    --print(UserRights(), AdminRights(), IsLoggedIn("shuw"))
+    local d=formdata()
+    if d["init"] then
+      init_user()
+    end
     pprint("all users", AllUsernames())
+    print(UsernameCookie(), Username(), CookieTimeout("shuw"), CookieSecret(), PasswordAlgo())
+    print("user", UserRights(), "admin", AdminRights(), "login", IsLoggedIn("shuw"))
   else 
     local t = formdata()
     if t["token"] == USER then
