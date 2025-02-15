@@ -50,6 +50,16 @@ local function KV(name)
     for _,v in ipairs(self.s:getall()) do j[v]=self.k:get(v) end
     return JSON(j)
   end
+  t.compact = function(self) local j = "";
+    for _,v in ipairs(self:getall()) do j=j..self.k:get(v).."\n" end
+    self:clear(); self:set(self:inc("primary_id"), j)
+  end
+  t.find = function(self, word) local ans = ""
+    for _,v in ipairs(self:getall()) do
+      if self.k:get(v):find(word) then ans = ans..v..". "..self.k:get(v).."\n" end
+    end
+    return #ans==0 and "not found "..word or ans
+  end
   return t
 end
 
@@ -76,6 +86,10 @@ local function cgi_memo()
         local nk = d["k"]:match("clear%s*(%d*)")
         if ""==nk then l:clear()
         else l:del(nk) end
+      elseif d["k"]=="compact" then
+        l:compact(); print("compact")
+      elseif d["k"]:sub(1,1)=="*" then
+        print(l:find(d["k"]:sub(2)))
       else
         local nk = l:inc("primary_id")
         l:set(nk, d["k"])

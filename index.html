@@ -123,14 +123,14 @@
         <select db="el:act,fn:show" id="sel" name="i">
           <option value="1" selected>memo</option>
           <option value="3">chew</option>
-          <option value="2">url</option>
-          <option value="4">acct</option>
+          <option value="2">snip</option>
+          <option value="4">uu</option>
           <option value="blog">blog</option>
         </select>
 
         <div db="el:m" style="display:inline">
           <button onclick='W.hxdom("get", "/cgi-bin/memo.cgi", "sel", "#hnt")'>pull</button>
-          <button onclick="push_memo()">push</button>
+          <button onclick="push_memo()">push:clear num/compact/*word</button>
         </div>
         <div db="el:b" style="display:none">
           act<input id="tid" name="tid">
