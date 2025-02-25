@@ -32,14 +32,16 @@ function showpanel(id){
   if (location.hostname.match(/158370.xyz|\d{1,3}.\d{1,3}.\d{1,3}/)) {
   let e = W.jq(id)
   e.disp("block")
+  }
+}
+function get_stock(){
+  W.hxdom("get", "/cgi-bin/stock.cgi", null, "#hnt")
+}
 
-  //sync textarea to span and expand height
+//sync textarea to span and expand height
 W.ko("#u_aht").sync = (v,m)=>{m.s(v)}
 var act = W.ko("u_act")
 act.show = (v,m)=>{if (v=="blog") {m.b.disp("inline");m.m.disp("none");m.t.disp("none")}
   else {m.m.disp("inline");m.b.disp("none");m.t.disp("none")}
   // else if (v=="t"){m.m.disp("none");m.b.disp("none");m.t.disp("inline")}
 }
-  }
-}
-

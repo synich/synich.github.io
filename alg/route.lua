@@ -5,6 +5,13 @@ function fmt(s, ...)
   return res
 end
 
+function split(s, sep)
+  if not sep then sep = "," end
+  local t = {}
+  for w in s:gmatch("([^"..sep.."]+)") do table.insert(t, w) end
+  return t
+end
+
 ----------------- user ----------------
 USER = "shuw"
 
@@ -34,6 +41,10 @@ local function cgi_user()
   end
 end
 
+local function check_user()
+  if UsernameCookie() == USER then return true
+  else print("not allow") return false end
+end
 ----------------- memo ------------------
 local function KV(name)
   local t = {}
@@ -129,9 +140,10 @@ local function cgi_blog()
   end
 end
 
-local function check_user()
-  if UsernameCookie() == USER then return true
-  else print("not allow") return false end
+----------------- stock ------------------
+local function cgi_stock()
+  local r = split(GET("http://qt.gtimg.cn/q=s_sz002236"), "~")
+  pprint(r[3], r[4], r[5], r[6])
 end
 
 ----------- define route ---------------
@@ -139,3 +151,4 @@ servedir("/", "..")
 handle("/cgi-bin/user.cgi", cgi_user)
 handle("/cgi-bin/memo.cgi", cgi_memo)
 handle("/cgi-bin/blog.cgi", cgi_blog)
+handle("/cgi-bin/stock.cgi",cgi_stock)
