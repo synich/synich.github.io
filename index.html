@@ -83,6 +83,7 @@
       white-space: pre-wrap;
       word-wrap: break-word;
       visibility: hidden;
+      line-height: 0.75;
     }
 
     textarea.auto_high {
@@ -105,8 +106,8 @@
     }
   </style>
 
-  <script src="alg/sep.min.js?v=1"></script>  
-  <script src="alg/buss.js?v=15" type="module"></script>
+  <script src="alg/sep.min.js?v=2"></script>  
+  <script src="alg/buss.js?v=16" type="module"></script>
 </head>
 
 <body>
@@ -129,18 +130,18 @@
         </select>
 
         <div db="el:m" style="display:inline">
-          <button db="el:bpll">pull</button>
-          <button db="el:bpsh">push:clear num/compact/*word</button>
+          <button db="fn:bpll">pull</button>
+          <button db="fn:bpsh">push:clear num/compact/*word</button>
         </div>
         <div db="el:b" style="display:none">
           act<input id="tid" name="tid">
-          <button db="el:bblg">blog</button>
+          <button db="fn:bblg">blog</button>
         </div>
         <div db="el:t" style="display:none">
           <button>tmrec</button>
         </div>
-        <button db="el:bcls">cls</button>
-        <button db="el:bstk">stock</button>
+        <button db="fn:bcls">cls</button>
+        <button db="fn:bstk">stock</button>
       </div>
       <pre id="hnt"></pre>
       <h2><a href="/data/tm9.html">不成熟的想法</a></h2>

@@ -41,17 +41,18 @@ function get_stock(){
 
 function main(){
   //sync textarea to span and expand height
-  W.ko("#u_aht").sync = (v,m)=>{m.s(v)}
+  W.ko("u_aht").sync = (v,m)=>{m.s(v)}
+  //show/hide blog/memo/txt
   var act = W.ko("u_act")
   act.show = (v,m)=>{if (v=="blog") {m.b.disp("inline");m.m.disp("none");m.t.disp("none")}
     else {m.m.disp("inline");m.b.disp("none");m.t.disp("none")}
     // else if (v=="t"){m.m.disp("none");m.b.disp("none");m.t.disp("inline")}
   }
-  act["bpll"].on("click", ()=>{W.hxdom("get", "/cgi-bin/memo.cgi", "sel", "#hnt")})
-  act["bpsh"].on("click", push_memo)
-  act["bblg"].on("click", ()=>{do_blog("tid","txt")})
-  act["bcls"].on("click", ()=>{clear_txt("txt")})
-  act["bstk"].on("click", get_stock)
+  act.bpll = ()=>{W.hxdom("get", "/cgi-bin/memo.cgi", "sel", "#hnt")}
+  act.bpsh = push_memo
+  act.bblg = ()=>{do_blog("tid","txt")}
+  act.bcls = ()=>{clear_txt("txt")}
+  act.bstk = get_stock
   showpanel('selfhost')
 }
 
