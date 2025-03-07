@@ -26,9 +26,9 @@ local function cgi_user()
       init_user()
     end
     pprint("all users", AllUsernames())
-    print(UsernameCookie(), Username(), CookieTimeout("shuw"), CookieSecret(), PasswordAlgo())
-    print("user", UserRights(), "admin", AdminRights(), "login", IsLoggedIn("shuw"))
-  else 
+    --print(UsernameCookie(), Username(), CookieTimeout("shuw"), CookieSecret(), PasswordAlgo())
+    --print("user", UserRights(), "admin", AdminRights(), "login", IsLoggedIn("shuw"))
+  else
     local t = formdata()
     if t["token"] == USER then
       Login(USER)
