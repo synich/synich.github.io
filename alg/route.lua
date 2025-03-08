@@ -142,8 +142,15 @@ end
 
 ----------------- stock ------------------
 local function cgi_stock()
+  pprint("名字", "现价", "波动", "percent")
   local r = split(GET("http://qt.gtimg.cn/q=s_sz002236"), "~")
-  pprint(r[3], r[4], r[5], r[6])
+  pprint('大华', r[4], r[5], r[6])
+  r = split(GET("http://qt.gtimg.cn/q=s_sz159919"), "~")
+  pprint('300ETF', r[4], r[5], r[6])
+  r = split(GET("http://qt.gtimg.cn/q=s_sz159915"), "~")
+  pprint('创业ETF', r[4], r[5], r[6])
+  r = split(GET("http://qt.gtimg.cn/q=s_sh512880"), "~")
+  pprint('证券ETF', r[4], r[5], r[6])
 end
 
 ----------- define route ---------------
