@@ -3,7 +3,7 @@
 --AddUserPrefix("/priv")
 DenyHandler(function()
   print([[
-  <script src="/alg/buss.js?v=1" type="text/javascript"></script>
+  <script src="/alg/sep.min.js?v=2" type="text/javascript"></script>
   <pre id="eo1"></pre>
   <input type="text" id="ei1" name="token">
   <button onclick='W.hxdom("POST", "/cgi-bin/user.cgi", "ei1", "eo1")'>Login</button>
