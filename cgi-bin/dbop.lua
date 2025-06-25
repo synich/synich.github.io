@@ -92,7 +92,7 @@ local function fts_match(db, txt, limit)
 
   local lst = {}
   local i = 0
-  if not limit then limit = 10 end
+  if not limit then limit = 20 end
   txt = _cv_kwd2fts_syn(txt)
   return fetchall(db, [[select rowid, snippet(memo,0,'','','@',10), content
       from memo where memo match ']]..txt.."' order by rank limit "..limit)
@@ -112,7 +112,7 @@ local function fts_like(db, txt, limit)
     end
     return s
   end
-  if not limit then limit = 10 end
+  if not limit then limit = 30 end
   txt = _cv_kwd2like(txt)
   local a = fetchall(db, "select date||'blog', substr(content,1,45) from blog where 1=1"..txt.." limit "..limit)
   local b = fetchall(db, "select date||'tmrec', substr(content,1,45) from tmrec where 1=1"..txt.." limit "..limit)

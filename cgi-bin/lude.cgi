@@ -81,7 +81,7 @@ end
 
 ---------------------------------------
 -- cgi entry, register bussness into fn
--- fn has 2 args: qs & ctx
+-- fn has 2 args: qs & ctx(both table)
 ---------------------------------------
 cgi = function(p,q,c)
     local ptf = require(p[1])

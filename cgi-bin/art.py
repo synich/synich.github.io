@@ -132,18 +132,18 @@ def any_kwd(prm):
                 where_clause += f" and attr like '%{i[1:]}%'"
             else:
                 where_clause += f" and content like '%{i}%'"
-        cur.execute(f"select date, substr(content, 1, 25), attr from blog {where_clause} limit 10")
+        cur.execute(f"select date, substr(content, 1, 25), attr from blog {where_clause} limit 20")
         lst = cur.fetchall()
         print(f'<span style="color: #00F;">{dname} blog</span>')
         for i in lst:
             print(f"{i[0]}|{_btitle(i[1])}|{i[2]}")
-        cur.execute(f"select date, content, attr from tmrec {where_clause} limit 10")
+        cur.execute(f"select date, content, attr from tmrec {where_clause} limit 20")
         lst = cur.fetchall()
         print(f'<span style="color: #390;">{dname} tmrec</span>')
         for i in lst:
             print(f"{i[0]}|{i[1]}|{i[2]}")
         print(f'<span style="color: #FC3;">{dname} memo</span>')
-        cur.execute(f"select date, content from memo where memo match '{arr[0]}*' limit 10") # TODO
+        cur.execute(f"select date, content from memo where memo match '{arr[0]}*' limit 20") # TODO
         lst = cur.fetchall()
         for i in lst:
             print(f"{i[0]}|{i[1]}")
@@ -180,7 +180,7 @@ def tmupload(prm):
     cur.execute(stmt)
     sqldb.commit()
     print(f"UPSERT {dt}, tag:{attr}.")
-    cur.execute("SELECT date FROM tmrec order by date desc limit 3")
+    cur.execute("SELECT date FROM tmrec order by date desc limit 5")
     print(f"Recent {[i[0] for i in cur.fetchall()]}")
 
 
@@ -201,7 +201,7 @@ def _matchdb(kwd):
     db = sqlite3.connect(f"./shuw.db", isolation_level=None)
     cur = db.cursor()
     cur.execute(f"""select rowid, snippet(memo,0,'','','@',10), content
-      from memo where memo match '{kwd}*' order by rank limit 10""")
+      from memo where memo match '{kwd}*' order by rank limit 20""")
     return cur.fetchall()
 
 def pbdbkwd(prm):
