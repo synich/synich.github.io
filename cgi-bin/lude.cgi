@@ -30,6 +30,7 @@ local function _url_str_tbl(s)
 end
 
 local function _path_tbl(s)
+  s = s and s or "/"
   local t = {}
   local p_start, p_next = 2, 1
   repeat
@@ -84,13 +85,14 @@ end
 -- fn has 2 args: qs & ctx(both table)
 ---------------------------------------
 cgi = function(p,q,c)
-    local ptf = require(p[1])
-    if ptf then
-      isok, msg = pcall(ptf[p[2]], q, c)
-      if not isok then errlog(p[1]..": "..msg) end
-    else
-      errlog("not found ["..p[1].."] request")
-    end
+  local mod = p[1]
+  local ent = p[2] and p[2] or 'main'
+  local ptf = require(mod)
+  local isok, msg = pcall(ptf[ent], q, c)
+  if not isok then
+    local em = msg..": "..mod.."/"..ent
+    errlog(em);print(em)
+  end
 end
 
 local ok,msg = pcall(main) -- must be global function
