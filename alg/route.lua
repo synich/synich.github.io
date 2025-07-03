@@ -142,6 +142,7 @@ end
 
 ----------------- stock ------------------
 local function cgi_stock()
+  pprint(os.date("%Y-%m-%d %H:%M:%S"))
   pprint("名字", "现价", "波动", "percent")
   local r = split(GET("http://qt.gtimg.cn/q=s_sz002236"), "~")
   pprint('大华', r[4], r[5], r[6])
@@ -155,7 +156,8 @@ end
 
 ----------- define route ---------------
 servedir("/", "..")
-handle("/cgi-bin/user.cgi", cgi_user)
-handle("/cgi-bin/memo.cgi", cgi_memo)
-handle("/cgi-bin/blog.cgi", cgi_blog)
-handle("/cgi-bin/stock.cgi",cgi_stock)
+handle("/cgi-bin/lude.cgi/user", cgi_user)
+handle("/cgi-bin/lude.cgi/memo", cgi_memo)
+handle("/cgi-bin/lude.cgi/blog", cgi_blog)
+handle("/cgi-bin/lude.cgi/stock",cgi_stock)
+

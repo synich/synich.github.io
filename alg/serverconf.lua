@@ -4,9 +4,10 @@
 DenyHandler(function()
   print([[
   <script src="/alg/sep.min.js?v=2" type="text/javascript"></script>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
   <pre id="eo1"></pre>
   <input type="text" id="ei1" name="token">
-  <button onclick='W.hxdom("POST", "/cgi-bin/user.cgi", "ei1", "eo1")'>Login</button>
+  <button onclick='W.hxdom("POST", "/cgi-bin/lude.cgi/user", "ei1", "eo1")'>Login</button>
   ]])
 end)
 

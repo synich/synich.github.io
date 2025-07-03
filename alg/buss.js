@@ -4,7 +4,7 @@ function push_memo() {
   }
   var kwd = W.jq("txt")()
   var idx = W.jq("sel")()
-  W.ajax("post", '/cgi-bin/memo.cgi', {'k':kwd,'i':idx}, _cb)
+  W.ajax("post", '/cgi-bin/lude.cgi/memo', {'k':kwd,'i':idx}, _cb)
 }
 
 async function do_blog(tid,tarea) {
@@ -12,14 +12,14 @@ async function do_blog(tid,tarea) {
   let txt = W.jq(tarea)
   if (e) {
 	if (txt().length<30) {
-	  let r = await W.awax("get", "/cgi-bin/blog.cgi", {"tid":e})
+	  let r = await W.awax("get", "/cgi-bin/lude.cgi/blog", {"tid":e})
       txt(r)
 	} else {
-	  let r = await W.awax("post", "/cgi-bin/blog.cgi", {"tid":e,"txt":txt()})
+	  let r = await W.awax("post", "/cgi-bin/lude.cgi/blog", {"tid":e,"txt":txt()})
 	  alert(r)
 	}
   } else {
-	W.hxdom("get", "/cgi-bin/blog.cgi", tid, "#hnt")
+	W.hxdom("get", "/cgi-bin/lude.cgi/blog", tid, "#hnt")
   }
 }
 
@@ -36,7 +36,7 @@ function showpanel(id){
 }
 
 function get_stock(){
-  W.hxdom("get", "/cgi-bin/stock.cgi", null, "#hnt")
+  W.hxdom("get", "/cgi-bin/lude.cgi/stock", null, "#hnt")
 }
 
 function main(){
@@ -48,7 +48,7 @@ function main(){
     else {m.m.disp("inline");m.b.disp("none");m.t.disp("none")}
     // else if (v=="t"){m.m.disp("none");m.b.disp("none");m.t.disp("inline")}
   }
-  act.bpll = ()=>{W.hxdom("get", "/cgi-bin/memo.cgi", "sel", "#hnt")}
+  act.bpll = ()=>{W.hxdom("get", "/cgi-bin/lude.cgi/memo", "sel", "#hnt")}
   act.bpsh = push_memo
   act.bblg = ()=>{do_blog("tid","txt")}
   act.bcls = ()=>{clear_txt("txt")}
