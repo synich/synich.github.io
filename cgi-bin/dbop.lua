@@ -61,15 +61,23 @@ local function curday() -- 6 digit date
   return year:sub(3,4) .. month .. day
 end
 
-local function fetchone(db, sql) -- always return table
+local function fetchone(db, sql) -- always return table and use [1],[2] get col
   for a in db:rows(sql) do return a end
   return {}
 end
 
-local function fetchall(db, sql) -- always return table
+local function fetchall(db, sql) -- always return table and use [1],[2] get col
   local lst = {}
   for a in db:rows(sql) do table.insert(lst, a) end
   return lst
+end
+
+local function tag2json(str)
+  local matches = {}
+  for mat in string.gmatch(str, "#[^ \n#'\"/?!;&@]+") do
+    table.insert(matches, fmt('"{}"', mat:sub(2)))
+  end
+  return fmt("[{}]", table.concat(matches, ", "))
 end
 
 --universal fts
@@ -138,7 +146,7 @@ local function fts_ramble(db)
   return lst
 end
 
-local function fts_rowid(db, rowid)
+local function fts_rowid(db, rowid) -- -> table
   -- {id, abstract, content(maybe has tag)}
   local id, tbl = rowid:match("(%d+)%s*(%a*)")
   if tbl:sub(1,1)=="b" then

@@ -1,4 +1,4 @@
-#!/sdf/arpa/ns/s/synich/.shuw/bin/pb lua
+#!/root/.shuw/bin/pb lua
 -- USAGE: provide xx.lua, must has cgi method as entry
 -- cgi will get 3 table, first `p: {do}` is router
 -- when query /xx.cgi/sth?arg=1, sth will get 2 table
@@ -45,11 +45,11 @@ local function _path_tbl(s)
   return t
 end
 
--- base64 in body will change by urlencoded, restore it
-local function _res_urlenc(str)
-  str = str:gsub("%%2B", "+")
-  str = str:gsub("%%2F", "/")
-  return str
+-- js send with encodeURI, restore it
+local function decodeURI(s)
+  return s:gsub('%%(%x%x)', function(hex)
+    return string.char(tonumber(hex, 16))
+  end)
 end
 
 local function errlog(msg)
@@ -66,8 +66,8 @@ local function cgi_entry()
   -- cal module's cgi function, urlencoded will make +/ to %2B%2F, restore them
   if nil then errlog(method.." pi:"..path_info.." qs:"..query_str.." ctx:"..urlencoded_content) end
   cgi(_path_tbl(path_info),
-      _url_str_tbl( _res_urlenc(query_str) ),
-      _url_str_tbl( _res_urlenc(urlencoded_content) ))
+      _url_str_tbl( decodeURI(query_str) ),
+      _url_str_tbl( decodeURI(urlencoded_content) ))
 end
 
 function main()
@@ -90,9 +90,10 @@ cgi = function(p,q,c)
   local ptf = require(mod)
   local isok, msg = pcall(ptf[ent], q, c)
   if not isok then
-    local em = msg..": "..mod.."/"..ent
+    local em = msg..", by "..mod.."/"..ent
     errlog(em);print(em)
   end
+  if mod.close then mod.close() end
 end
 
 local ok,msg = pcall(main) -- must be global function
