@@ -56,8 +56,7 @@ local function errlog(msg)
   os.execute("echo "..'"`date` '..msg..'">>cgi-err.log')
 end
 
-local function cgi_entry()
-  local method = os.getenv("REQUEST_METHOD")
+local function cgi_entry(method)
   -- part after r.cgi, e.g r.cgi/foo/bar, path_info is /foo/bar
   local path_info = os.getenv("PATH_INFO")
   -- part after ?(exclude ?), e.g r.cgi/foo?arg=3, query is arg=3
@@ -67,14 +66,16 @@ local function cgi_entry()
   if nil then errlog(method.." pi:"..path_info.." qs:"..query_str.." ctx:"..urlencoded_content) end
   cgi(_path_tbl(path_info),
       _url_str_tbl( decodeURI(query_str) ),
-      _url_str_tbl( decodeURI(urlencoded_content) ))
+      _url_str_tbl( decodeURI(urlencoded_content) ),
+      method)
 end
 
 function main()
-  if os.getenv("REQUEST_METHOD") then
+  local method = os.getenv("REQUEST_METHOD")
+  if method then
     -- ensure html render
     print("Content-Type: text/html; charset=UTF-8\n")
-    cgi_entry()
+    cgi_entry(method)
   else
     unittest()
   end
@@ -82,13 +83,13 @@ end
 
 ---------------------------------------
 -- cgi entry, register bussness into fn
--- fn has 2 args: qs & ctx(both table)
+-- fn has 3 args: qs & ctx(both table), method(GET/POST)
 ---------------------------------------
-cgi = function(p,q,c)
+cgi = function(p,q,c,m)
   local mod = p[1]
   local ent = p[2] and p[2] or 'main'
   local ptf = require(mod)
-  local isok, msg = pcall(ptf[ent], q, c)
+  local isok, msg = pcall(ptf[ent], q, c, m:upper())
   if not isok then
     local em = msg..", by "..mod.."/"..ent
     errlog(em);print(em)
