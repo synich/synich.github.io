@@ -5,7 +5,28 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="/static/mel.css?v=3" rel="stylesheet" type="text/css">
 	<script src="/static/mel.min.js?v=2" type="text/javascript"></script>
-	<script type="text/javascript">
+<style>
+div.auto_high {
+  position: relative;
+  min-height: 6rem;
+}
+p.auto_high {
+  font-size: 1em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  visibility: hidden;
+  line-height: 0.8;
+}
+textarea.auto_high {
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  padding: 0px 4px;
+  box-sizing: border-box;
+}
+</style>
+<script type="module">
 async function pull_art(){
   let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/pull")
   let res = W.jq("#res")
@@ -34,11 +55,15 @@ async function stock(){
   let res = W.jq("#res")
   res(r)
 }
-    </script>
+W.ko("u_aht").sync = (v,m)=>{m.s(v)}
+</script>
 </head>
 <body>
 <h1>记忆</h1>
-<textarea id="txt"></textarea>
+<div id="u_aht" class="auto_high">
+  <p class="auto_high" db="el:s"></p>
+  <textarea id="txt" class="auto_high" db="el:t,fn:sync"></textarea>
+</div>
 <select id="mm">
     <option value="memo">memo</option>
 </select>
