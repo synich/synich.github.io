@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>记忆</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="/static/mel.css?v=3" rel="stylesheet" type="text/css">
+	<script src="/static/mel.min.js?v=2" type="text/javascript"></script>
+	<script type="text/javascript">
+async function pull_art(){
+  let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/pull")
+  let res = W.jq("#res")
+  res(r)
+}
+async function push_art(){
+  let t = W.jq("#txt")
+  let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/push", {t: t()})
+  alert(r)
+}
+async function pull_tm(){
+  let dt = W.jq("#tmdt")
+  let r = await W.awax("get", "/cgi-bin/pyde.cgi/art/tmread", {db:"shuw",dt:dt()})
+  let res = W.jq("#res")
+  res(r)
+}
+async function push_tm(){
+  let dt = W.jq("#tmdt")
+  let t = W.jq("#txt")
+  let r = await W.awax("get", "/cgi-bin/pyde.cgi/art/tmupload", {db:"shuw",dt:dt(),txt:btoa(String.fromCharCode(...new TextEncoder().encode(t())))})
+  let res = W.jq("#res")
+  res(r)
+}
+async function stock(){
+  let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/stock")
+  let res = W.jq("#res")
+  res(r)
+}
+    </script>
+</head>
+<body>
+<h1>记忆</h1>
+<textarea id="txt"></textarea>
+<select id="mm">
+    <option value="memo">memo</option>
+</select>
+<button class="c2" onclick="pull_art()">pull</button>
+<button class="c2" onclick="push_art()">push</button>
+<button class="c2" onclick="pull_tm()">rdtm</button>
+<button class="c2" onclick="push_tm()">wrtm</button>
+<br>
+<button onclick="stock()">stock</button> <input id="tmdt" type="text">
+<div id="res"> </div>
+</body>
+</html>
+

@@ -164,7 +164,7 @@ def tmread(prm):
     cur.execute(stmt)
     lst = cur.fetchall()
     for i in lst:
-        print(f"{i[0]}|{i[1]}|{i[2]}")
+        print(f"{i[0]}|{i[1]}|{i[2]}<br>")
 
 def tmupload(prm):
     db = prm["db"]

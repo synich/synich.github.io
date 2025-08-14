@@ -1,4 +1,4 @@
-#!/root/.shuw/bin/pb lua
+#!/sdf/arpa/ns/s/synich/.shuw/bin/pb lua
 -- USAGE: provide xx.lua, must has cgi method as entry
 -- cgi will get 3 table, first `p: {do}` is router
 -- when query /xx.cgi/sth?arg=1, sth will get 2 table
