@@ -3,7 +3,7 @@
 --AddUserPrefix("/priv")
 DenyHandler(function()
   print([[
-  <script src="/alg/sep.min.js?v=2" type="text/javascript"></script>
+  <script src="/static/mel.min.js?v=2" type="text/javascript"></script>
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <pre id="eo1"></pre>
   <input type="text" id="ei1" name="token">
