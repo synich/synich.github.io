@@ -39,7 +39,11 @@ mod.stock = function()
     local cmd = fmt("curl http://qt.gtimg.cn/q=s_{} 2>/dev/null", k)
     local r = os.popen(cmd)
     local a = r:split("~")
-    print(v, '||', a[4], a[5], a[6], '<br>')
+    local co = '<p style="color:red;">'
+    if tonumber(a[5]) <0 then
+      co = '<p style="color:green;">'
+    end
+    print(co, v, '||', a[4], a[5], a[6], '</p>')
   end
 end
 
