@@ -43,7 +43,7 @@ mod.stock = function()
     if tonumber(a[5]) <0 then
       co = '<p style="color:green;">'
     end
-    print(co, v, '||', a[4], a[5], a[6], '</p>')
+    print(co, v, '||', a[4], a[5], fmt('{}%',a[6]), '</p>')
   end
 end
 
