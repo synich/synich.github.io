@@ -5,9 +5,10 @@ DenyHandler(function()
   print([[
   <script src="/static/mel.min.js?v=2" type="text/javascript"></script>
   <meta content="width=device-width, initial-scale=1" name="viewport">
-  <pre id="eo1"></pre>
   <input type="text" id="ei1" name="token">
-  <button onclick='W.hxdom("POST", "/cgi-bin/lude.cgi/user", "ei1", "eo1")'>Login</button>
+  <script>function val_t(){return W.jq("ei1")()}
+  function login(rsp){location.reload()}</script>
+  <button onclick='W.ajax("POST", "/cgi-bin/lude.cgi/user", {"token":val_t()}, login)'>Login</button>
   ]])
 end)
 
