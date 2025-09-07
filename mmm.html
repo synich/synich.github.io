@@ -28,8 +28,7 @@ textarea.auto_high {
 <script type="text/javascript">
 async function pull_art(){
   let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/pull")
-  let res = W.jq("#res")
-  res(r)
+  W.jq("#mes")(r)
 }
 async function push_art(){
   let t = W.jq("#txt")
@@ -39,20 +38,17 @@ async function push_art(){
 async function pull_tm(){
   let dt = W.jq("#tmdt")
   let r = await W.awax("get", "/cgi-bin/pyde.cgi/art/tmread", {db:"shuw",dt:dt()})
-  let res = W.jq("#res")
-  res(r)
+  W.jq("#res")(r)
 }
 async function push_tm(){
   let dt = W.jq("#tmdt")
   let t = W.jq("#txt")
   let r = await W.awax("get", "/cgi-bin/pyde.cgi/art/tmupload", {db:"shuw",dt:dt(),txt:btoa(String.fromCharCode(...new TextEncoder().encode(t())))})
-  let res = W.jq("#res")
-  res(r)
+  W.jq("#res")(r)
 }
 async function stock(){
   let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/stock")
-  let res = W.jq("#res")
-  res(r)
+  W.jq("#res")(r)
 }
 </script>
 </head>
@@ -71,6 +67,7 @@ async function stock(){
 <button class="c2" onclick="push_tm()">wrtm</button>
 <br>
 <button onclick="stock()">stock</button> <input id="tmdt" type="text">
+<pre id="mes"> </pre>
 <div id="res"> </div>
 </body>
 <script type="text/javascript">W.ko("u_aht").sync = (v,m)=>{m.s(v)}</script>
