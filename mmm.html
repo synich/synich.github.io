@@ -50,10 +50,16 @@ async function stock(){
   let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/stock")
   W.jq("#ses")(r)
 }
+function main(){
+  W.ko("u_aht").sync = (v,m)=>{m.s(v)}
+  W.ko("u_tm2ss").toss = (v,m)=>{W.ss.set('tmdt', v)}
+  let dt = W.ss.get('tmdt')
+  if(dt) W.jq("#tmdt")(dt)
+}
 </script>
 </head>
 <body>
-<h1>记忆</h1>
+<h1>Welcome</h1>
 <div id="u_aht" class="auto_high">
   <p class="auto_high" db="el:s"></p>
   <textarea id="txt" class="auto_high" db="el:t,fn:sync"></textarea>
@@ -66,11 +72,11 @@ async function stock(){
 <button class="c2" onclick="pull_tm()">rdtm</button>
 <button class="c2" onclick="push_tm()">wrtm</button>
 <br>
-<button onclick="stock()">stock</button> <input id="tmdt" type="text">
+<button onclick="stock()">stock</button> <span id="u_tm2ss"><input id="tmdt" type="text" db="el:t,fn:toss"></span>
 <pre id="mes"></pre>
 <div id="tes"></div>
 <div id="ses"></div>
 </body>
-<script type="text/javascript">W.ko("u_aht").sync = (v,m)=>{m.s(v)}</script>
+<script type="text/javascript">main()</script>
 </html>
 
