@@ -26,6 +26,27 @@ textarea.auto_high {
 }
 </style>
 <script type="text/javascript">
+</script>
+</head>
+<body>
+<h1>Welcome</h1>
+<div id="u_aht" class="auto_high">
+  <p class="auto_high" db="el:s"></p>
+  <textarea id="txt" class="auto_high" db="el:t,fn:sync"></textarea>
+</div>
+<select id="mm">
+    <option value="memo">memo</option>
+    <option value="tmrec">tmrec</option>
+</select>
+<button class="c3" onclick="gn_pull()">pull</button>
+<button class="c3" onclick="gn_push()">push</button>
+<br>
+<button onclick="stock()">stock</button> <span id="u_tm2ss"><input id="tmdt" type="text" db="el:t,fn:toss"></span>
+<pre id="mes"></pre>
+<div id="tes"></div>
+<div id="ses"></div>
+</body>
+<script type="text/javascript">
 async function pull_art(){
   let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/pull")
   W.jq("#mes")(r)
@@ -46,6 +67,16 @@ async function push_tm(){
   let r = await W.awax("get", "/cgi-bin/pyde.cgi/art/tmupload", {db:"shuw",dt:dt(),txt:btoa(String.fromCharCode(...new TextEncoder().encode(t())))})
   alert(r)
 }
+function gn_pull(){
+  let mm = W.jq("#mm")
+  if(mm() == "memo") pull_art()
+  else if(mm() == "tmrec") pull_tm()
+}
+function gn_push(){
+  let mm = W.jq("#mm")
+  if(mm() == "memo") push_art()
+  else if(mm() == "tmrec") push_tm()
+}
 async function stock(){
   let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/stock")
   W.jq("#ses")(r)
@@ -56,27 +87,7 @@ function main(){
   let dt = W.ss.get('tmdt')
   if(dt) W.jq("#tmdt")(dt)
 }
+main()
 </script>
-</head>
-<body>
-<h1>Welcome</h1>
-<div id="u_aht" class="auto_high">
-  <p class="auto_high" db="el:s"></p>
-  <textarea id="txt" class="auto_high" db="el:t,fn:sync"></textarea>
-</div>
-<select id="mm">
-    <option value="memo">memo</option>
-</select>
-<button class="c2" onclick="pull_art()">pull</button>
-<button class="c2" onclick="push_art()">push</button>
-<button class="c2" onclick="pull_tm()">rdtm</button>
-<button class="c2" onclick="push_tm()">wrtm</button>
-<br>
-<button onclick="stock()">stock</button> <span id="u_tm2ss"><input id="tmdt" type="text" db="el:t,fn:toss"></span>
-<pre id="mes"></pre>
-<div id="tes"></div>
-<div id="ses"></div>
-</body>
-<script type="text/javascript">main()</script>
 </html>
 
