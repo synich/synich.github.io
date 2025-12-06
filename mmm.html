@@ -63,7 +63,7 @@ async function pull_tm(){
 }
 async function push_tm(){
   let dt = W.jq("#tmdt")
-  if (dt.length!=6){alert("dt length not 6");return}
+  if (dt().length!=6){alert("dt not 6. "+dt());return}
   let t = W.jq("#txt")
   let r = await W.awax("get", "/cgi-bin/pyde.cgi/art/tmupload", {db:"shuw",dt:dt(),txt:btoa(String.fromCharCode(...new TextEncoder().encode(t())))})
   alert(r)
