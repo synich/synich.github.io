@@ -129,10 +129,12 @@ local function cgi_blog()
       for i,v in ipairs(l:getall()) do print(v) end
     elseif "dump"==tid then
 	  local a = l:getall()
+      local b_nam = ""
 	  for i,v in ipairs(a) do
 	    local fd = io.open(v, "w"); fd:write(l:get(v)); fd:close()
+        b_nam = b_nam..fmt("\n{}", v)
 	  end
-	  print("dump blog")
+	  print(fmt("dump blog in alg:{}", b_nam))
 	elseif "clear"==tid then
 	  l:remove();os.execute("rm *.md") print("clear *.md")
 	else print(l:get(tid))
