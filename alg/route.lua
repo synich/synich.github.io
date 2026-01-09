@@ -133,6 +133,7 @@ local function cgi_blog()
 	  for i,v in ipairs(a) do
 	    local fd = io.open(v, "w"); fd:write(l:get(v)); fd:close()
         b_nam = b_nam..fmt("\n{}", v)
+        os.execute("md2repo "..v)
 	  end
 	  print(fmt("dump blog in alg:{}", b_nam))
 	elseif "clear"==tid then
