@@ -1,15 +1,23 @@
 ----------------- tool ----------------
-function fmt(s, ...)
+local function fmt(s, ...)
   local args = {...}
   local res = s:gsub("{}", function() return table.remove(args, 1) or "" end)
   return res
 end
 
-function split(s, sep)
+local function split(s, sep)
   if not sep then sep = "," end
   local t = {}
   for w in s:gmatch("([^"..sep.."]+)") do table.insert(t, w) end
   return t
+end
+
+local function _wc(fname, txt) -- write text to file
+  os.execute("echo >"..fname) -- open with w sometimes not work, so use echo force purge
+  local fout = io.open(fname, "w"); fout:write(txt); fout:close() --txt=txt:gsub("[\n%s]*$","");
+end
+local function _rc(fname)
+  local fout = io.open(fname, "r");local txt=fout:read("*a"); fout:close(); return txt --:gsub("'", "''")
 end
 
 ----------------- user ----------------
@@ -115,6 +123,38 @@ local function cgi_memo()
   end
 end
 
+----------------- fts ------------------
+--- match/rowid/ins/up kw=12&txt=...
+local hint_name = "flk_hint.txt"
+local full_name = "flk_full.md"
+local dbop_cmd = "~/.shuw/bin/pb lu dbop.lua "
+local function cgi_fts()
+  local d = formdata()
+  local cmd, txt
+  if "POST"==method() then -- ins or up
+    _wc(full_name, d["txt"])
+    if d["kw"]=="" then
+      cmd = fmt("{} mod_m ins", dbop_cmd)
+    else
+      cmd = fmt("{} mod_m up {}", dbop_cmd, d["kw"])
+    end
+    os.execute(cmd)
+    txt = _rc(hint_name)
+    print(cmd, txt)
+  else -- match or rowid
+    if d["kw"]:sub(1,1) == "#" then
+      cmd = fmt("{} rowid {}", dbop_cmd, d["kw"]:sub(2))
+      os.execute(cmd)
+      txt = _rc(full_name)
+    else
+      cmd = fmt("{} match '{}'", dbop_cmd, d["kw"])
+      os.execute(cmd)
+      txt = _rc(hint_name)
+    end
+    print(txt)
+  end
+end
+
 ----------------- blog ------------------
 local function cgi_blog()
   local d = formdata()
@@ -161,6 +201,7 @@ end
 servedir("/", "..")
 handle("/cgi-bin/lude.cgi/user", cgi_user)
 handle("/cgi-bin/lude.cgi/memo", cgi_memo)
+handle("/cgi-bin/lude.cgi/fts",  cgi_fts)
 handle("/cgi-bin/lude.cgi/blog", cgi_blog)
 handle("/cgi-bin/lude.cgi/stock",cgi_stock)
 
