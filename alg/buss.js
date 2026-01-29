@@ -61,9 +61,9 @@ function main(){
   //show/hide blog/memo/txt
   var act = W.ko("u_act")
   act.show = (v,m)=>{
-    if (v=="blog") {m.b.disp("inline");m.m.disp("none");m.t.disp("none")}
-    else if (v=="fts"){m.m.disp("none");m.b.disp("inline");m.t.disp("inline")}
-    else {m.m.disp("inline");m.b.disp("none");m.t.disp("none")}
+    if (v=="blog") {m.i.disp("inline");m.b.disp("inline");m.m.disp("none");m.t.disp("none")}
+    else if (v=="fts"){m.m.disp("none");m.i.disp("inline");m.b.disp("none");m.t.disp("inline")}
+    else {m.m.disp("inline");m.i.disp("none");m.b.disp("none");m.t.disp("none")}
   }
   act.bpll = ()=>{W.hxdom("get", "/cgi-bin/lude.cgi/memo", "sel", "#hnt")}
   act.bpsh = push_memo
