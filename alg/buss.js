@@ -11,7 +11,8 @@ async function fts_get(tid, tarea) {
   let e = W.jq(tid)()
   let txt = W.jq(tarea)
   let query = txt()
-  if (e!=""){query="#"+e}
+  if (e=="?"){query=e}
+  else if (e!=""){query="#"+e}
   let r = await W.awax("get", "/cgi-bin/lude.cgi/fts", {"kw":query})
   txt(r.trim())
 }
@@ -39,9 +40,10 @@ async function do_blog(tid,tarea) {
   }
 }
 
-function clear_txt(id){
-  let e = W.jq(id)
-  e('')
+function clear_txt(ids){
+  for (let i = 0; i<ids.length; i++){
+    let e = W.jq(ids[i]); e('')
+  }
 }
 
 function showpanel(id){
@@ -70,7 +72,7 @@ function main(){
   act.bfts_get = ()=>{fts_get("tid","txt")}
   act.bfts_set = ()=>{fts_set("tid","txt")}
   act.bblg = ()=>{do_blog("tid","txt")}
-  act.bcls = ()=>{clear_txt("txt")}
+  act.bcls = ()=>{clear_txt(["txt", "tid"])}
   act.bstk = get_stock
   showpanel('selfhost')
 }
