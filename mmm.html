@@ -34,7 +34,7 @@ textarea.auto_high {
 </div>
 <select id="mm">
     <option value="tmrec">tmrec</option>
-    <option value="memo">memo</option>
+    <option value="memo">llm</option>
 </select>
 <button class="c3" onclick="gn_pull()">pull</button>
 <button class="c3" onclick="gn_push()">push</button>
@@ -49,10 +49,10 @@ async function pull_art(){
   let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/pull")
   W.jq("#mes")(r)
 }
-async function push_art(){
+async function ask_llm(){
   let t = W.jq("#txt")
-  let r = await W.awax("get", "/cgi-bin/lude.cgi/memo/push", {t: t()})
-  alert(r)
+  let r = await W.awax("post", "/cgi-bin/pyde.cgi/art/ask_llm", {txt: t()})
+  W.jq("#mes")(r)
 }
 async function pull_tm(){
   let dt = W.jq("#tmdt")
@@ -73,7 +73,7 @@ function gn_pull(){
 }
 function gn_push(){
   let mm = W.jq("#mm")
-  if(mm() == "memo") push_art()
+  if(mm() == "memo") ask_llm()
   else if(mm() == "tmrec") push_tm()
 }
 async function stock(){
