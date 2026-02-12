@@ -326,6 +326,30 @@ def upfile(prm):
         st = os.stat(upfn)
         print(f"{upfn} {st.st_size}")
 
+################# llm gemini ####################
+def query_gemini(prompt):
+    import json
+    from urllib.request import Request, urlopen
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"thinkingConfig": {"thinkingBudget": 0}}
+    }
+    data = json.dumps(payload).encode('utf-8')
+    req = Request( url=url, data=data,
+        headers={ 'Content-Type': 'application/json',
+            'X-goog-api-key': 'AIzaSyChvjyiU1TBzgyKqCY1lEe6ZSHAYxJggFo'
+        }
+    )
+    with urlopen(req) as response:
+        result = json.loads(response.read())
+        return result['candidates'][0]['content']['parts'][0]['text']
+
+def ask_llm(prm):
+    txt = prm["txt"]
+    res = query_gemini(txt)
+    print(res)
+
 ################# test ####################
 if __name__ == "__main__":
     prm = {"i":"8"}
