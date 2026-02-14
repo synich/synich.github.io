@@ -141,13 +141,17 @@ local function cgi_fts()
     os.execute(cmd)
     txt = _rc(hint_name)
     print(cmd, txt)
-  else -- match or rowid or ramble
+  else -- match/like or rowid or ramble
     if d["kw"]:sub(1,1) == "#" then
       cmd = fmt("{} rowid {}", dbop_cmd, d["kw"]:sub(2))
       os.execute(cmd)
       txt = _rc(full_name)
     elseif d["kw"] == "?" then
       cmd = fmt("{} ramble", dbop_cmd)
+      os.execute(cmd)
+      txt = _rc(hint_name)
+    elseif d["kw"]:sub(1,1) == "*" then
+      cmd = fmt("{} like {}", dbop_cmd, d["kw"]:sub(2))
       os.execute(cmd)
       txt = _rc(hint_name)
     else
