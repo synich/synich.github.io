@@ -14,30 +14,6 @@
 #1. must in *cgi-bin* directory
 #2. file least be 700
 
-all: blog tmrec
-
-blog: blog.lua
-	@cat len blog.lua > $^.cgi
-	@echo "main()" >> $^.cgi
-	@chmod 755 $^.cgi
-	@mv $^.cgi blog.cgi
-
-tmrec: tmrec.lua
-	@cat len tmrec.lua > $^.cgi
-	@echo "main()" >> $^.cgi
-	@chmod 755 $^.cgi
-	@mv $^.cgi tmrec.cgi
-
-cata: cata.lua
-	@cat lude $^ > $@.cgi
-	@echo "main()" >> $@.cgi
-	@chmod 755 $@.cgi
-
-article: article.lua
-	@cat lude $^ > $@.cgi
-	@echo "main()" >> $@.cgi
-	@chmod 755 $@.cgi
-
 dif:
 	@diff $(v) ../../cgi-bin/$(v)
 

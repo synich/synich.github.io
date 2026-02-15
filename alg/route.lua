@@ -151,7 +151,7 @@ local function cgi_fts()
       os.execute(cmd)
       txt = _rc(hint_name)
     elseif d["kw"]:sub(1,1) == "*" then
-      cmd = fmt("{} like {}", dbop_cmd, d["kw"]:sub(2))
+      cmd = fmt("{} like '{}'", dbop_cmd, d["kw"]:sub(2))
       os.execute(cmd)
       txt = _rc(hint_name)
     else

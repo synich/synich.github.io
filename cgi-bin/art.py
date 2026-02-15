@@ -237,65 +237,7 @@ def pbdbop(prm):
     print(_rtxt("flk_hint.txt"))
 
 
-################# anki ####################
-def ankiReview(prm):
-    """ anki remember """
-    import datetime
-    db = prm["db"]
-    tbl = prm["tbl"]
-    cur, sqldb = _db_cur(db)
-    t = datetime.datetime.now()
-    cur.execute(f"select date,lastday from anki where cata='{tbl}' and lastday <> {t.strftime('%Y%m%d')[2:]} order by recall asc limit 1")
-    lst = cur.fetchone()
-    last_day = lst[1]
-    cur.execute(f"select date, content, attr from {tbl} where date={lst[0]}")
-    lst = cur.fetchone()
-    if len(lst) > 0:
-        print(lst[0], lst[1], lst[2], last_day)
-    else:
-        print("today no anki")
-
-
-def ankiMark(prm):
-    def _up_recall(D, S, R, dT, dificulty)->tuple:
-        REMEM_A = 1.5 # S remem
-        FORGET_DECAY = 0.5  # S forget
-        import math
-        d = D - (dificulty-1) # - (1-R)
-        d = max(d, 1)
-        d = min(d, 5)
-        if dificulty >= 1:
-            s = int(S + d * dificulty * REMEM_A)
-        else:
-            s = int(S - d * FORGET_DECAY)
-        s = max(s, 1)
-        s = min(s, 180)
-        r = "%.3f"%(1 / ((1+dT/s) * d))
-        print(f"D:{D}, S:{S}, R:{R}, d:{d}, s:{s}, r:{r}")
-        return r, f"{d}_{s}"
-    import datetime
-    db = prm["db"]
-    tbl = prm["tbl"]
-    dt = prm["dt"]
-    dificulty = int(prm["d"])
-    cur, sqldb = _db_cur(db)
-    cur.execute(f"select d_s, recall, lastday from anki where date={dt}")
-    lst = cur.fetchone()
-    ds = lst[0].split('_')
-    lastday = datetime.datetime.strptime(f'20{lst[2]}','%Y%m%d')
-    t = datetime.datetime.now()
-    ret = _up_recall(int(ds[0]), int(ds[1]), float(lst[1]), (t-lastday).days, dificulty)
-    cur.execute(f"update anki set d_s='{ret[1]}', recall={ret[0]}, lastday={t.strftime('%Y%m%d')[2:]} where cata='{tbl}' and date={dt}")
-    sqldb.commit()
-    print(dt,"anki up")
-
-
-################# boot & file ####################
-def startup(prm):
-    import os
-    r = os.popen("curl http://qt.gtimg.cn/q=s_sz002236 2>/dev/null|awk -F~ '{print $4, $5, $6, $10}'")
-    print(r.read())
-
+################# pic and video ####################
 def pic(prm):
     idx = prm["i"]
     print(f"""<html><head>
