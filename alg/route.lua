@@ -1,23 +1,9 @@
 ----------------- tool ----------------
-local function fmt(s, ...)
-  local args = {...}
-  local res = s:gsub("{}", function() return table.remove(args, 1) or "" end)
-  return res
-end
-
-local function split(s, sep)
-  if not sep then sep = "," end
-  local t = {}
-  for w in s:gmatch("([^"..sep.."]+)") do table.insert(t, w) end
-  return t
-end
-
-local function _wc(fname, txt) -- write text to file
+require 'pb'
+-- fix in algernon which pb is not enough
+local function _wc(fname, txt)
   os.execute("echo >"..fname) -- open with w sometimes not work, so use echo force purge
   local fout = io.open(fname, "w"); fout:write(txt); fout:close() --txt=txt:gsub("[\n%s]*$","");
-end
-local function _rc(fname)
-  local fout = io.open(fname, "r");local txt=fout:read("*a"); fout:close(); return txt --:gsub("'", "''")
 end
 
 ----------------- user ----------------
@@ -195,13 +181,13 @@ end
 local function cgi_stock()
   pprint(os.date("%Y-%m-%d %H:%M:%S"))
   pprint("名字", "现价", "波动", "percent")
-  local r = split(GET("http://qt.gtimg.cn/q=s_sz002236"), "~")
+  local r = string.split(GET("http://qt.gtimg.cn/q=s_sz002236"), "~")
   pprint('大华', r[4], r[5], r[6])
-  r = split(GET("http://qt.gtimg.cn/q=s_sz159919"), "~")
+  r = string.split(GET("http://qt.gtimg.cn/q=s_sz159919"), "~")
   pprint('300ETF', r[4], r[5], r[6])
-  r = split(GET("http://qt.gtimg.cn/q=s_sz159915"), "~")
+  r = string.split(GET("http://qt.gtimg.cn/q=s_sz159915"), "~")
   pprint('创业ETF', r[4], r[5], r[6])
-  r = split(GET("http://qt.gtimg.cn/q=s_sh512880"), "~")
+  r = string.split(GET("http://qt.gtimg.cn/q=s_sh512880"), "~")
   pprint('证券ETF', r[4], r[5], r[6])
 end
 
