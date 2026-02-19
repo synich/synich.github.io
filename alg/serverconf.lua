@@ -1,3 +1,5 @@
+require 'pb'
+
 -- change admin/user default prefix
 --ClearPermissions()
 --AddUserPrefix("/priv")
@@ -15,9 +17,9 @@ end)
 -- Provide a lua function that will be run once, when the server is ready to start serving.
 -- OnReady(function() print(1357) end)
 
--- reverse to another server(only IP&port), drop the matched path, transfer rest path and querystring
-AddReverseProxy("/cgi-bin/node.cgi", "http://localhost:3080/")
-AddReverseProxy("/node", "http://localhost:3080/")
+-- proxy_pass to another server(only IP&port either has / or not), drop matched path(end must not has /, because another will not has /), transfer rest path and querystring
+AddReverseProxy("/cgi-bin/node.cgi", "http://192.168.1.173:8000/")
+AddReverseProxy("/node", "http://192.168.1.173:8000")
 
 -- use custom route
 ServerFile("./route.lua")

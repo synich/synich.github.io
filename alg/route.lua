@@ -1,5 +1,4 @@
 ----------------- tool ----------------
-require 'pb'
 -- fix in algernon which pb is not enough
 local function _wc(fname, txt)
   os.execute("echo >"..fname) -- open with w sometimes not work, so use echo force purge
