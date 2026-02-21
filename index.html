@@ -3,75 +3,9 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link href="/static/mel.min.css?v=3" rel="stylesheet" type="text/css">
   <title>蛙二的记忆</title>
   <style>
-    body {
-      color: #111;
-      background-color: #f4f4f4;
-    }
-
-    header {
-      font-size: 2em;
-      background-color: #202020;
-      color: #e7e7e7;
-      margin: 0;
-      padding-top: 0.5em;
-      padding-left: 0.5em;
-      font-weight: bold;
-    }
-
-    h1 {
-      font-size: 2em;
-      background-color: #202020;
-      color: #e7e7e7;
-      margin: 0;
-      padding-top: 0.5em;
-      padding-left: 0.5em;
-    }
-
-    h2 {
-      font-size: 1.7em;
-      color: #037;
-      padding-top: 0.2em;
-      margin: 0.2em;
-    }
-
-    h3 {
-      color: #409eff;
-    }
-
-    p {
-      margin: 0px;
-      font-size: 1.2em;
-    }
-
-    pre {
-      white-space: pre-wrap;
-    }
-
-    article {
-      background-color: #ececec;
-      max-width: 80rem;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    .footer {
-      margin: 0 auto;
-      text-align: center
-    }
-
-    @media screen and (max-width: 400px) {
-      #kwd {
-        width: 100px;
-      }
-    }
-
-    textarea {
-      width: 100%;
-      font-size: 1em
-    }
-
     div.auto_high {
       position: relative;
       min-height: 10rem;
@@ -92,16 +26,6 @@
       height: 100%;
       padding: 0px 4px;
       box-sizing: border-box;
-    }
-
-    button {
-      width: 22%;
-      height: 4vh;
-      margin: 0.1em;
-    }
-
-    select {
-      width: 20%;
     }
   </style>
 
@@ -130,21 +54,21 @@
         </select>
 
         <div db="el:m" style="display:inline">
-          <button db="fn:bpll">pull</button>
-          <button db="fn:bpsh">push:clear num/compact/*word</button>
+          <button class="c2" db="fn:bpll">pull</button>
+          <button class="c2" db="fn:bpsh">push:clear num/*word/compact</button>
         </div>
         <div db="el:i" style="display:none">
           act<input id="tid" name="tid">
         </div>
         <div db="el:b" style="display:none">
-          <button db="fn:bblg">blog</button>
+          <button class="c2" db="fn:bblg">blog</button>
         </div>
         <div db="el:t" style="display:none">
-          <button db="fn:bfts_get">fts_query</button>
-          <button db="fn:bfts_set">fts_insup</button>
+          <button class="c2" db="fn:bfts_get">fts_query</button>
+          <button class="c2" db="fn:bfts_set">fts_insup</button>
         </div>
-        <button db="fn:bcls">cls</button>
-        <button db="fn:bstk">stock</button>
+        <button class="c2" db="fn:bcls">cls</button>
+        <button class="c2" db="fn:bstk">stock</button>
       </div>
       <pre id="hnt"></pre>
       <h2><a href="/data/tm9.html">不成熟的想法</a></h2>
@@ -160,5 +84,4 @@
   </article>
   <footer class="footer">© 2014 - 2026</footer>
 </body>
-
 </html>

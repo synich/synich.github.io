@@ -60,7 +60,7 @@ local function KV(name)
   end
   t.find = function(self, word) local ans = ""
     for _,v in ipairs(self:getall()) do
-      if self.k:get(v):find(word) then ans = ans..v..". "..self.k:get(v).."\n" end
+      if self.k:get(v):lower():find(word) then ans = ans..v..". "..self.k:get(v).."\n" end
     end
     return #ans==0 and "not found "..word or ans
   end
