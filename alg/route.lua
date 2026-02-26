@@ -110,39 +110,39 @@ end
 
 ----------------- fts ------------------
 --- match/rowid/ins/up kw=12&txt=...
-local hint_name = "flk_hint.txt"
-local full_name = "flk_full.md"
+local flk_hint = "flk_hint.txt"
+local flk_full = "flk_full.md"
 local dbop_cmd = "~/.shuw/bin/pb lu dbop.lua "
 local function cgi_fts()
   local d = formdata()
   local cmd, txt
   if "POST"==method() then -- ins or up
-    _wc(full_name, d["txt"])
+    _wc(flk_full, d["txt"])
     if d["kw"]=="" then
       cmd = fmt("{} mod_m ins", dbop_cmd)
     else
       cmd = fmt("{} mod_m up {}", dbop_cmd, d["kw"])
     end
     os.execute(cmd)
-    txt = _rc(hint_name)
+    txt = _rc(flk_hint)
     print(cmd, txt)
   else -- match/like or rowid or ramble
     if d["kw"]:sub(1,1) == "#" then
       cmd = fmt("{} rowid {}", dbop_cmd, d["kw"]:sub(2))
       os.execute(cmd)
-      txt = _rc(full_name)
+      txt = _rc(flk_full)
     elseif d["kw"] == "?" then
       cmd = fmt("{} ramble", dbop_cmd)
       os.execute(cmd)
-      txt = _rc(hint_name)
+      txt = _rc(flk_hint)
     elseif d["kw"]:sub(1,1) == "*" then
       cmd = fmt("{} like '{}'", dbop_cmd, d["kw"]:sub(2))
       os.execute(cmd)
-      txt = _rc(hint_name)
+      txt = _rc(flk_hint)
     else
       cmd = fmt("{} match '{}'", dbop_cmd, d["kw"])
       os.execute(cmd)
-      txt = _rc(hint_name)
+      txt = _rc(flk_hint)
     end
     print(txt)
   end
@@ -176,6 +176,26 @@ local function cgi_blog()
   end
 end
 
+----------------- tmrec ------------------
+local function cgi_tmrec()
+  local d = formdata()
+  local tid, cmd = d['kw']
+  if tid:sub(1,1) == "#" then
+    tid = tid:sub(2)
+  end
+  if "POST"==method() then
+    local txt = d['txt']
+    _wc(flk_full, txt)
+    cmd = fmt("{} mod_bt tmrec iu {}", dbop_cmd, tid)
+    os.execute(cmd)
+    print(_rc(flk_hint))
+  else
+    cmd = fmt("{} rowid {}t", dbop_cmd, tid)
+    os.execute(cmd)
+    print(_rc(flk_full))
+  end
+end
+
 ----------------- stock ------------------
 local function cgi_stock()
   pprint(os.date("%Y-%m-%d %H:%M:%S"))
@@ -196,5 +216,6 @@ handle("/cgi-bin/lude.cgi/user", cgi_user)
 handle("/cgi-bin/lude.cgi/memo", cgi_memo)
 handle("/cgi-bin/lude.cgi/fts",  cgi_fts)
 handle("/cgi-bin/lude.cgi/blog", cgi_blog)
+handle("/cgi-bin/lude.cgi/tmrec",cgi_tmrec)
 handle("/cgi-bin/lude.cgi/stock",cgi_stock)
 
