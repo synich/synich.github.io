@@ -198,16 +198,18 @@ end
 
 ----------------- stock ------------------
 local function cgi_stock()
-  pprint(os.date("%Y-%m-%d %H:%M:%S"))
-  pprint("名字", "现价", "波动", "percent")
-  local r = string.split(GET("http://qt.gtimg.cn/q=s_sz002236"), "~")
-  pprint('大华', r[4], r[5], r[6])
-  r = string.split(GET("http://qt.gtimg.cn/q=s_sz159919"), "~")
-  pprint('300ETF', r[4], r[5], r[6])
-  r = string.split(GET("http://qt.gtimg.cn/q=s_sz159915"), "~")
-  pprint('创业ETF', r[4], r[5], r[6])
-  r = string.split(GET("http://qt.gtimg.cn/q=s_sh512880"), "~")
-  pprint('证券ETF', r[4], r[5], r[6])
+  print(os.date("%Y-%m-%d %H:%M:%S", os.time()+8*3600).."<br>")
+  local lst = {sz002236='大华', sz159919='300ETF:3.11-5.74', sz159922='500ETF:1.73-3.03', sz159915='创业ETF:1.44-3.46', sh512880='证券ETF:0.74-1.40'}
+  for k, v in pairs(lst) do
+    local cmd = fmt("curl http://qt.gtimg.cn/q=s_{} 2>/dev/null", k)
+    local r = os.popen(cmd)
+    local a = r:split("~")
+    local co = '<p style="color:red;">'
+    if tonumber(a[5]) <0 then
+      co = '<p style="color:green;">'
+    end
+    print(co, v, '||', a[4], a[5], fmt('{}%',a[6]), '</p>')
+  end
 end
 
 ----------- define route ---------------

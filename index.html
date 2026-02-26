@@ -5,76 +5,13 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <link href="/static/mel.min.css?v=3" rel="stylesheet" type="text/css">
   <title>蛙二的记忆</title>
-  <style>
-    div.auto_high {
-      position: relative;
-      min-height: 10rem;
-    }
-
-    p.auto_high {
-      font-size: 1em;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      visibility: hidden;
-      line-height: 0.8;
-    }
-
-    textarea.auto_high {
-      font-size: 1em;
-      position: absolute;
-      top: 0;
-      height: 100%;
-      padding: 0px 4px;
-      box-sizing: border-box;
-    }
-  </style>
-
-  <script src="/static/mel.min.js?v=3"></script>  
-  <script src="alg/buss.js?v=16" type="module"></script>
 </head>
 
 <body>
   <article>
     <p>不积跬步，无以至千里；不积小流，无以成江海</p>
     <h2><a href="/tm1.html">思考与沉淀</a></h2>
-    <h3><a href="/tmb1.html">技术</a></h3>
-    <h3><a href="/tmb2.html">文史</a></h3>
-    <h3><a href="/tmp5.html">封档</a></h3>
     <hr>
-
-    <div id="selfhost" style="display: none;">
-      <div id="u_aht" class="auto_high">
-        <p class="auto_high" db="el:s"></p><textarea id="txt" class="auto_high" db="el:t,fn:sync"></textarea>
-      </div>
-      <div id="u_act">
-        <select db="el:act,fn:show" id="sel" name="i">
-          <option value="fts" >fts</option>
-          <option value="3" selected>chew</option>
-          <option value="tmrec" selected>tmrec</option>
-          <option value="blog">blog</option>
-        </select>
-
-        <div db="el:m" style="display:inline">
-          <button class="resp-btn" db="fn:bpll">pull</button>
-          <button class="resp-btn" db="fn:bpsh">push:clear num/*k/compact</button>
-        </div>
-        <div db="el:i" style="display:none">
-          act<input id="tid" name="tid">
-        </div>
-        <div db="el:b" style="display:none">
-          <button class="resp-btn" db="fn:bblg">blog</button>
-        </div>
-        <div db="el:t" style="display:none">
-          <button class="resp-btn" db="fn:bfts_get">query</button>
-          <button class="resp-btn" db="fn:bfts_set">insup</button>
-        </div>
-        <button class="resp-btn" db="fn:bcls">cls</button>
-        <button class="resp-btn" db="fn:bstk">stock</button>
-      </div>
-      <pre id="hnt"></pre>
-      <h2><a href="/data/tm9.html">不成熟的想法</a></h2>
-    </div>
-
     <details>
       <summary>关于我</summary>
       <p>2019~ 从事数据仓库和数据分析产品的研发</p>
