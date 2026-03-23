@@ -38,7 +38,7 @@ local function check_user()
   if UsernameCookie() == USER then return true
   else print("not allow") return false end
 end
------------------ memo ------------------
+---------------- memo -----------------
 local function KV(name)
   local t = {}
   t.s = Set(name.."_s")
@@ -108,7 +108,7 @@ local function cgi_memo()
   end
 end
 
------------------ fts ------------------
+---------------- fts -----------------
 --- match/rowid/ins/up kw=12&txt=...
 local flk_hint = "flk_hint.txt"
 local flk_full = "flk_full.md"
@@ -124,31 +124,31 @@ local function cgi_fts()
       cmd = fmt("{} mod_m up {}", dbop_cmd, d["kw"])
     end
     os.execute(cmd)
-    txt = _rc(flk_hint)
+    txt = io._rc(flk_hint)
     print(cmd, txt)
   else -- match/like or rowid or ramble
     if d["kw"]:sub(1,1) == "#" then
       cmd = fmt("{} rowid {}", dbop_cmd, d["kw"]:sub(2))
       os.execute(cmd)
-      txt = _rc(flk_full)
+      txt = io._rc(flk_full)
     elseif d["kw"] == "?" then
       cmd = fmt("{} ramble", dbop_cmd)
       os.execute(cmd)
-      txt = _rc(flk_hint)
+      txt = io._rc(flk_hint)
     elseif d["kw"]:sub(1,1) == "*" then
       cmd = fmt("{} like '{}'", dbop_cmd, d["kw"]:sub(2))
       os.execute(cmd)
-      txt = _rc(flk_hint)
+      txt = io._rc(flk_hint)
     else
       cmd = fmt("{} match '{}'", dbop_cmd, d["kw"])
       os.execute(cmd)
-      txt = _rc(flk_hint)
+      txt = io._rc(flk_hint)
     end
     print(txt)
   end
 end
 
------------------ blog ------------------
+---------------- blog -----------------
 local function cgi_blog()
   local d = formdata()
   local tid, l = d['tid'], KV("blog")
@@ -176,7 +176,7 @@ local function cgi_blog()
   end
 end
 
------------------ tmrec ------------------
+--------------- tmrec ----------------
 local function cgi_tmrec()
   local d = formdata()
   local tid, cmd = d['kw']
@@ -188,15 +188,15 @@ local function cgi_tmrec()
     _wc(flk_full, txt)
     cmd = fmt("{} mod_bt tmrec iu {}", dbop_cmd, tid)
     os.execute(cmd)
-    print(_rc(flk_hint))
+    print(io._rc(flk_hint))
   else
     cmd = fmt("{} rowid {}t", dbop_cmd, tid)
     os.execute(cmd)
-    print(_rc(flk_full))
+    print(io._rc(flk_full))
   end
 end
 
------------------ stock ------------------
+--------------- stock ----------------
 local function cgi_stock()
   print(os.date("%Y-%m-%d %H:%M:%S", os.time()+8*3600).."<br>")
   local lst = {sz002236='大华', sz159919='300ETF:3.11-5.74', sz159922='500ETF:1.73-3.03', sz159915='创业ETF:1.44-3.46', sh512880='证券ETF:0.74-1.40'}

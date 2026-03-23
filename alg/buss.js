@@ -21,6 +21,7 @@ async function fts_get(tid, tarea, which) {
 async function fts_set(tid, tarea, which) {
   let e = W.jq(tid)()
   let txt = W.jq(tarea)
+  if (which()=="tmrec" && e.length!=6){alert("must length 6, but now: "+e); return}
   let r = await W.awax("post", `/cgi-bin/lude.cgi/${which()}`, {"kw":e, "txt":txt()})
   txt(r.trim())
 }
