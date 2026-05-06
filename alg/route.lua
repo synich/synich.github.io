@@ -1,3 +1,4 @@
+require "pb"
 ----------------- tool ----------------
 -- fix in algernon which pb is not enough
 local function _wc(fname, txt)
