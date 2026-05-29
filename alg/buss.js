@@ -14,6 +14,7 @@ async function fts_get(tid, tarea, which) {
   if (e=="?"){query=e}
   else if (e!=""){query="#"+e}
   // which in fts/tmrec
+  if (which()=="tmrec" && (query[0]!="#")){alert("tmrec must #number,"+query); return}
   let r = await W.awax("get", `/cgi-bin/lude.cgi/${which()}`, {"kw":query})
   txt(r.trim())
 }
