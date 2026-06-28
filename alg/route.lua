@@ -122,7 +122,11 @@ local function cgi_fts()
     if d["kw"]=="" then
       cmd = fmt("{} mod_m ins", dbop_cmd)
     else
-      cmd = fmt("{} mod_m up {}", dbop_cmd, d["kw"])
+      if d["kw"]:at(1)=="~" then -- ~5 means del 5
+        cmd = fmt("{} mod_m del {}", dbop_cmd, d["kw"]:sub(2))
+      else
+        cmd = fmt("{} mod_m up {}", dbop_cmd, d["kw"])
+      end
     end
     os.execute(cmd)
     txt = io._rc(flk_hint)
