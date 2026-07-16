@@ -68,21 +68,6 @@ local function KV(name)
   return t
 end
 
-local function sub_u8(u_str, need_n)
-  local epos = 1
-  for i = 1, need_n do
-    if epos > #u_str then break end
-    if u_str:byte(epos) < 128 then
-      epos = epos + 1
-    elseif u_str:byte(epos) < 192 then
-      epos = epos + 2
-    else -- 224
-      epos = epos + 3
-    end
-  end
-  return epos
-end
-
 local function cgi_memo()
   local d = formdata()
   local i = tonumber(d["i"])
@@ -101,7 +86,7 @@ local function cgi_memo()
         local nk = l:inc("primary_id")
         l:set(nk, d["k"])
       end
-      pprint(string.sub(d["k"], 1, sub_u8(d["k"], 8)-1), #d["k"], "bytes OK")
+      pprint(d["k"]:slice(1, 8), #d["k"], "bytes OK")
     else -- GET
       for i,v in ipairs(l:getall()) do
         local c = l:get(v):gsub("<", "&lt;"):gsub(">", "&gt;")
@@ -162,7 +147,7 @@ local function cgi_blog()
   if "POST"==method() then
     local txt = d['txt']
     l:set(tid, txt)
-    print(fmt("{} '{}' {}{}", tid, string.sub(txt, 1, sub_u8(txt, 6)-1), #txt, "bytes saved"))
+    print(fmt("{} '{}' {}{}", tid, txt:slice(1, 8), #txt, "bytes saved"))
   else
     if 0==#tid then
       print("title:")
