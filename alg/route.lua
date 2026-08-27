@@ -202,6 +202,8 @@ local function cgi_stock()
     end
     print(co, v, '||', a[4], a[5], fmt('{}%',a[6]), '</p>')
   end
+  local ma = run3("~/.shuw/bin/pb lu stock.lua m")
+  print(ma[1])
 end
 
 ----------- define route ---------------
