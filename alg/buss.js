@@ -7,11 +7,12 @@ function push_memo() {
   W.ajax("post", '/cgi-bin/lude.cgi/memo', {'k':kwd,'i':idx}, _cb)
 }
 
+// fts match | all like | tmrec rowid
 async function fts_get(tid, tarea, which) {
   let e = W.jq(tid)()
   let txt = W.jq(tarea)
   let query = txt()
-  if (e=="?"){query=e}
+  if ((e=="?") || (e[0]=="*")){query=e}
   else if (e!=""){query="#"+e}
   // which in fts/tmrec
   if (which()=="tmrec" && (query[0]!="#")){alert("tmrec must #number,"+query); return}
